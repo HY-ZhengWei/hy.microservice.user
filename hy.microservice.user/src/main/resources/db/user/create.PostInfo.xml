@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 发帖子的创建（自动创建）的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_Create_PostInfo">
+        
+            <dataSourceGroup ref="DSG_MS_Post" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE PostInfo
+                (
+                 id              VARCHAR(64)     NOT NULL          COMMENT '主键'
+                ,serviceType     VARCHAR(64)     NOT NULL          COMMENT '业务类型（值内容由业务决定）'
+                ,deviceNo        VARCHAR(64)                       COMMENT '设备编号或OpenID'
+                ,deviceType      VARCHAR(32)                       COMMENT '设备类型'
+                ,userID          VARCHAR(64)     NOT NULL          COMMENT '用户编号'
+                ,userName        VARCHAR(128)                      COMMENT '用户名称'
+                ,userIcon        VARCHAR(500)                      COMMENT '用户头像路径'
+                ,userType        VARCHAR(64)                       COMMENT '用户类型'
+                ,postTypeID      VARCHAR(64)     NOT NULL          COMMENT '帖子分类编号'
+                ,postTypeName    VARCHAR(64)     NOT NULL          COMMENT '帖子分类名称'
+                ,title           VARCHAR(200)    NOT NULL          COMMENT '帖子标题'
+                ,videoUrl        VARCHAR(320)                      COMMENT '帖子视频地址'
+                ,videoUrlID      VARCHAR(64)                       COMMENT '帖子视频的文件ID'
+                ,coverUrl        VARCHAR(320)                      COMMENT '帖子封面图片地址'
+                ,coverUrlID      VARCHAR(64)                       COMMENT '帖子封面图片的文件ID'
+                ,content         MEDIUMTEXT                        COMMENT '帖子内容'
+                ,openCount       INT             NOT NULL          COMMENT '阅读次数'
+                ,messageCount    INT             NOT NULL          COMMENT '消息次数'
+                ,favoritesCount  INT             NOT NULL          COMMENT '收藏次数'
+                ,goodCount       INT             NOT NULL          COMMENT '点赞次数'
+                ,isRecommend     INT             NOT NULL          COMMENT '是否推荐。1推荐；0不推荐'
+                ,isShow          INT             NOT NULL          COMMENT '是否显示。1显示；0不显示'
+                ,orderBy         INT             NOT NULL          COMMENT '排列显示顺序。数据越大越在前显示'
+                ,relationID      VARCHAR(64)                       COMMENT '关联对象的编号'
+                ,relationName    VARCHAR(128)                      COMMENT '关联对象的名称'
+                ,expireTime      DATETIME        NOT NULL          COMMENT '过期时间'
+                ,createTime      DATETIME        NOT NULL          COMMENT '创建时间'
+                ,updateTime      DATETIME        NOT NULL          COMMENT '修改时间'
+                ,auditState      VARCHAR(2)      NOT NULL          COMMENT '0：待审核、1：已审核'
+                ,auditResult     VARCHAR(2)                        COMMENT '0：不通过、1：通过'
+                ,auditTime       DATETIME                          COMMENT '审核时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+
+                ALTER TABLE PostInfo ADD CONSTRAINT PK_PostInfo PRIMARY KEY (id);/
+                
+                Alter TABLE PostInfo COMMENT                           = '帖子信息';/
+                ]]>
+            </content>
+            
+            <comment>帖子信息</comment>
+            <create>PostInfo</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

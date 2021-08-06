@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="dataSource"      class="com.alibaba.druid.pool.DruidDataSource" />
+    <import name="dataSourceGroup" class="org.hy.common.db.DataSourceGroup" />
+
+
+
+    <!-- 数据库配置信息 -->
+    <sqls>
+
+        <dataSource id="DS_MS_User" >
+            <driverClassName>com.mysql.cj.jdbc.Driver</driverClassName>
+            <url><![CDATA[jdbc:mysql://139.199.111.241:3306/hms?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8]]></url>
+            <username encrypt="org.hy.common.StringHelp">encrypt:X0aMiBwccdg=</username>
+            <password encrypt="org.hy.common.StringHelp">encrypt:fEYJx0xCjtZdeFu5FERhgQ==</password>
+            <filters>stat,wall,log4j2</filters>
+            <initialSize>5</initialSize>
+            <minIdle>5</minIdle>
+            <maxActive>20</maxActive>
+            <maxWait>60000</maxWait>
+            <timeBetweenEvictionRunsMillis>60000</timeBetweenEvictionRunsMillis>
+            <minEvictableIdleTimeMillis>300000</minEvictableIdleTimeMillis>
+            <validationQuery>SELECT 1</validationQuery>
+            <testWhileIdle>true</testWhileIdle>
+            <testOnBorrow>false</testOnBorrow>
+            <testOnReturn>false</testOnReturn>
+            <poolPreparedStatements>true</poolPreparedStatements>
+            <maxPoolPreparedStatementPerConnectionSize>20</maxPoolPreparedStatementPerConnectionSize>
+        </dataSource>
+
+
+        <!-- 数据库连接池组 -->
+        <dataSourceGroup id="DSG_MS_User">
+            <call name="add">
+                <dataSource ref="DS_MS_User" />
+            </call>
+        </dataSourceGroup>
+
+    </sqls>
+
+</config>

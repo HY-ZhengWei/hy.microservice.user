@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <sqls>
+    
+        <sql id="XSQL_PostInfo_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_Post" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO PostInfo
+                       (
+                        id     
+                       ,serviceType
+                       ,deviceNo 
+                       ,deviceType 
+                       ,userID    
+                       ,userName  
+                       ,userIcon
+                       ,userType
+                       ,postTypeID
+                       ,postTypeName
+                       ,title
+                       ,videoUrl      
+                       ,videoUrlID
+                       ,coverUrl      
+                       ,coverUrlID
+                       ,content
+                       ,openCount
+                       ,messageCount  
+                       ,favoritesCount
+                       ,goodCount 
+                       ,isRecommend    
+                       ,isShow  
+                       ,orderBy      
+                       ,relationID
+                       ,relationName
+                       ,expireTime
+                       ,createTime
+                       ,updateTime    
+                       ,auditState    
+                       ,auditResult   
+                       ,auditTime     
+                       )
+                VALUES (
+                        ':id'
+                       ,':serviceType'
+                       ,':deviceNo'
+                       ,':deviceType'
+                       ,':userID'
+                       ,':userName'
+                       ,':userIcon'
+                       ,':userType'
+                       ,':postTypeID'
+                       ,':postTypeName'
+                       ,':title'
+                       ,':videoUrl'
+                       ,':videoUrlID'
+                       ,':coverUrl'
+                       ,':coverUrlID'
+                       ,':content'
+                       ,':openCount'
+                       ,':messageCount'
+                       ,':favoritesCount'
+                       ,':goodCount'
+                       ,':isRecommend'
+                       ,':isShow'
+                       ,':orderBy'
+                       ,':relationID'
+                       ,':relationName'
+                       ,':expireTime'
+                       ,NOW()
+                       ,NOW()
+                       ,':auditState'
+                       ,':auditResult'
+                       ,NULL
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+
+    </sqls>
+    
+</config>

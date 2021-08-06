@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xobjects"        class="java.util.ArrayList" />
+    <import name="http"            class="org.hy.common.xml.XHttp" />
+    <import name="xparam"          class="org.hy.common.app.Param" />
+    
+    
+    
+    <xobjects>
+    
+        <!-- 验证并获取登录用户 -->
+        <http id="XHTTP_MS_User_GetLoginUser">
+            <protocol>https</protocol>
+            <ip>www.dadeyuntu.com</ip>
+            <url>/msXSSO/xsso/getLoginUser</url>
+            <contentType>application/json</contentType> <!-- text/html -->
+            <requestType ref="this.$Request_Type_Get" />
+            <encode>false</encode>
+            <toUnicode>false</toUnicode>
+            
+            <addParam>
+                <paramName>token</paramName>
+            </addParam>
+            
+        </http>
+        
+    </xobjects>
+
+</config>
