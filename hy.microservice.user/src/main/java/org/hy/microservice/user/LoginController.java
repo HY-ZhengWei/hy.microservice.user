@@ -249,6 +249,8 @@ public class LoginController
     {
         try
         {
+            int v_LoginLockMaxCount = Integer.parseInt(this.loginLockMaxCount.getValue());
+            
             // 客户端尝试登录三次后，不允许再连续登录
             String v_SessionID = i_Request.getSession().getId();
             if ( !Help.isNull(v_SessionID) )
@@ -259,7 +261,7 @@ public class LoginController
                 {
                     datasPool.put($DP_SessionID + v_SessionID ,1            ,60 * 5);
                 }
-                else if ( v_LCount < 3 )
+                else if ( v_LCount < v_LoginLockMaxCount )
                 {
                     datasPool.put($DP_SessionID + v_SessionID ,v_LCount + 1 ,60 * 5);
                 }
@@ -278,7 +280,7 @@ public class LoginController
                 {
                     datasPool.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,1            ,60 * 5);
                 }
-                else if ( v_LCount < 3 )
+                else if ( v_LCount < v_LoginLockMaxCount )
                 {
                     datasPool.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,v_LCount + 1 ,60 * 5);
                 }
@@ -297,7 +299,7 @@ public class LoginController
                 {
                     datasPool.put($DP_OpenID + i_LoginUser.getOpenID() ,1            ,60 * 5);
                 }
-                else if ( v_LCount < 3 )
+                else if ( v_LCount < v_LoginLockMaxCount )
                 {
                     datasPool.put($DP_OpenID + i_LoginUser.getOpenID() ,v_LCount + 1 ,60 * 5);
                 }

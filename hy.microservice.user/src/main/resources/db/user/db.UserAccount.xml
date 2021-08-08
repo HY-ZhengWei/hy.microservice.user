@@ -19,7 +19,7 @@
                 SELECT  A.appID
                        ,A.accountNo     
                        ,A.accountType
-                       ,A.userID 
+                       ,A.userGID 
                        ,A.createTime 
                   FROM  UserAccount  A
                  WHERE  A.appID     = ':appID'
