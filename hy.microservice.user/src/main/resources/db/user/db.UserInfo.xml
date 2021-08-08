@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <sqls>
+    
+        <sql id="XSQL_User_UserInfo_Query_ByID"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.id        
+                       ,A.appID     
+                       ,A.userId    
+                       ,A.userNo    
+                       ,A.userCode  
+                       ,A.openID    
+                       ,A.unionID   
+                       ,A.mobile    
+                       ,A.phone     
+                       ,A.email     
+                       ,A.userName  
+                       ,A.nickname  
+                       ,A.userType  
+                       ,A.userLevel 
+                       ,A.userSource
+                       ,A.orgCode   
+                       ,A.orgName   
+                       ,A.sex       
+                       ,A.cardID    
+                       ,A.startDate 
+                       ,A.passDate  
+                       ,A.endDate   
+                       ,A.isStart   
+                       ,A.isPass    
+                       ,A.isEnd     
+                       ,A.isDel     
+                       ,A.createTime
+                       ,A.updateTime
+                  FROM  UserInfo  A
+                 WHERE  A.id = ':id'
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.UserInfo</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+
+    </sqls>
+    
+</config>

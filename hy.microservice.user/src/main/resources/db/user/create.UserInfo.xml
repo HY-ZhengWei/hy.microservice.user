@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 用户信息的创建（自动创建）的相关SQL -->
+    <sqls>
+        
+        <sql id="XSQL_User_Create_UserInfo">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE UserInfo
+                (
+                 id              VARCHAR(64)     NOT NULL           COMMENT '用户全域主键'
+                ,appID           VARCHAR(64)     NOT NULL           COMMENT '应用编号'
+                ,userId          VARCHAR(64)                        COMMENT '用户编号'
+                ,userNo          VARCHAR(64)                        COMMENT '用户工号'
+                ,userCode        VARCHAR(64)                        COMMENT '用户编号'
+                ,openID          VARCHAR(64)                        COMMENT '微信用户应用ID'
+                ,unionID         VARCHAR(64)                        COMMENT '微信用户统一ID'
+                ,mobile          VARCHAR(32)                        COMMENT '手机号'
+                ,phone           VARCHAR(32)                        COMMENT '手机号'
+                ,email           VARCHAR(64)                        COMMENT '邮箱'
+                ,userName        VARCHAR(128)    NOT NULL           COMMENT '用户名称'
+                ,nickname        VARCHAR(128)                       COMMENT '用户昵称'
+                ,userType        VARCHAR(64)                        COMMENT '用户类型'
+                ,userLevel       VARCHAR(64)                        COMMENT '用户级别'
+                ,userSource      VARCHAR(64)                        COMMENT '用户来源'
+                ,orgCode         VARCHAR(64)                        COMMENT '组织编码'
+                ,orgName         VARCHAR(128)                       COMMENT '组织名称'
+                ,sex             VARCHAR(5)                         COMMENT '用户性别'
+                ,cardID          VARCHAR(24)                        COMMENT '身份证号'
+                ,password        VARCHAR(256)    NOT NULL           COMMENT '密码'
+                ,pwdExpireTime   DATETIME        NOT NULL           COMMENT '密码过期时间'
+                ,startDate       DATETIME                           COMMENT '入职日期'
+                ,passDate        DATETIME                           COMMENT '转正日期'
+                ,endDate         DATETIME                           COMMENT '离职日期'
+                ,isStart         INT             NOT NULL DEFAULT 0 COMMENT '是否入职（1：已入职）'
+                ,isPass          INT             NOT NULL DEFAULT 0 COMMENT '是否转正（1：已转正）'
+                ,isEnd           INT             NOT NULL DEFAULT 0 COMMENT '是否离职（1：已离职）'
+                ,isDel           INT             NOT NULL DEFAULT 0 COMMENT '删除标记（1：已删除）'
+                ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
+                ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+
+                ALTER TABLE UserInfo ADD CONSTRAINT PK_UserInfo PRIMARY KEY (id);/
+                
+                Alter TABLE UserInfo COMMENT                             = '用户信息';/
+                ]]>
+            </content>
+            
+            <comment>用户信息</comment>
+            <create>UserInfo</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

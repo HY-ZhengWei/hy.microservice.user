@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 用户账户的创建（自动创建）的相关SQL -->
+    <sqls>
+        
+        <sql id="XSQL_User_Create_UserAccount">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE UserAccount
+                (
+                 appID           VARCHAR(64)     NOT NULL          COMMENT '应用编号'
+                ,accountNo       VARCHAR(64)     NOT NULL          COMMENT '用户账号编号'
+                ,accountType     INT             NOT NULL          COMMENT '用户账号类型（1:身份证  2:邮箱  3:手机号）'
+                ,userGID         VARCHAR(64)     NOT NULL          COMMENT '用户全域编号'
+                ,createTime      DATETIME        NOT NULL          COMMENT '创建时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+
+                ALTER TABLE UserAccount ADD CONSTRAINT PK_UserAccount PRIMARY KEY (accountNo ,appID);/
+                
+                CREATE INDEX IDX_UserAccount_UserID ON UserAccount (userID);
+                
+                Alter TABLE UserAccount COMMENT                           = '用户账户信息';/
+                ]]>
+            </content>
+            
+            <comment>用户账户信息</comment>
+            <create>UserAccount</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

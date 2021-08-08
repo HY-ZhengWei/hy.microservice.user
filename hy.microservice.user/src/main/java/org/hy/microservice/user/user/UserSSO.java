@@ -20,6 +20,9 @@ public class UserSSO extends SerializableDef
 
     private static final long serialVersionUID = -6709011909036487332L;
     
+    /** 用户主键ID */
+    private String id;
+    
     /** 应用appKey */
     private String appKey;
     
@@ -88,6 +91,26 @@ public class UserSSO extends SerializableDef
 
     
     
+    /**
+     * 获取：用户主键ID
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+
+    /**
+     * 设置：用户主键ID
+     * 
+     * @param id
+     */
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+
     /**
      * 获取：用户在第三方用户中心的标识
      */

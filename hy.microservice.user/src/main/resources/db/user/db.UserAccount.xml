@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <sqls>
+    
+        <sql id="XSQL_User_UserAccount_Query_AccountNo"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.appID
+                       ,A.accountNo     
+                       ,A.accountType
+                       ,A.userID 
+                       ,A.createTime 
+                  FROM  UserAccount  A
+                 WHERE  A.appID     = ':appID'
+                   AND  A.accountNo = ':accountNo'
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.account.UserAccount</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+
+    </sqls>
+    
+</config>
