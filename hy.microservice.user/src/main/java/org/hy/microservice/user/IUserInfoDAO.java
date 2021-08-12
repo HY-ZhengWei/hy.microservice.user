@@ -33,4 +33,19 @@ public interface IUserInfoDAO
     @Xsql(id="XSQL_User_UserInfo_Query_ByID" ,returnOne=true)
     public UserInfo queryByID(@Xparam(id="id" ,notNull=true) String i_UserGID);
     
+    
+    
+    /**
+     * 创建用户
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-12
+     * @version     v1.0
+     * 
+     * @param i_User
+     * @return
+     */
+    @Xsql("GXSQL_User_UserInfo_Insert_CreateUser")
+    public boolean createUser(UserInfo i_User);
+    
 }

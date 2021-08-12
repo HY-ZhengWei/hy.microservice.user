@@ -78,10 +78,7 @@ public class LoginController
      * @createDate  2021-08-08
      * @version     v1.0
      * 
-     * @param i_LoginAccount  用户名称
-     * @param i_Password      用户密码
-     * @param i_AppID         应用编号AppID（可以是微信的AppID）
-     * @param i_OpenID        微信OpenID
+     * @param i_LoginUser  登录用户。必要信息（loginAccount用户名称、password用户密码、appID应用编号、openID）
      * @param i_Request
      * @param i_Response
      * @return

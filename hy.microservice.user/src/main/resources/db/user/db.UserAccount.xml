@@ -33,6 +33,90 @@
             </result>
             
         </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserAccount_Insert_CreateUser_CardID"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserAccount
+                       (
+                        appID           
+                       ,accountNo        
+                       ,accountType       
+                       ,userGID       
+                       ,createTime     
+                       )
+                VALUES (
+                        ':appID'
+                       ,':cardID'
+                       ,'1'
+                       ,':id'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserAccount_Insert_CreateUser_EMail"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserAccount
+                       (
+                        appID           
+                       ,accountNo        
+                       ,accountType       
+                       ,userGID       
+                       ,createTime     
+                       )
+                VALUES (
+                        ':appID'
+                       ,':email'
+                       ,'2'
+                       ,':id'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserAccount_Insert_CreateUser_Phone"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserAccount
+                       (
+                        appID           
+                       ,accountNo        
+                       ,accountType       
+                       ,userGID       
+                       ,createTime     
+                       )
+                VALUES (
+                        ':appID'
+                       ,':phone'
+                       ,'3'
+                       ,':id'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
 
     </sqls>
     

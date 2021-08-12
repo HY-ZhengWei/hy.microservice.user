@@ -35,6 +35,8 @@
                        ,A.orgName   
                        ,A.sex       
                        ,A.cardID    
+                       ,A.password    
+                       ,A.pwdExpireTime    
                        ,A.startDate 
                        ,A.passDate  
                        ,A.endDate   
@@ -55,6 +57,113 @@
             </result>
             
         </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserInfo_Insert_CreateUser"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserInfo
+                       (
+                        id           
+                       ,appID        
+                       ,userId       
+                       ,userNo       
+                       ,userCode     
+                       ,openID       
+                       ,unionID      
+                       ,mobile       
+                       ,phone        
+                       ,email        
+                       ,userName     
+                       ,nickname     
+                       ,userType     
+                       ,userLevel    
+                       ,userSource   
+                       ,orgCode      
+                       ,orgName      
+                       ,sex          
+                       ,cardID       
+                       ,password     
+                       ,pwdExpireTime
+                       ,startDate    
+                       ,passDate     
+                       ,endDate      
+                       ,isStart      
+                       ,isPass       
+                       ,isEnd        
+                       ,isDel        
+                       ,createTime   
+                       ,updateTime                      
+                       )
+                VALUES (
+                        ':id'
+                       ,':appID'
+                       ,':userId'
+                       ,':userNo'
+                       ,':userCode'
+                       ,':openID'
+                       ,':unionID'
+                       ,':mobile'
+                       ,':phone'
+                       ,':email'
+                       ,':userName'
+                       ,':nickname'
+                       ,':userType'
+                       ,':userLevel'
+                       ,':userSource'
+                       ,':orgCode'
+                       ,':orgName'
+                       ,':sex'
+                       ,':cardID'
+                       ,':password'
+                       ,NULL
+                       ,NULL
+                       ,NULL
+                       ,NULL
+                       ,'0'
+                       ,'0'
+                       ,'0'
+                       ,'0'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sqlGroup id="GXSQL_User_UserInfo_Insert_CreateUser">
+        
+            <sqlNode>
+                <sql  ref="XSQL_User_UserInfo_Insert_CreateUser" />
+                <type ref="this.$Type_ExecuteUpdate" />
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_CardID" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:cardID != NULL && :cardID != '']]></condition>
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_EMail" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:email != NULL && :email != '']]></condition>
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_Phone" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:phone != NULL && :phone != '']]></condition>
+            </sqlNode>
+            
+        </sqlGroup>
 
     </sqls>
     

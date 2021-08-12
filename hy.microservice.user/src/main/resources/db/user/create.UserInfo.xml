@@ -39,7 +39,7 @@
                 ,sex             VARCHAR(5)                         COMMENT '用户性别'
                 ,cardID          VARCHAR(24)                        COMMENT '身份证号'
                 ,password        VARCHAR(256)    NOT NULL           COMMENT '密码'
-                ,pwdExpireTime   DATETIME        NOT NULL           COMMENT '密码过期时间'
+                ,pwdExpireTime   DATETIME                           COMMENT '密码过期时间'
                 ,startDate       DATETIME                           COMMENT '入职日期'
                 ,passDate        DATETIME                           COMMENT '转正日期'
                 ,endDate         DATETIME                           COMMENT '离职日期'

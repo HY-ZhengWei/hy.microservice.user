@@ -3,15 +3,19 @@ package org.hy.microservice.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hy.common.Help;
 import org.hy.common.app.Param;
 import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
+import org.hy.microservice.user.user.UserSSO;
 import org.hy.microservice.user.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +44,10 @@ public class UserController
     private UserService userService;
     
     @Autowired
+    @Qualifier("UserInfoService")
+    private UserInfoService UserInfoService;
+    
+    @Autowired
     @Qualifier("MS_User_IsCheckToken")
     private Param isCheckToken;
     
@@ -52,27 +60,44 @@ public class UserController
      * @createDate  2021-08-08
      * @version     v1.0
      * 
-     * @param i_UserName   用户名称
-     * @param i_Password   用户密码
-     * @param i_CheckSMS   验证码
-     * @param i_OpenID     微信OpenID
+     * @param i_Token        认证票据号
+     * @param i_CreateUser   创建的用户信息
      * @param i_Request
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="qq" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="createUser" ,produces=MediaType.APPLICATION_JSON_VALUE ,method= {RequestMethod.POST})
     @ResponseBody
-    public BaseResponse<String> login(@RequestParam(value="loginName" ,required=false) String i_UserName
-                                     ,@RequestParam(value="password"  ,required=false) String i_Password
-                                     ,@RequestParam(value="checkSMS"  ,required=false) String i_CheckSMS
-                                     ,@RequestParam(value="openID"    ,required=false) String i_OpenID
-                                     ,HttpServletRequest  i_Request
-                                     ,HttpServletResponse i_Response)
+    public BaseResponse<UserInfo> createUser(@RequestParam(value="token" ,required=false) String i_Token
+                                            ,@RequestBody UserInfo i_CreateUser
+                                            ,HttpServletRequest    i_Request
+                                            ,HttpServletResponse   i_Response)
     {
+        BaseResponse<UserInfo> v_RetResp = new BaseResponse<UserInfo>();
         
-        $Logger.info("qq");
+        UserSSO v_User = null;
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            // 验证票据及用户登录状态
+            if ( Help.isNull(i_Token) )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            v_User = this.userService.getUser(i_Token);
+            if ( v_User == null )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+        }
         
-        return new BaseResponse<String>();
+        UserInfo v_CreateUser = this.UserInfoService.createUser(i_CreateUser);
+        if ( v_CreateUser == null )
+        {
+            return v_RetResp.setCode("-911").setMessage("创建用户失败");
+        }
+        
+        return v_RetResp.setData(v_CreateUser);
     }
     
 }
