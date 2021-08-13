@@ -50,7 +50,7 @@
             
             <item id="MS_User_AccountIllegalChar">
                 <name>MS_User_AccountIllegalChar</name>
-                <value><![CDATA['-"-,-!-=-<- ->-(-)-\-?-%-*]]></value>
+                <value><![CDATA['-"-,-<- ->-(-)-\-?-%-*]]></value>
                 <comment>用户账号的非法字符（用横杠分割）</comment>
             </item>
             

@@ -12,8 +12,8 @@
     
         <!-- 验证并获取登录用户 -->
         <http id="XHTTP_MS_User_GetLoginUser">
-            <protocol>https</protocol>
-            <ip>ECloudService.OpenApis.cn</ip>
+            <protocol>http</protocol>
+            <ip>10.1.50.60</ip>
             <url>/msXSSO/xsso/getLoginUser</url>
             <contentType>application/json</contentType> <!-- text/html -->
             <requestType ref="this.$Request_Type_Get" />

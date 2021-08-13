@@ -28,7 +28,7 @@
 
                 ALTER TABLE UserAccount ADD CONSTRAINT PK_UserAccount PRIMARY KEY (accountNo ,appID);/
                 
-                CREATE INDEX IDX_UserAccount_UserID ON UserAccount (userID);
+                CREATE INDEX IDX_UserAccount_UserID ON UserAccount (userGID);/
                 
                 Alter TABLE UserAccount COMMENT                           = '用户账户信息';/
                 ]]>
