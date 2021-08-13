@@ -117,6 +117,62 @@
             </content>
             
         </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserAccount_Insert_CreateUser_UserId"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserAccount
+                       (
+                        appID           
+                       ,accountNo        
+                       ,accountType       
+                       ,userGID       
+                       ,createTime     
+                       )
+                VALUES (
+                        ':appID'
+                       ,':userId'
+                       ,'4'
+                       ,':id'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserAccount_Insert_CreateUser_UserNo"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserAccount
+                       (
+                        appID           
+                       ,accountNo        
+                       ,accountType       
+                       ,userGID       
+                       ,createTime     
+                       )
+                VALUES (
+                        ':appID'
+                       ,':userNo'
+                       ,'5'
+                       ,':id'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
 
     </sqls>
     

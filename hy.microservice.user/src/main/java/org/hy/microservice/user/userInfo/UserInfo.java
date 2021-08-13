@@ -1,4 +1,4 @@
-package org.hy.microservice.user;
+package org.hy.microservice.user.userInfo;
 
 import org.hy.common.Date;
 import org.hy.microservice.user.user.UserSSO;
@@ -54,6 +54,15 @@ public class UserInfo extends UserSSO
     
     /** 删除标记（1：已删除） */
     private Integer isDel;
+    
+    /** 是否验证了身份证（1：已验证） */
+    private Integer checkCardID;
+    
+    /** 是否验证了电子邮箱（1：已验证） */
+    private Integer checkEMail;
+    
+    /** 是否验证了手机号（1：已验证） */
+    private Integer checkPhone;
     
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
@@ -322,6 +331,66 @@ public class UserInfo extends UserSSO
     public void setPwdExpireTime(Date pwdExpireTime)
     {
         this.pwdExpireTime = pwdExpireTime;
+    }
+
+
+    /**
+     * 获取：是否验证了身份证（1：已验证）
+     */
+    public Integer getCheckCardID()
+    {
+        return checkCardID;
+    }
+
+
+    /**
+     * 设置：是否验证了身份证（1：已验证）
+     * 
+     * @param
+     */
+    public void setCheckCardID(Integer checkCardID)
+    {
+        this.checkCardID = checkCardID;
+    }
+
+
+    /**
+     * 获取：是否验证了电子邮箱（1：已验证）
+     */
+    public Integer getCheckEMail()
+    {
+        return checkEMail;
+    }
+
+
+    /**
+     * 设置：是否验证了电子邮箱（1：已验证）
+     * 
+     * @param
+     */
+    public void setCheckEMail(Integer checkEMail)
+    {
+        this.checkEMail = checkEMail;
+    }
+
+
+    /**
+     * 获取：是否验证了手机号（1：已验证）
+     */
+    public Integer getCheckPhone()
+    {
+        return checkPhone;
+    }
+
+
+    /**
+     * 设置：是否验证了手机号（1：已验证）
+     * 
+     * @param
+     */
+    public void setCheckPhone(Integer checkPhone)
+    {
+        this.checkPhone = checkPhone;
     }
     
 }

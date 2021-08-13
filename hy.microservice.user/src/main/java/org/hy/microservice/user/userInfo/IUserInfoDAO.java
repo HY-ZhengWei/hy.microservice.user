@@ -1,4 +1,4 @@
-package org.hy.microservice.user;
+package org.hy.microservice.user.userInfo;
 
 import org.hy.common.xml.annotation.XType;
 import org.hy.common.xml.annotation.Xjava;

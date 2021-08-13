@@ -11,6 +11,8 @@ import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
 import org.hy.microservice.user.account.UserAccount;
 import org.hy.microservice.user.common.DatasPool;
+import org.hy.microservice.user.userInfo.UserInfo;
+import org.hy.microservice.user.userInfo.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -66,6 +68,10 @@ public class LoginController
     private Param loginLockMaxCount;
     
     @Autowired
+    @Qualifier("MS_User_LoginLockTimeLen")
+    private Param loginLockTimeLen;
+    
+    @Autowired
     @Qualifier("UserInfoService")
     private UserInfoService userInfoService;
     
@@ -94,51 +100,51 @@ public class LoginController
         if ( i_LoginUser == null || Help.isNull(i_LoginUser.getLoginAccount()) || Help.isNull(i_LoginUser.getPassword()) )
         {
             $Logger.info("登录验证：账号、密码为空");
-            return v_Ret.setCode("900").setMessage("登录验证：账号、密码为空");
+            return v_Ret.setCode("902").setMessage("登录验证：账号、密码为空");
         }
         
         if ( Help.isNull(i_LoginUser.getAppID()) )
         {
             $Logger.info("登录验证：微信AppID为空");
-            return v_Ret.setCode("901").setMessage("登录验证：微信AppID为空");
+            return v_Ret.setCode("903").setMessage("登录验证：微信AppID为空");
         }
         
         if ( Help.isNull(i_LoginUser.getOpenID()) )
         {
             $Logger.info("登录验证：微信OpenID为空");
-            return v_Ret.setCode("902").setMessage("登录验证：微信OpenID为空");
+            return v_Ret.setCode("904").setMessage("登录验证：微信OpenID为空");
         }
         
         int v_AccountMaxLen = Integer.parseInt(this.accountMaxLen.getValue());
         if ( i_LoginUser.getLoginAccount().length() >= v_AccountMaxLen )
         {
             $Logger.info("登录验证：账号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
-            return v_Ret.setCode("903").setMessage("登录验证：账号长度超出允许范围（最大" + v_AccountMaxLen + "）");
+            return v_Ret.setCode("905").setMessage("登录验证：账号长度超出允许范围（最大" + v_AccountMaxLen + "）");
         }
         
         String [] v_AccountIllegalChar = this.accountIllegalChar.getValue().split("-");
         if ( StringHelp.isContains(i_LoginUser.getLoginAccount() ,v_AccountIllegalChar) )
         {
             $Logger.info("登录验证：账号禁止非法字符" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
-            return v_Ret.setCode("904").setMessage("登录验证：账号禁止非法字符");
+            return v_Ret.setCode("906").setMessage("登录验证：账号禁止非法字符");
         }
         
         if ( StringHelp.isContains(i_LoginUser.getPassword() ,v_AccountIllegalChar) )
         {
             $Logger.info("登录验证：密码禁止非法字符" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
-            return v_Ret.setCode("905").setMessage("登录验证：密码禁止非法字符");
+            return v_Ret.setCode("907").setMessage("登录验证：密码禁止非法字符");
         }
         
         if ( StringHelp.isContains(i_LoginUser.getAppID() ,v_AccountIllegalChar) )
         {
             $Logger.info("登录验证：AppID禁止非法字符" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
-            return v_Ret.setCode("906").setMessage("登录验证：AppID禁止非法字符");
+            return v_Ret.setCode("908").setMessage("登录验证：AppID禁止非法字符");
         }
         
         if ( StringHelp.isContains(i_LoginUser.getOpenID() ,v_AccountIllegalChar) )
         {
             $Logger.info("登录验证：OpenID禁止非法字符" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
-            return v_Ret.setCode("907").setMessage("登录验证：OpenID禁止非法字符");
+            return v_Ret.setCode("909").setMessage("登录验证：OpenID禁止非法字符");
         }
         
         boolean v_IsLock = this.loginIsLock(i_LoginUser ,i_Request);
@@ -247,6 +253,7 @@ public class LoginController
         try
         {
             int v_LoginLockMaxCount = Integer.parseInt(this.loginLockMaxCount.getValue());
+            int v_LoginLockTimeLen  = Integer.parseInt(this.loginLockTimeLen .getValue());
             
             // 客户端尝试登录三次后，不允许再连续登录
             String v_SessionID = i_Request.getSession().getId();
@@ -256,11 +263,11 @@ public class LoginController
                 
                 if ( v_LCount == null || v_LCount <= 0 )
                 {
-                    datasPool.put($DP_SessionID + v_SessionID ,1            ,60 * 5);
+                    datasPool.put($DP_SessionID + v_SessionID ,1            ,60 * v_LoginLockTimeLen);
                 }
                 else if ( v_LCount < v_LoginLockMaxCount )
                 {
-                    datasPool.put($DP_SessionID + v_SessionID ,v_LCount + 1 ,60 * 5);
+                    datasPool.put($DP_SessionID + v_SessionID ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
                 }
                 else
                 {
@@ -275,11 +282,11 @@ public class LoginController
                 
                 if ( v_LCount == null || v_LCount <= 0 )
                 {
-                    datasPool.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,1            ,60 * 5);
+                    datasPool.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,1            ,60 * v_LoginLockTimeLen);
                 }
                 else if ( v_LCount < v_LoginLockMaxCount )
                 {
-                    datasPool.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,v_LCount + 1 ,60 * 5);
+                    datasPool.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
                 }
                 else
                 {
@@ -294,11 +301,11 @@ public class LoginController
                 
                 if ( v_LCount == null || v_LCount <= 0 )
                 {
-                    datasPool.put($DP_OpenID + i_LoginUser.getOpenID() ,1            ,60 * 5);
+                    datasPool.put($DP_OpenID + i_LoginUser.getOpenID() ,1            ,60 * v_LoginLockTimeLen);
                 }
                 else if ( v_LCount < v_LoginLockMaxCount )
                 {
-                    datasPool.put($DP_OpenID + i_LoginUser.getOpenID() ,v_LCount + 1 ,60 * 5);
+                    datasPool.put($DP_OpenID + i_LoginUser.getOpenID() ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
                 }
                 else
                 {

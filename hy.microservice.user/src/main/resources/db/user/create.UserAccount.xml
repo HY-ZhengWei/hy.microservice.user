@@ -21,7 +21,7 @@
                 (
                  appID           VARCHAR(64)     NOT NULL          COMMENT '应用编号'
                 ,accountNo       VARCHAR(64)     NOT NULL          COMMENT '用户账号编号'
-                ,accountType     INT             NOT NULL          COMMENT '用户账号类型（1:身份证  2:邮箱  3:手机号）'
+                ,accountType     INT             NOT NULL          COMMENT '用户账号类型（1:身份证  2:邮箱  3:手机号  4:用户编号  5:用户工号）'
                 ,userGID         VARCHAR(64)     NOT NULL          COMMENT '用户全域编号'
                 ,createTime      DATETIME        NOT NULL          COMMENT '创建时间'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/

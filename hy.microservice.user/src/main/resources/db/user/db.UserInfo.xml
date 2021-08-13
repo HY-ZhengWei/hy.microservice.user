@@ -43,7 +43,10 @@
                        ,A.isStart   
                        ,A.isPass    
                        ,A.isEnd     
-                       ,A.isDel     
+                       ,A.isDel    
+                       ,A.checkCardID
+                       ,A.checkEMail
+                       ,A.checkPhone
                        ,A.createTime
                        ,A.updateTime
                   FROM  UserInfo  A
@@ -52,7 +55,7 @@
             </content>
             
             <result>
-                <row>org.hy.microservice.user.UserInfo</row>
+                <row>org.hy.microservice.user.userInfo.UserInfo</row>
                 <cfill>setter(colValue)</cfill>
             </result>
             
@@ -95,7 +98,10 @@
                        ,isStart      
                        ,isPass       
                        ,isEnd        
-                       ,isDel        
+                       ,isDel     
+                       ,checkCardID
+                       ,checkEMail
+                       ,checkPhone
                        ,createTime   
                        ,updateTime                      
                        )
@@ -128,6 +134,9 @@
                        ,'0'
                        ,'0'
                        ,'0'
+                       ,'0'
+                       ,'0'
+                       ,'0'
                        ,NOW()
                        ,NOW()
                        )
@@ -143,24 +152,42 @@
             <sqlNode>
                 <sql  ref="XSQL_User_UserInfo_Insert_CreateUser" />
                 <type ref="this.$Type_ExecuteUpdate" />
+                <comment>创建用户主数据</comment>
             </sqlNode>
             
             <sqlNode>
                 <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_CardID" />
                 <type ref="this.$Type_ExecuteUpdate" />
                 <condition><![CDATA[:cardID != NULL && :cardID != '']]></condition>
+                <comment>创建以"身份证"为登录账号的信息</comment>
             </sqlNode>
             
             <sqlNode>
                 <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_EMail" />
                 <type ref="this.$Type_ExecuteUpdate" />
                 <condition><![CDATA[:email != NULL && :email != '']]></condition>
+                <comment>创建以"电子邮箱"为登录账号的信息</comment>
             </sqlNode>
             
             <sqlNode>
                 <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_Phone" />
                 <type ref="this.$Type_ExecuteUpdate" />
                 <condition><![CDATA[:phone != NULL && :phone != '']]></condition>
+                <comment>创建以"手机"为登录账号的信息</comment>
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_UserId" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:userId != NULL && :userId != '']]></condition>
+                <comment>创建以"用户编号"为登录账号的信息</comment>
+            </sqlNode>
+            
+            <sqlNode>
+                <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_UserNo" />
+                <type ref="this.$Type_ExecuteUpdate" />
+                <condition><![CDATA[:userNo != NULL && :userNo != '']]></condition>
+                <comment>创建以"工号"为登录账号的信息</comment>
             </sqlNode>
             
         </sqlGroup>

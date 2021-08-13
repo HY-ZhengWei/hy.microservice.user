@@ -47,6 +47,9 @@
                 ,isPass          INT             NOT NULL DEFAULT 0 COMMENT '是否转正（1：已转正）'
                 ,isEnd           INT             NOT NULL DEFAULT 0 COMMENT '是否离职（1：已离职）'
                 ,isDel           INT             NOT NULL DEFAULT 0 COMMENT '删除标记（1：已删除）'
+                ,checkCardID     INT             NOT NULL DEFAULT 0 COMMENT '是否验证了身份证（1：已验证）'
+                ,checkEMail      INT             NOT NULL DEFAULT 0 COMMENT '是否验证了电子邮箱（1：已验证）'
+                ,checkPhone      INT             NOT NULL DEFAULT 0 COMMENT '是否验证了手机号（1：已验证）'
                 ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
                 ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/

@@ -1,10 +1,13 @@
-package org.hy.microservice.user;
+package org.hy.microservice.user.userInfo;
 
+import org.hy.common.Help;
 import org.hy.common.StringHelp;
 import org.hy.common.license.Hash;
 import org.hy.common.license.IHash;
 import org.hy.common.license.base64.Base64Factory;
 import org.hy.common.xml.annotation.Xjava;
+import org.hy.common.xml.log.Logger;
+import org.hy.microservice.user.UserController;
 import org.hy.microservice.user.account.IUserAccountDAO;
 import org.hy.microservice.user.account.UserAccount;
 
@@ -22,6 +25,7 @@ import org.hy.microservice.user.account.UserAccount;
 @Xjava
 public class UserInfoService
 {
+    private static final Logger $Logger = new Logger(UserController.class);
     
     @Xjava
     private IUserInfoDAO    userInfoDAO;
@@ -50,6 +54,23 @@ public class UserInfoService
     
     
     /**
+     * 创建密码加密方式
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-08
+     * @version     v1.0
+     * 
+     * @param i_Key
+     * @return
+     */
+    public IHash createPassowrdSecurity(String i_Key)
+    {
+        return new Hash(2 ,3 ,i_Key);
+    }
+    
+    
+    
+    /**
      * 验证用户登录
      * 
      * @author      ZhengWei(HY)
@@ -67,7 +88,7 @@ public class UserInfoService
         if ( v_User != null )
         {
             String v_Password = new String(Base64Factory.getIntance().decode(i_UserInfo.getPassword()));
-            IHash  v_IHash    = new Hash(2 ,3 ,i_UserInfo.getId());
+            IHash  v_IHash    = this.createPassowrdSecurity(v_User.getId());
             
             v_Password = v_IHash.encrypt(v_Password);
             
@@ -93,29 +114,44 @@ public class UserInfoService
      * @createDate  2021-08-12
      * @version     v1.0
      * 
-     * @param io_User
+     * @param io_User  当入参指定密码时，使用入参密码，否则内部自动创建密码。
      * @return         返回带明文密码的用户信息。
      */
     public UserInfo createUser(UserInfo io_User)
     {
-        io_User.setId(StringHelp.getUUID());
-        
-        IHash  v_IHash    = new Hash(2 ,3 ,io_User.getId());
-        String v_Password = StringHelp.random(16 ,true);
-        io_User.setPassword(v_IHash.encrypt(v_Password));
-        
-        if ( this.userInfoDAO.createUser(io_User) )
+        String v_ID       = StringHelp.getUUID();
+        IHash  v_IHash    = this.createPassowrdSecurity(v_ID);
+        String v_Password = "";
+                
+        if ( Help.isNull(io_User.getPassword()) )
         {
-            UserInfo v_User = this.userInfoDAO.queryByID(io_User.getId());
-            
-            v_User.setPassword(v_Password);
-            
-            return v_User;
+            v_Password = StringHelp.random(16 ,true);
         }
         else
         {
-            return null;
+            v_Password = io_User.getPassword();
         }
+                
+        io_User.setPassword(v_IHash.encrypt(v_Password));
+        io_User.setId(v_ID);
+        
+        if ( this.userInfoDAO.createUser(io_User) )
+        {
+            try
+            {
+                UserInfo v_User = this.userInfoDAO.queryByID(io_User.getId());
+                
+                v_User.setPassword(v_Password);
+                
+                return v_User;
+            }
+            catch (Exception exce)
+            {
+                $Logger.error(exce);
+            }
+        }
+        
+        return null;
     }
     
 }

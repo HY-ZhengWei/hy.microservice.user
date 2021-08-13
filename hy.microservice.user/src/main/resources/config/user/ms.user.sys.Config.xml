@@ -36,21 +36,21 @@
             
             <item id="MS_User_IsCheckToken">
                 <name>MS_Usesr_IsCheckToken</name>
-                <value>false</value>
+                <value>true</value>
                 <comment>是否验证用户登录的票据</comment>
             </item>
             
             
             <item id="MS_User_AccountMaxLen">
                 <name>MS_User_AccountMaxLen</name>
-                <value>32</value>
+                <value>64</value>
                 <comment>用户登录账号的最大长度</comment>
             </item>
             
             
             <item id="MS_User_AccountIllegalChar">
                 <name>MS_User_AccountIllegalChar</name>
-                <value><![CDATA['-"-,-!-=-<- ->-(-)-\-?-%-_-*]]></value>
+                <value><![CDATA['-"-,-!-=-<- ->-(-)-\-?-%-*]]></value>
                 <comment>用户账号的非法字符（用横杠分割）</comment>
             </item>
             
@@ -59,6 +59,12 @@
                 <name>MS_User_LoginLockMaxCount</name>
                 <value>5</value>
                 <comment>用户登录失败多少次后，锁定用户</comment>
+            </item>
+            
+            <item id="MS_User_LoginLockTimeLen">
+                <name>MS_User_LoginLockTimeLen</name>
+                <value>5</value>
+                <comment>用户登录失败后的锁定时长(单位：分钟)</comment>
             </item>
             
         </xparam>
