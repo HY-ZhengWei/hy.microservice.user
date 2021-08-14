@@ -21,7 +21,7 @@
                 (
                  id              VARCHAR(64)     NOT NULL           COMMENT '用户全域主键'
                 ,appID           VARCHAR(64)     NOT NULL           COMMENT '应用编号'
-                ,userId          VARCHAR(64)                        COMMENT '用户编号'
+                ,userId          VARCHAR(64)                        COMMENT '用户主键'
                 ,userNo          VARCHAR(64)                        COMMENT '用户工号'
                 ,userCode        VARCHAR(64)                        COMMENT '用户编号'
                 ,openID          VARCHAR(64)                        COMMENT '微信用户应用ID'

@@ -130,7 +130,7 @@ public class UserController
         {
             if ( i_CreateUser.getCardID().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：身份证长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName() + "：" + i_CreateUser.getCardID());
+                $Logger.info("创建用户：身份证长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：身份证长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
@@ -145,7 +145,7 @@ public class UserController
         {
             if ( i_CreateUser.getEmail().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：电子邮箱长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName() + "：" + i_CreateUser.getCardID());
+                $Logger.info("创建用户：电子邮箱长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：电子邮箱长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
@@ -160,7 +160,7 @@ public class UserController
         {
             if ( i_CreateUser.getPhone().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：手机号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName() + "：" + i_CreateUser.getCardID());
+                $Logger.info("创建用户：手机号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：手机号长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
@@ -171,15 +171,15 @@ public class UserController
             }
         }
         
-        if ( !Help.isNull(i_CreateUser.getUserId()) )
+        if ( !Help.isNull(i_CreateUser.getUserCode()) )
         {
-            if ( i_CreateUser.getUserId().length() >= v_AccountMaxLen )
+            if ( i_CreateUser.getUserCode().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：用户编号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName() + "：" + i_CreateUser.getCardID());
+                $Logger.info("创建用户：用户编号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：用户编号长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
-            if ( StringHelp.isContains(i_CreateUser.getUserId() ,v_AccountIllegalChar) )
+            if ( StringHelp.isContains(i_CreateUser.getUserCode() ,v_AccountIllegalChar) )
             {
                 $Logger.info("创建用户：用户编号禁止非法字符" + i_CreateUser.getAppID() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("906").setMessage("创建用户：用户编号禁止非法字符");
@@ -190,7 +190,7 @@ public class UserController
         {
             if ( i_CreateUser.getUserNo().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：工号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName() + "：" + i_CreateUser.getCardID());
+                $Logger.info("创建用户：工号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：工号长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
@@ -205,7 +205,7 @@ public class UserController
         {
             if ( i_CreateUser.getOpenID().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：OpenID长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName() + "：" + i_CreateUser.getCardID());
+                $Logger.info("创建用户：OpenID长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：OpenID长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             

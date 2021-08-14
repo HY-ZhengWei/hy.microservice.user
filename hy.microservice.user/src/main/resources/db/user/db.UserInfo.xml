@@ -177,9 +177,9 @@
             </sqlNode>
             
             <sqlNode>
-                <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_UserId" />
+                <sql  ref="XSQL_User_UserAccount_Insert_CreateUser_UserCode" />
                 <type ref="this.$Type_ExecuteUpdate" />
-                <condition><![CDATA[:userId != NULL && :userId != '']]></condition>
+                <condition><![CDATA[:userCode != NULL && :userCode != '']]></condition>
                 <comment>创建以"用户编号"为登录账号的信息</comment>
             </sqlNode>
             

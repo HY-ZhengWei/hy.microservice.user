@@ -120,7 +120,7 @@
         
         
         
-        <sql id="XSQL_User_UserAccount_Insert_CreateUser_UserId"> 
+        <sql id="XSQL_User_UserAccount_Insert_CreateUser_UserCode"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
@@ -136,7 +136,7 @@
                        )
                 VALUES (
                         ':appID'
-                       ,':userId'
+                       ,':userCode'
                        ,'4'
                        ,':id'
                        ,NOW()
