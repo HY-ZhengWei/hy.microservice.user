@@ -21,6 +21,9 @@ public class BaseViewMode extends SerializableDef
 {
     private static final long serialVersionUID = -3998918924300953503L;
 
+    /** 应用appKey */
+    private String appKey;
+    
     /** 票据号 */
     private String  token;
     
@@ -84,8 +87,31 @@ public class BaseViewMode extends SerializableDef
     
     /** 总行数 */
     private Long    totalCount;
+    
+    /** 备注说明 */
+    private String  remarks;
+    
+    
+    
+    /**
+     * 获取：应用appKey
+     */
+    public String getAppKey()
+    {
+        return appKey;
+    }
 
     
+    /**
+     * 设置：应用appKey
+     * 
+     * @param appKey
+     */
+    public void setAppKey(String appKey)
+    {
+        this.appKey = appKey;
+    }
+
     
     /**
      * 获取：票据号
@@ -574,6 +600,26 @@ public class BaseViewMode extends SerializableDef
     public void setExpireTime(Date expireTime)
     {
         this.expireTime = expireTime;
+    }
+    
+    
+    /**
+     * 获取：备注说明
+     */
+    public String getRemarks()
+    {
+        return remarks;
+    }
+
+    
+    /**
+     * 设置：备注说明
+     * 
+     * @param remarks
+     */
+    public void setRemarks(String remarks)
+    {
+        this.remarks = remarks;
     }
 
 }

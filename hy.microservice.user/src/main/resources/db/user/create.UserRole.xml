@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 用户角色的创建（自动创建）的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_User_Init_UserRole">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserRole
+                       (
+                        id
+                       ,appKey        
+                       ,roleName       
+                       ,remarks       
+                       ,createTime   
+                       ,updateTime  
+                       )
+                VALUES (
+                        'R0000'
+                       ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,'超级管理员'
+                       ,'拥有创建管理员、审计员、策略员的权限'
+                       ,NOW()
+                       ,NOW()
+                       );/
+                       
+                       
+                INSERT  INTO UserRole
+                       (
+                        id
+                       ,appKey        
+                       ,roleName       
+                       ,remarks       
+                       ,createTime   
+                       ,updateTime  
+                       )
+                VALUES (
+                        'R0001'
+                       ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,'管理员'
+                       ,'拥有创建普通用户的权限'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+
+            <comment>初始化角色</comment>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_Create_UserAccount">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE UserRole
+                (
+                 id              VARCHAR(64)     NOT NULL           COMMENT '角色主键'
+                ,appKey          VARCHAR(64)     NOT NULL           COMMENT '应用编号'
+                ,roleName        VARCHAR(128)    NOT NULL           COMMENT '角色名称'
+                ,remarks         VARCHAR(500)                       COMMENT '备注说明'
+                ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
+                ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+
+                ALTER TABLE UserRole ADD CONSTRAINT PK_UserRole PRIMARY KEY (id ,appKey);/
+                
+                Alter TABLE UserRole COMMENT                              = '用户账户信息';/
+                ]]>
+            </content>
+            
+            <trigger>
+                <create ref="XSQL_User_Init_UserAccount" />
+            </trigger>
+            
+            <comment>用户角色信息</comment>
+            <create>XSQL_User_Init_UserRole</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

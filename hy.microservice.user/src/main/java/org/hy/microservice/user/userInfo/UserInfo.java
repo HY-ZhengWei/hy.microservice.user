@@ -113,6 +113,7 @@ public class UserInfo extends UserSSO
      * 
      * @param createTime
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     public void setCreateTime(Date createTime)
     {
         this.createTime = createTime;
@@ -122,6 +123,7 @@ public class UserInfo extends UserSSO
     /**
      * 获取：修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     public Date getUpdateTime()
     {
         return updateTime;
@@ -153,6 +155,7 @@ public class UserInfo extends UserSSO
      * 
      * @param
      */
+    @JsonFormat(pattern = "yyyy-MM-dd" ,timezone = "GMT+8")
     public void setStartDate(Date startDate)
     {
         this.startDate = startDate;
@@ -173,6 +176,7 @@ public class UserInfo extends UserSSO
      * 
      * @param
      */
+    @JsonFormat(pattern = "yyyy-MM-dd" ,timezone = "GMT+8")
     public void setPassDate(Date passDate)
     {
         this.passDate = passDate;
@@ -193,6 +197,7 @@ public class UserInfo extends UserSSO
      * 
      * @param
      */
+    @JsonFormat(pattern = "yyyy-MM-dd" ,timezone = "GMT+8")
     public void setEndDate(Date endDate)
     {
         this.endDate = endDate;
@@ -313,6 +318,7 @@ public class UserInfo extends UserSSO
      * 
      * @param
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     public void setPwdExpireTime(Date pwdExpireTime)
     {
         this.pwdExpireTime = pwdExpireTime;
