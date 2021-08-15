@@ -57,7 +57,7 @@ public interface IUserInfoDAO
      * @createDate  2021-08-15
      * @version     v1.0
      * 
-     * @param i_User  必要参数是 id 和 openID
+     * @param i_User  必要参数是 id 、 openID  appID
      * @return
      */
     @Xsql("XSQL_User_UserInfo_Update_OpenID")
