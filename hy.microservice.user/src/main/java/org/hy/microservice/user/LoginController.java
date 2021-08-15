@@ -256,6 +256,13 @@ public class LoginController
             return v_Ret.setCode("913").setMessage("登录验证：非法账户");
         }
         
+        if ( !Help.isNull(v_RetUser.getOpenID()) && !i_LoginUser.getOpenID().equals(v_RetUser.getOpenID()) )
+        {
+            $Logger.info("登录验证：绑定微信用户不一致：" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+            this.loginLock(i_LoginUser ,i_Request);
+            return v_Ret.setCode("914").setMessage("登录验证：绑定微信用户不一致");
+        }
+        
         if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
         {
             TokenInfo v_SessionToken = this.userService.loginUser(i_Code ,v_AppKey ,v_RetUser);
@@ -263,10 +270,21 @@ public class LoginController
             {
                 $Logger.info("登录验证：临时登录Code无效或已过期：" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
                 this.loginLock(i_LoginUser ,i_Request);
-                return v_Ret.setCode("914").setMessage("登录验证：临时登录Code无效或已过期");
+                return v_Ret.setCode("915").setMessage("登录验证：临时登录Code无效或已过期");
             }
             
             v_RetUser.setToken(v_SessionToken);
+        }
+        
+        // 首次登录后，绑定OpenID
+        if ( Help.isNull(v_RetUser.getOpenID()) )
+        {
+            if ( !this.userInfoService.bindingOpenID(i_LoginUser) )
+            {
+                $Logger.info("登录验证：绑定微信用户异常：" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+                this.loginLock(i_LoginUser ,i_Request);
+                return v_Ret.setCode("916").setMessage("登录验证：绑定微信用户异常");
+            }
         }
         
         return v_Ret.setData(v_RetUser);

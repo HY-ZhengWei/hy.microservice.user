@@ -48,4 +48,19 @@ public interface IUserInfoDAO
     @Xsql("GXSQL_User_UserInfo_Insert_CreateUser")
     public boolean createUser(UserInfo i_User);
     
+    
+    
+    /**
+     * 绑定微信用户的OpenID
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-15
+     * @version     v1.0
+     * 
+     * @param i_User  必要参数是 id 和 openID
+     * @return
+     */
+    @Xsql("XSQL_User_UserInfo_Update_OpenID")
+    public int bindingOpenID(UserInfo i_User);
+    
 }

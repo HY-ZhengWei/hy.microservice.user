@@ -191,6 +191,23 @@
             </sqlNode>
             
         </sqlGroup>
+        
+        
+        
+        <sql id="XSQL_User_UserInfo_Update_OpenID"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  UserInfo
+                   SET  openID     = ':openID'
+                       ,updateTime = NOW()
+                 WHERE  id         = ':id'
+                ]]>
+            </content>
+            
+        </sql>
 
     </sqls>
     

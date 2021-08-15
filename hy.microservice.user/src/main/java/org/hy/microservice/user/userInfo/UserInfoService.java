@@ -159,4 +159,21 @@ public class UserInfoService
         return null;
     }
     
+    
+    
+    /**
+     * 绑定微信用户的OpenID
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-15
+     * @version     v1.0
+     * 
+     * @param i_User  必要参数是 id 和 openID
+     * @return
+     */
+    public boolean bindingOpenID(UserInfo i_User)
+    {
+        return this.userInfoDAO.bindingOpenID(i_User) >= 1;
+    }
+    
 }
