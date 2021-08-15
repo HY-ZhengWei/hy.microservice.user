@@ -42,13 +42,13 @@ public class UserInfoService
      * @createDate  2021-08-08
      * @version     v1.0
      *
-     * @param i_AccountNo  用户账号
+     * @param i_AppKey     应用编号
      * @param i_AccountNo  用户账号
      * @return
      */
-    public UserAccount queryAccountNo(String i_AppID ,String i_AccountNo)
+    public UserAccount queryAccountNo(String i_AppKey ,String i_AccountNo)
     {
-        return this.userAccountDAO.queryAccountNo(i_AppID ,i_AccountNo);
+        return this.userAccountDAO.queryAccountNo(i_AppKey ,i_AccountNo);
     }
     
     
@@ -87,9 +87,14 @@ public class UserInfoService
         
         if ( v_User != null )
         {
-            String v_Password = new String(Base64Factory.getIntance().decode(i_UserInfo.getPassword()));
             IHash  v_IHash    = this.createPassowrdSecurity(v_User.getId());
+            String v_Password = i_UserInfo.getPassword();
             
+            if ( v_Password.startsWith("@@E@@") )   // 表示已被前端Base64过才传输此
+            {
+                v_Password = StringHelp.replaceAll(v_Password ,"@@E@@" ,"");
+                v_Password = new String(Base64Factory.getIntance().decode(v_Password));
+            }
             v_Password = v_IHash.encrypt(v_Password);
             
             if ( v_Password.equals(v_User.getPassword()) )

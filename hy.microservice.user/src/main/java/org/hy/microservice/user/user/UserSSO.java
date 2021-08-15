@@ -35,6 +35,9 @@ public class UserSSO extends SerializableDef
     /** 用户在第三方系统的编码 */
     private String userCode;
     
+    /** 微信应用编号 */
+    private String appID;
+    
     /** 微信用户应用ID */
     private String openID;
         
@@ -89,6 +92,26 @@ public class UserSSO extends SerializableDef
     /** 附加用户数据 */
     private Map<String ,String> datas;
 
+    
+    
+    /**
+     * 获取：微信应用编号
+     */
+    public String getAppID()
+    {
+        return this.appID;
+    }
+
+    
+    /**
+     * 设置：微信应用编号
+     * 
+     * @param i_AppID
+     */
+    public void setAppID(String i_AppID)
+    {
+        this.appID = i_AppID;
+    }
     
     
     /**

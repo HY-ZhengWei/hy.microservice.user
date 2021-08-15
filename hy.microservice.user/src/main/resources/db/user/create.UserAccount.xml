@@ -10,6 +10,36 @@
 
     <!-- 用户账户的创建（自动创建）的相关SQL -->
     <sqls>
+    
+        <sql id="XSQL_User_Init_UserAccount">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserAccount
+                       (
+                        appKey          
+                       ,accountNo        
+                       ,accountType       
+                       ,userGID       
+                       ,createTime     
+                       )
+                VALUES (
+                        'C35C99CCE8914BD184CC2CF87288928D'
+                       ,'administrator'
+                       ,'4'
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+
+            <comment>初始化超级管理员的登录账号</comment>
+            
+        </sql>
+        
+        
         
         <sql id="XSQL_User_Create_UserAccount">
         
@@ -19,20 +49,24 @@
                 <![CDATA[
                 CREATE TABLE UserAccount
                 (
-                 appID           VARCHAR(64)     NOT NULL          COMMENT '应用编号'
+                 appKey          VARCHAR(64)     NOT NULL          COMMENT '应用编号'
                 ,accountNo       VARCHAR(64)     NOT NULL          COMMENT '用户账号编号'
                 ,accountType     INT             NOT NULL          COMMENT '用户账号类型（1:身份证  2:邮箱  3:手机号  4:用户编号  5:用户工号）'
                 ,userGID         VARCHAR(64)     NOT NULL          COMMENT '用户全域编号'
                 ,createTime      DATETIME        NOT NULL          COMMENT '创建时间'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
 
-                ALTER TABLE UserAccount ADD CONSTRAINT PK_UserAccount PRIMARY KEY (accountNo ,appID);/
+                ALTER TABLE UserAccount ADD CONSTRAINT PK_UserAccount PRIMARY KEY (accountNo ,appKey);/
                 
                 CREATE INDEX IDX_UserAccount_UserID ON UserAccount (userGID);/
                 
                 Alter TABLE UserAccount COMMENT                           = '用户账户信息';/
                 ]]>
             </content>
+            
+            <trigger>
+                <create ref="XSQL_User_Init_UserAccount" />
+            </trigger>
             
             <comment>用户账户信息</comment>
             <create>UserAccount</create>

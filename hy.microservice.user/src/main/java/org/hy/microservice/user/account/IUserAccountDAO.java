@@ -27,12 +27,12 @@ public interface IUserAccountDAO
      * @createDate  2021-08-08
      * @version     v1.0
      *
-     * @param i_AppID      应用编码
+     * @param i_AppKey     应用编码
      * @param i_AccountNo  用户账号
      * @return
      */
     @Xsql(id="XSQL_User_UserAccount_Query_AccountNo" ,returnOne=true)
-    public UserAccount queryAccountNo(@Xparam(id="appID"     ,notNull=true) String i_AppID
+    public UserAccount queryAccountNo(@Xparam(id="appKey"    ,notNull=true) String i_AppKey
                                      ,@Xparam(id="accountNo" ,notNull=true) String i_AccountNo);
     
 }

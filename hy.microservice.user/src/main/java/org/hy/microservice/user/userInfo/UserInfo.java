@@ -1,6 +1,7 @@
 package org.hy.microservice.user.userInfo;
 
 import org.hy.common.Date;
+import org.hy.microservice.user.user.TokenInfo;
 import org.hy.microservice.user.user.UserSSO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -20,6 +21,7 @@ public class UserInfo extends UserSSO
 {
 
     private static final long serialVersionUID = -3261003581839189606L;
+    
     
     /** 密码 */
     private String  password;
@@ -71,27 +73,10 @@ public class UserInfo extends UserSSO
     /** 修改时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     private Date    updateTime;
+    
+    /** 票据号 */
+    private TokenInfo token;
 
-    
-    
-    /**
-     * 获取：应用appKey
-     */
-    public String getAppID()
-    {
-        return super.getAppKey();
-    }
-
-    
-    /**
-     * 设置：应用AppID
-     * 
-     * @param i_AppID
-     */
-    public void setAppID(String i_AppID)
-    {
-        super.setAppKey(i_AppID);
-    }
     
     
     /**
@@ -391,6 +376,28 @@ public class UserInfo extends UserSSO
     public void setCheckPhone(Integer checkPhone)
     {
         this.checkPhone = checkPhone;
+    }
+
+
+    /**
+     * 获取：票据号
+     * 
+     * @param
+     */
+    public TokenInfo getToken()
+    {
+        return token;
+    }
+
+
+    /**
+     * 设置：票据号
+     * 
+     * @param
+     */
+    public void setToken(TokenInfo token)
+    {
+        this.token = token;
     }
     
 }

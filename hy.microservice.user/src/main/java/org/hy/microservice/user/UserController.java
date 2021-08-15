@@ -8,6 +8,7 @@ import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
 import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
+import org.hy.microservice.user.account.UserAccount;
 import org.hy.microservice.user.user.UserSSO;
 import org.hy.microservice.user.user.UserService;
 import org.hy.microservice.user.userInfo.UserInfo;
@@ -43,14 +44,6 @@ public class UserController
     private static final Logger $Logger = new Logger(UserController.class);
     
     @Autowired
-    @Qualifier("UserService")
-    private UserService userService;
-    
-    @Autowired
-    @Qualifier("UserInfoService")
-    private UserInfoService UserInfoService;
-    
-    @Autowired
     @Qualifier("MS_User_IsCheckToken")
     private Param isCheckToken;
     
@@ -61,6 +54,14 @@ public class UserController
     @Autowired
     @Qualifier("MS_User_AccountIllegalChar")
     private Param accountIllegalChar;
+    
+    @Autowired
+    @Qualifier("UserService")
+    private UserService userService;
+    
+    @Autowired
+    @Qualifier("UserInfoService")
+    private UserInfoService userInfoService;
     
     
     
@@ -108,7 +109,7 @@ public class UserController
             return v_RetResp.setCode("902").setMessage("创建用户：用户名称为空");
         }
         
-        if ( Help.isNull(i_CreateUser.getAppID()) )
+        if ( Help.isNull(i_CreateUser.getAppKey()) )
         {
             $Logger.info("创建用户：属于系统编号为空");
             return v_RetResp.setCode("903").setMessage("创建用户：属于系统编号为空");
@@ -117,27 +118,35 @@ public class UserController
         if ( Help.isNull(i_CreateUser.getCardID())
           && Help.isNull(i_CreateUser.getEmail())
           && Help.isNull(i_CreateUser.getPhone())
-          && Help.isNull(i_CreateUser.getUserId())
+          && Help.isNull(i_CreateUser.getUserCode())
           && Help.isNull(i_CreateUser.getUserNo()) )
         {
             $Logger.info("创建用户：身份证、电子邮箱、手机号、用户编号和工号五者必须有其一");
             return v_RetResp.setCode("904").setMessage("创建用户：身份证、电子邮箱、手机号、用户编号和工号五者必须有其一");
         }
         
-        int       v_AccountMaxLen      = Integer.parseInt(this.accountMaxLen.getValue());
-        String [] v_AccountIllegalChar = this.accountIllegalChar.getValue().split("-");
+        int         v_AccountMaxLen      = Integer.parseInt(this.accountMaxLen.getValue());
+        String []   v_AccountIllegalChar = this.accountIllegalChar.getValue().split("-");
+        UserAccount v_IsHaveAccount      = null;
         if ( !Help.isNull(i_CreateUser.getCardID()) )
         {
             if ( i_CreateUser.getCardID().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：身份证长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：身份证长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：身份证长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
             if ( StringHelp.isContains(i_CreateUser.getCardID() ,v_AccountIllegalChar) )
             {
-                $Logger.info("创建用户：身份证禁止非法字符" + i_CreateUser.getAppID() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：身份证禁止非法字符" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("906").setMessage("创建用户：身份证禁止非法字符");
+            }
+            
+            v_IsHaveAccount = this.userInfoService.queryAccountNo(i_CreateUser.getAppKey() ,i_CreateUser.getCardID());
+            if ( v_IsHaveAccount != null )
+            {
+                $Logger.info("创建用户：身份证已存在" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("907").setMessage("创建用户：身份证已存在");
             }
         }
         
@@ -145,14 +154,21 @@ public class UserController
         {
             if ( i_CreateUser.getEmail().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：电子邮箱长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：电子邮箱长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：电子邮箱长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
             if ( StringHelp.isContains(i_CreateUser.getEmail() ,v_AccountIllegalChar) )
             {
-                $Logger.info("创建用户：电子邮箱禁止非法字符" + i_CreateUser.getAppID() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：电子邮箱禁止非法字符" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("906").setMessage("创建用户：电子邮箱禁止非法字符");
+            }
+            
+            v_IsHaveAccount = this.userInfoService.queryAccountNo(i_CreateUser.getAppKey() ,i_CreateUser.getEmail());
+            if ( v_IsHaveAccount != null )
+            {
+                $Logger.info("创建用户：电子邮箱已存在" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("907").setMessage("创建用户：电子邮箱已存在");
             }
         }
         
@@ -160,14 +176,21 @@ public class UserController
         {
             if ( i_CreateUser.getPhone().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：手机号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：手机号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：手机号长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
             if ( StringHelp.isContains(i_CreateUser.getPhone() ,v_AccountIllegalChar) )
             {
-                $Logger.info("创建用户：手机号禁止非法字符" + i_CreateUser.getAppID() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：手机号禁止非法字符" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("906").setMessage("创建用户：手机号禁止非法字符");
+            }
+            
+            v_IsHaveAccount = this.userInfoService.queryAccountNo(i_CreateUser.getAppKey() ,i_CreateUser.getEmail());
+            if ( v_IsHaveAccount != null )
+            {
+                $Logger.info("创建用户：手机号已存在" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("907").setMessage("创建用户：手机号已存在");
             }
         }
         
@@ -175,14 +198,21 @@ public class UserController
         {
             if ( i_CreateUser.getUserCode().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：用户编号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：用户编号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：用户编号长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
             if ( StringHelp.isContains(i_CreateUser.getUserCode() ,v_AccountIllegalChar) )
             {
-                $Logger.info("创建用户：用户编号禁止非法字符" + i_CreateUser.getAppID() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：用户编号禁止非法字符" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("906").setMessage("创建用户：用户编号禁止非法字符");
+            }
+            
+            v_IsHaveAccount = this.userInfoService.queryAccountNo(i_CreateUser.getAppKey() ,i_CreateUser.getUserCode());
+            if ( v_IsHaveAccount != null )
+            {
+                $Logger.info("创建用户：用户编号已存在" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("907").setMessage("创建用户：用户编号已存在");
             }
         }
         
@@ -190,14 +220,21 @@ public class UserController
         {
             if ( i_CreateUser.getUserNo().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：工号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：工号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：工号长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
             if ( StringHelp.isContains(i_CreateUser.getUserNo() ,v_AccountIllegalChar) )
             {
-                $Logger.info("创建用户：用工号禁止非法字符" + i_CreateUser.getAppID() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：用工号禁止非法字符" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("906").setMessage("创建用户：工号禁止非法字符");
+            }
+            
+            v_IsHaveAccount = this.userInfoService.queryAccountNo(i_CreateUser.getAppKey() ,i_CreateUser.getUserNo());
+            if ( v_IsHaveAccount != null )
+            {
+                $Logger.info("创建用户：工号已存在" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("907").setMessage("创建用户：工号已存在");
             }
         }
         
@@ -205,27 +242,44 @@ public class UserController
         {
             if ( i_CreateUser.getOpenID().length() >= v_AccountMaxLen )
             {
-                $Logger.info("创建用户：OpenID长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppID() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：OpenID长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("905").setMessage("创建用户：OpenID长度超出允许范围（最大" + v_AccountMaxLen + "）");
             }
             
             if ( StringHelp.isContains(i_CreateUser.getOpenID() ,v_AccountIllegalChar) )
             {
-                $Logger.info("创建用户：OpenID禁止非法字符" + i_CreateUser.getAppID() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                $Logger.info("创建用户：OpenID禁止非法字符" + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
                 return v_RetResp.setCode("906").setMessage("创建用户：OpenID禁止非法字符");
             }
         }
         
         
-        UserInfo v_CreateUser = this.UserInfoService.createUser(i_CreateUser);
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            if ( !i_CreateUser.getAppKey().equals(v_User.getAppKey()) )
+            {
+                $Logger.info("创建用户：创建用户的用户不能跨权系统创建用户"  + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("907").setMessage("创建用户：创建用户的用户不能跨权系统创建用户");
+            }
+            
+            // 临时用账号名称来判定是否有创建用户的权限。
+            if ( !"administrator".equals(v_User.getUserCode()) )
+            {
+                $Logger.info("创建用户：创建用户的用户没有权限"  + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("908").setMessage("创建用户：创建用户的用户没有权限");
+            }
+        }
+        
+        
+        UserInfo v_CreateUser = this.userInfoService.createUser(i_CreateUser);
         if ( v_CreateUser == null )
         {
-            $Logger.info("创建用户失败：" + i_CreateUser.getAppID() + ":"+ i_CreateUser.getUserName());
+            $Logger.info("创建用户失败：" + i_CreateUser.getAppKey() + ":"+ i_CreateUser.getUserName());
             return v_RetResp.setCode("-911").setMessage("创建用户失败");
         }
         else
         {
-            $Logger.info("创建用户成功" + i_CreateUser.getAppID() + ":"+ i_CreateUser.getUserName());
+            $Logger.info("创建用户成功" + i_CreateUser.getAppKey() + ":"+ i_CreateUser.getUserName());
             return v_RetResp.setData(v_CreateUser);
         }
     }

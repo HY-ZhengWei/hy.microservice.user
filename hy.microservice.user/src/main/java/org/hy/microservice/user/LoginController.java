@@ -1,5 +1,7 @@
 package org.hy.microservice.user;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -7,10 +9,13 @@ import org.hy.common.Date;
 import org.hy.common.Help;
 import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
+import org.hy.common.license.AppKey;
 import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
 import org.hy.microservice.user.account.UserAccount;
 import org.hy.microservice.user.common.DatasPool;
+import org.hy.microservice.user.user.TokenInfo;
+import org.hy.microservice.user.user.UserService;
 import org.hy.microservice.user.userInfo.UserInfo;
 import org.hy.microservice.user.userInfo.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,10 +58,6 @@ public class LoginController
     
     
     @Autowired
-    @Qualifier("DatasPool")
-    private DatasPool datasPool;
-    
-    @Autowired
     @Qualifier("MS_User_AccountMaxLen")
     private Param accountMaxLen;
     
@@ -72,8 +74,69 @@ public class LoginController
     private Param loginLockTimeLen;
     
     @Autowired
+    @Qualifier("MS_User_AppKeys")
+    private Map<String ,AppKey> appKeys;
+    
+    @Autowired
+    @Qualifier("MS_User_IsCheckToken")
+    private Param isCheckToken;
+    
+    @Autowired
+    @Qualifier("DatasPool")
+    private DatasPool datasPool;
+    
+    @Autowired
+    @Qualifier("UserService")
+    private UserService userService;
+    
+    @Autowired
     @Qualifier("UserInfoService")
     private UserInfoService userInfoService;
+    
+    
+    
+    /**
+     * 获取登录临时Code
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-15
+     * @version     v1.0
+     * 
+     * @param i_AppKey   应用编号
+     * @param i_Request
+     * @param i_Response
+     * @return
+     */
+    @RequestMapping(value="code" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse<String> code(@RequestParam(value="appKey" ,required=false) String i_AppKey
+                                    ,HttpServletRequest  i_Request
+                                    ,HttpServletResponse i_Response)
+    {
+        BaseResponse<String> v_Ret = new BaseResponse<String>();
+        
+        if ( Help.isNull(i_AppKey) )
+        {
+            $Logger.info("登录临时Code：应用编号为空");
+            return v_Ret.setCode("902").setMessage("登录临时Code：应用编号为空");
+        }
+        
+        AppKey v_AppKey = this.appKeys.get(i_AppKey);
+        if ( v_AppKey == null )
+        {
+            $Logger.info("登录临时Code：应用编号无效");
+            return v_Ret.setCode("903").setMessage("登录临时Code：应用编号无效");
+        }
+        
+        TokenInfo v_Token = this.userService.getCode(v_AppKey);
+        if ( v_Token == null )
+        {
+            $Logger.info("登录临时Code：服务异常");
+            return v_Ret.setCode("911").setMessage("登录临时Code：服务异常");
+        }
+        
+        return v_Ret.setData(v_Token.getCode());
+    }
     
     
     
@@ -84,6 +147,8 @@ public class LoginController
      * @createDate  2021-08-08
      * @version     v1.0
      * 
+     * @param i_Code       临时Code
+     * @param i_AppKey     应用编号
      * @param i_LoginUser  登录用户。必要信息（loginAccount用户名称、password用户密码、appID应用编号、openID）
      * @param i_Request
      * @param i_Response
@@ -91,17 +156,43 @@ public class LoginController
      */
     @RequestMapping(value="loginWeiXin" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public BaseResponse<UserInfo> loginWeiXin(@RequestBody UserInfo i_LoginUser
+    public BaseResponse<UserInfo> loginWeiXin(@RequestParam(value="code"   ,required=false) String i_Code
+                                             ,@RequestParam(value="appKey" ,required=false) String i_AppKey
+                                             ,@RequestBody UserInfo i_LoginUser
                                              ,HttpServletRequest    i_Request
                                              ,HttpServletResponse   i_Response)
     {
-        BaseResponse<UserInfo> v_Ret = new BaseResponse<UserInfo>();
+        BaseResponse<UserInfo> v_Ret    = new BaseResponse<UserInfo>();
+        AppKey                 v_AppKey = null;
+        
+        if ( Help.isNull(i_AppKey) )
+        {
+            $Logger.info("登录验证：非法访问");
+            return v_Ret.setCode("901").setMessage("登录验证：非法访问");
+        }
+        
+        v_AppKey = this.appKeys.get(i_AppKey);
+        if ( v_AppKey == null )
+        {
+            $Logger.info("登录验证：应用编号无效");
+            return v_Ret.setCode("901").setMessage("登录验证：应用编号无效");
+        }
+        
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            if ( Help.isNull(i_Code) )
+            {
+                $Logger.info("登录验证：非法访问");
+                return v_Ret.setCode("901").setMessage("登录验证：非法访问");
+            }
+        }
         
         if ( i_LoginUser == null || Help.isNull(i_LoginUser.getLoginAccount()) || Help.isNull(i_LoginUser.getPassword()) )
         {
             $Logger.info("登录验证：账号、密码为空");
             return v_Ret.setCode("902").setMessage("登录验证：账号、密码为空");
         }
+        i_LoginUser.setAppKey(i_AppKey);
         
         if ( Help.isNull(i_LoginUser.getAppID()) )
         {
@@ -118,46 +209,40 @@ public class LoginController
         int v_AccountMaxLen = Integer.parseInt(this.accountMaxLen.getValue());
         if ( i_LoginUser.getLoginAccount().length() >= v_AccountMaxLen )
         {
-            $Logger.info("登录验证：账号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+            $Logger.info("登录验证：账号长度超出允许范围（最大" + v_AccountMaxLen + "）：" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
             return v_Ret.setCode("905").setMessage("登录验证：账号长度超出允许范围（最大" + v_AccountMaxLen + "）");
         }
         
         String [] v_AccountIllegalChar = this.accountIllegalChar.getValue().split("-");
         if ( StringHelp.isContains(i_LoginUser.getLoginAccount() ,v_AccountIllegalChar) )
         {
-            $Logger.info("登录验证：账号禁止非法字符" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+            $Logger.info("登录验证：账号禁止非法字符" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
             return v_Ret.setCode("906").setMessage("登录验证：账号禁止非法字符");
-        }
-        
-        if ( StringHelp.isContains(i_LoginUser.getPassword() ,v_AccountIllegalChar) )
-        {
-            $Logger.info("登录验证：密码禁止非法字符" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
-            return v_Ret.setCode("907").setMessage("登录验证：密码禁止非法字符");
         }
         
         if ( StringHelp.isContains(i_LoginUser.getAppID() ,v_AccountIllegalChar) )
         {
-            $Logger.info("登录验证：AppID禁止非法字符" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
-            return v_Ret.setCode("908").setMessage("登录验证：AppID禁止非法字符");
+            $Logger.info("登录验证：AppID禁止非法字符" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+            return v_Ret.setCode("907").setMessage("登录验证：AppID禁止非法字符");
         }
         
         if ( StringHelp.isContains(i_LoginUser.getOpenID() ,v_AccountIllegalChar) )
         {
-            $Logger.info("登录验证：OpenID禁止非法字符" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
-            return v_Ret.setCode("909").setMessage("登录验证：OpenID禁止非法字符");
+            $Logger.info("登录验证：OpenID禁止非法字符" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+            return v_Ret.setCode("908").setMessage("登录验证：OpenID禁止非法字符");
         }
         
         boolean v_IsLock = this.loginIsLock(i_LoginUser ,i_Request);
         if ( v_IsLock )
         {
-            $Logger.info("登录验证：账户被锁定：" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+            $Logger.info("登录验证：账户被锁定：" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
             return v_Ret.setCode("911").setMessage("登录验证：账户被锁定");
         }
         
-        UserAccount v_UAccount = this.userInfoService.queryAccountNo(i_LoginUser.getAppID() ,i_LoginUser.getLoginAccount());
+        UserAccount v_UAccount = this.userInfoService.queryAccountNo(i_LoginUser.getAppKey() ,i_LoginUser.getLoginAccount());
         if ( v_UAccount == null )
         {
-            $Logger.info("登录验证：非法账户：" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+            $Logger.info("登录验证：非法账户：" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
             this.loginLock(i_LoginUser ,i_Request);
             return v_Ret.setCode("912").setMessage("登录验证：非法账户");
         }
@@ -166,9 +251,22 @@ public class LoginController
         UserInfo v_RetUser = this.userInfoService.checkLogin(i_LoginUser);
         if ( v_RetUser == null )
         {
-            $Logger.info("登录验证：非法账户：" + i_LoginUser.getAppID() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+            $Logger.info("登录验证：非法账户：" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
             this.loginLock(i_LoginUser ,i_Request);
             return v_Ret.setCode("913").setMessage("登录验证：非法账户");
+        }
+        
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            TokenInfo v_SessionToken = this.userService.loginUser(i_Code ,v_AppKey ,v_RetUser);
+            if ( v_SessionToken == null )
+            {
+                $Logger.info("登录验证：临时登录Code无效或已过期：" + i_LoginUser.getAppKey() + "：" + i_LoginUser.getLoginAccount() + "：" + i_LoginUser.getOpenID());
+                this.loginLock(i_LoginUser ,i_Request);
+                return v_Ret.setCode("914").setMessage("登录验证：临时登录Code无效或已过期");
+            }
+            
+            v_RetUser.setToken(v_SessionToken);
         }
         
         return v_Ret.setData(v_RetUser);

@@ -11,6 +11,93 @@
     <!-- 用户信息的创建（自动创建）的相关SQL -->
     <sqls>
         
+        
+        <sql id="XSQL_User_Init_UserInfo">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserInfo
+                       (
+                        id           
+                       ,appKey        
+                       ,userId       
+                       ,userNo       
+                       ,userCode     
+                       ,openID       
+                       ,unionID      
+                       ,mobile       
+                       ,phone        
+                       ,email        
+                       ,userName     
+                       ,nickname     
+                       ,userType     
+                       ,userLevel    
+                       ,userSource   
+                       ,orgCode      
+                       ,orgName      
+                       ,sex          
+                       ,cardID       
+                       ,password     
+                       ,pwdExpireTime
+                       ,startDate    
+                       ,passDate     
+                       ,endDate      
+                       ,isStart      
+                       ,isPass       
+                       ,isEnd        
+                       ,isDel     
+                       ,checkCardID
+                       ,checkEMail
+                       ,checkPhone
+                       ,createTime   
+                       ,updateTime                      
+                       )
+                VALUES (
+                        '94AB32E9B50D4D2DB713621061303350'
+                       ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,''
+                       ,''
+                       ,'administrator'
+                       ,''
+                       ,''
+                       ,''
+                       ,''
+                       ,''
+                       ,'超级管理员'
+                       ,''
+                       ,''
+                       ,''
+                       ,''
+                       ,''
+                       ,''
+                       ,''
+                       ,''
+                       ,'0D93363CF3060320C00E8EA6B6E6E1DF1E539A3C70123CECB4F0A555298482DF'
+                       ,NULL
+                       ,NULL
+                       ,NULL
+                       ,NULL
+                       ,'0'
+                       ,'0'
+                       ,'0'
+                       ,'0'
+                       ,'0'
+                       ,'0'
+                       ,'0'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+
+            <comment>初始化超级管理员（默认密码：msUser!@#$%67890）</comment>
+            
+        </sql>
+        
+    
+        
         <sql id="XSQL_User_Create_UserInfo">
         
             <dataSourceGroup ref="DSG_MS_User" />
@@ -20,10 +107,11 @@
                 CREATE TABLE UserInfo
                 (
                  id              VARCHAR(64)     NOT NULL           COMMENT '用户全域主键'
-                ,appID           VARCHAR(64)     NOT NULL           COMMENT '应用编号'
+                ,appKey          VARCHAR(64)     NOT NULL           COMMENT '应用编号'
                 ,userId          VARCHAR(64)                        COMMENT '用户主键'
                 ,userNo          VARCHAR(64)                        COMMENT '用户工号'
                 ,userCode        VARCHAR(64)                        COMMENT '用户编号'
+                ,appID           VARCHAR(64)                        COMMENT '微信应用编号'
                 ,openID          VARCHAR(64)                        COMMENT '微信用户应用ID'
                 ,unionID         VARCHAR(64)                        COMMENT '微信用户统一ID'
                 ,mobile          VARCHAR(32)                        COMMENT '手机号'
@@ -60,8 +148,13 @@
                 ]]>
             </content>
             
+            <trigger>
+                <create ref="XSQL_User_Init_UserInfo" />
+            </trigger>
+            
             <comment>用户信息</comment>
             <create>UserInfo</create>
+            
             
         </sql>
         

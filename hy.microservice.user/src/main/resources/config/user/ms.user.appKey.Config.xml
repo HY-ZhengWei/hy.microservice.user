@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xconfig"         class="java.util.ArrayList" />
+    <import name="appMap"          class="java.util.Hashtable" />
+    <import name="application"     class="org.hy.common.license.AppKey" />
+    
+    
+    
+    <!-- 系统密钥配置参数信息 -->
+    <xconfig>
+        
+        <appMap id="MS_User_AppKeys" key="appKey">
+            
+            <application>
+                <appKey>C35C99CCE8914BD184CC2CF87288928D</appKey>
+                <privateKey encrypt="org.hy.common.StringHelp">MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAMVU5PL7itIjkemqkbo3Qk7/9utaXDhiJWQhZP2T7YhYM4zlZ2cRQjnzaQYHZpP46mtmCZlDP1dR4n+8LlJYojyUjFJbA7JkW0MrUz1SdzDpQhPC33d7dmmxwQgnxUVFMvmyQo4b31RuHfwAPGZEtCyAQqNfTMUFWoyaXGbR4ZIRAgMBAAECgYBnuQfe8Hk3m5rGx/FxgDpKbCDN9OEkgfJFf4gmAeuJD1OJa8u+UUQOUfOSR7GTdfNCIJBLDx3sOA5mNfPjNNORN9HCo00UxP2Qvy6E6s1Ng907nupACrLEh0Lg458mNFvVYOgGBoWazXocnU4r2bli/fJg1N9FeJjFiScoP74vAQJBAOlAJkc6SinPVZz6q++cfNObTEnwiqy8GTHMqvqrfUBwYIyoYETE2Vc8XeX9yaCOTPShP3fY0JtHWFVMTHPOQqUCQQDYk+mSilP/6N492n/WiADjRniMgkExRzik/1yIiZjJplh8xzEuLGzqu0Fr2fOAUad8ukAPZ2SZ4y5Pbp8DTdH9AkEAzy1Gkq+onhhl/+f7ffnuOfpPucEpO6JbcotLNxnJR8pJR8Zqs8pxDfY1pQpV5AFhQ0xSVn5DVBj70c/SfG4xbQJAF0+kXl+BNxRLh4DTLbYp0kytgQIsHi+6SxgpT5Dv3xSGhbey9XNWrdVF72PgL7maO3SYnI/WZjHrtCUF/IcNyQJBAOHruUY7Kbj7ja+IrZlcHliCMJbpLhkPzlR5GUqox/l6u88k9/8PDpQlfwNGv6CN/YzBgg0u1BE20RrVvZgaIGk=</privateKey>
+            </application>
+            
+        </appMap>
+        
+    </xconfig>
+    
+</config>

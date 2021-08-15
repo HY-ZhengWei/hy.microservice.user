@@ -16,13 +16,13 @@
             
             <content>
                 <![CDATA[
-                SELECT  A.appID
+                SELECT  A.appKey
                        ,A.accountNo     
                        ,A.accountType
                        ,A.userGID 
                        ,A.createTime 
                   FROM  UserAccount  A
-                 WHERE  A.appID     = ':appID'
+                 WHERE  A.appKey    = ':appKey'
                    AND  A.accountNo = ':accountNo'
                 ]]>
             </content>
@@ -44,14 +44,14 @@
                 <![CDATA[
                 INSERT  INTO UserAccount
                        (
-                        appID           
+                        appKey          
                        ,accountNo        
                        ,accountType       
                        ,userGID       
                        ,createTime     
                        )
                 VALUES (
-                        ':appID'
+                        ':appKey'
                        ,':cardID'
                        ,'1'
                        ,':id'
@@ -72,14 +72,14 @@
                 <![CDATA[
                 INSERT  INTO UserAccount
                        (
-                        appID           
+                        appKey          
                        ,accountNo        
                        ,accountType       
                        ,userGID       
                        ,createTime     
                        )
                 VALUES (
-                        ':appID'
+                        ':appKey'
                        ,':email'
                        ,'2'
                        ,':id'
@@ -100,14 +100,14 @@
                 <![CDATA[
                 INSERT  INTO UserAccount
                        (
-                        appID           
+                        appKey           
                        ,accountNo        
                        ,accountType       
                        ,userGID       
                        ,createTime     
                        )
                 VALUES (
-                        ':appID'
+                        ':appKey'
                        ,':phone'
                        ,'3'
                        ,':id'
@@ -128,14 +128,14 @@
                 <![CDATA[
                 INSERT  INTO UserAccount
                        (
-                        appID           
+                        appKey           
                        ,accountNo        
                        ,accountType       
                        ,userGID       
                        ,createTime     
                        )
                 VALUES (
-                        ':appID'
+                        ':appKey'
                        ,':userCode'
                        ,'4'
                        ,':id'
@@ -156,14 +156,14 @@
                 <![CDATA[
                 INSERT  INTO UserAccount
                        (
-                        appID           
+                        appKey           
                        ,accountNo        
                        ,accountType       
                        ,userGID       
                        ,createTime     
                        )
                 VALUES (
-                        ':appID'
+                        ':appKey'
                        ,':userNo'
                        ,'5'
                        ,':id'
