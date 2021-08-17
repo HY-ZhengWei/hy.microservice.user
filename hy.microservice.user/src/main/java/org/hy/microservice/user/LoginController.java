@@ -147,12 +147,19 @@ public class LoginController
      * @createDate  2021-08-08
      * @version     v1.0
      * 
-     * @param i_Code       临时Code
+     * @param i_Code       临时Code，用完即失效（只能使用一次）
      * @param i_AppKey     应用编号
      * @param i_LoginUser  登录用户。必要信息（loginAccount用户名称、password用户密码、appID应用编号、openID）
+     *                         password：前缀为@@E@@时，表示已Base64位过了
      * @param i_Request
      * @param i_Response
-     * @return
+     * @return             登录成功时，
+     *                         1. 不返回密码
+     *                         2. 会返回loginAccount：当时用于登录的账号
+     *                         3. 会返回会话级票据
+     *                         4. 首次登录时，会绑定微信OpenID，防止账号被盗号
+     *                      登录失败时，
+     *                         1. 记录一定时间内的失败次数，防止暴力破解
      */
     @RequestMapping(value="loginWeiXin" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -287,6 +294,7 @@ public class LoginController
             }
         }
         
+        v_RetUser.setLoginAccount(i_LoginUser.getLoginAccount());
         return v_Ret.setData(v_RetUser);
     }
     
