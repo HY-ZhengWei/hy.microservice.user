@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <sqls>
+    
+        <sql id="XSQL_User_UserRoleInfo_Query"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.roleID
+                       ,A.appKey        
+                       ,A.roleName       
+                       ,A.remarks       
+                       ,A.createTime   
+                       ,A.updateTime 
+                  FROM  UserRoleInfo  A
+                 WHERE  A.appKey      = ':appKey'
+              <[   AND  A.roleID      = ':roleID'                      ]>
+              <[   AND  A.roleName LIKE CONCAT('%' ,':roleName' ,'%')  ]>
+                 ORDER  BY A.roleID
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.role.RoleInfo</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserRoleInfo_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserRoleInfo
+                       (
+                        roleID
+                       ,appKey        
+                       ,roleName       
+                       ,remarks       
+                       ,createTime   
+                       ,updateTime  
+                       )
+                VALUES (
+                        ':roleID'
+                       ,':appKey'
+                       ,':roleName'
+                       ,':remarks'
+                       ,NOW()
+                       ,NOW()
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserRoleInfo_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  UserRoleInfo
+                   SET  roleName   = ':roleName'
+                       ,remarks    = ':remarks'
+                       ,updateTime = NOW()
+                 WHERE  A.appKey   = ':appKey'
+                   AND  A.roleID   = ':roleID'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserRoleInfo_Delete"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                DELETE  FROM UserRoleInfo
+                 WHERE  A.appKey = ':appKey'
+                   AND  A.roleID = ':roleID'
+                ]]>
+            </content>
+            
+        </sql>
+
+    </sqls>
+    
+</config>

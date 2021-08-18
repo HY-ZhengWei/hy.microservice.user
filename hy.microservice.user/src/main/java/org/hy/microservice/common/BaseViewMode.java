@@ -22,7 +22,7 @@ public class BaseViewMode extends SerializableDef
     private static final long serialVersionUID = -3998918924300953503L;
 
     /** 应用appKey */
-    private String appKey;
+    private String  appKey;
     
     /** 票据号 */
     private String  token;

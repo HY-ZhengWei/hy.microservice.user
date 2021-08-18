@@ -52,7 +52,7 @@ public class UserController
     private Param accountMaxLen;
     
     @Autowired
-    @Qualifier("MS_User_AccountIllegalChar")
+    @Qualifier("MS_User_CheckIllegalChar")
     private Param accountIllegalChar;
     
     @Autowired

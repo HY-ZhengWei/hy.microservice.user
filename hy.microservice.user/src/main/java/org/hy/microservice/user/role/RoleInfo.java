@@ -19,7 +19,7 @@ public class RoleInfo extends BaseViewMode
     private static final long serialVersionUID = -4939813621990304510L;
     
     /** 角色主键 */
-    private String id;
+    private String roleID;
     
     /** 角色名称 */
     private String roleName;
@@ -29,20 +29,20 @@ public class RoleInfo extends BaseViewMode
     /**
      * 获取：角色主键
      */
-    public String getId()
+    public String getRoleID()
     {
-        return id;
+        return roleID;
     }
 
     
     /**
      * 设置：角色主键
      * 
-     * @param id
+     * @param roleID
      */
-    public void setId(String id)
+    public void setRoleID(String roleID)
     {
-        this.id = id;
+        this.roleID = roleID;
     }
 
     

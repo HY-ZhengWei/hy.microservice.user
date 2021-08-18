@@ -11,15 +11,15 @@
     <!-- 用户角色的创建（自动创建）的相关SQL -->
     <sqls>
     
-        <sql id="XSQL_User_Init_UserRole">
+        <sql id="XSQL_User_Init_UserRoleInfo">
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                INSERT  INTO UserRole
+                INSERT  INTO UserRoleInfo
                        (
-                        id
+                        roleID
                        ,appKey        
                        ,roleName       
                        ,remarks       
@@ -36,9 +36,9 @@
                        );/
                        
                        
-                INSERT  INTO UserRole
+                INSERT  INTO UserRoleInfo
                        (
-                        id
+                        roleID
                        ,appKey        
                        ,roleName       
                        ,remarks       
@@ -62,15 +62,15 @@
         
         
         
-        <sql id="XSQL_User_Create_UserAccount">
+        <sql id="XSQL_User_Create_UserRoleInfo">
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                CREATE TABLE UserRole
+                CREATE TABLE UserRoleInfo
                 (
-                 id              VARCHAR(64)     NOT NULL           COMMENT '角色主键'
+                 roleID          VARCHAR(64)     NOT NULL           COMMENT '角色主键'
                 ,appKey          VARCHAR(64)     NOT NULL           COMMENT '应用编号'
                 ,roleName        VARCHAR(128)    NOT NULL           COMMENT '角色名称'
                 ,remarks         VARCHAR(500)                       COMMENT '备注说明'
@@ -78,9 +78,9 @@
                 ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
 
-                ALTER TABLE UserRole ADD CONSTRAINT PK_UserRole PRIMARY KEY (id ,appKey);/
+                ALTER TABLE UserRoleInfo ADD CONSTRAINT PK_UserRoleInfo PRIMARY KEY (roleID ,appKey);/
                 
-                Alter TABLE UserRole COMMENT                              = '用户账户信息';/
+                Alter TABLE UserRoleInfo COMMENT                              = '用户账户信息';/
                 ]]>
             </content>
             
@@ -89,7 +89,7 @@
             </trigger>
             
             <comment>用户角色信息</comment>
-            <create>XSQL_User_Init_UserRole</create>
+            <create>XSQL_User_Init_UserRoleInfo</create>
             
         </sql>
         

@@ -57,10 +57,10 @@ public interface IUserInfoDAO
      * @createDate  2021-08-15
      * @version     v1.0
      * 
-     * @param i_User  必要参数是 id 、 openID  appID
+     * @param i_User
      * @return
      */
     @Xsql("XSQL_User_UserInfo_Update_OpenID")
-    public int bindingOpenID(UserInfo i_User);
+    public int bindingOpenID(@Xparam(notNulls={"appKey" ,"id" ,"openID"}) UserInfo i_User);
     
 }

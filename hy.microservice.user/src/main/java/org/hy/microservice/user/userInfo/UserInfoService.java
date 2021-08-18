@@ -7,7 +7,6 @@ import org.hy.common.license.IHash;
 import org.hy.common.license.base64.Base64Factory;
 import org.hy.common.xml.annotation.Xjava;
 import org.hy.common.xml.log.Logger;
-import org.hy.microservice.user.UserController;
 import org.hy.microservice.user.account.IUserAccountDAO;
 import org.hy.microservice.user.account.UserAccount;
 
@@ -25,7 +24,7 @@ import org.hy.microservice.user.account.UserAccount;
 @Xjava
 public class UserInfoService
 {
-    private static final Logger $Logger = new Logger(UserController.class);
+    private static final Logger $Logger = new Logger(UserInfoService.class);
     
     @Xjava
     private IUserInfoDAO    userInfoDAO;
