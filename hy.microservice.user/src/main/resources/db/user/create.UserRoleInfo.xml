@@ -52,7 +52,7 @@
                        ,'拥有创建普通用户的权限'
                        ,NOW()
                        ,NOW()
-                       )
+                       );/
                 ]]>
             </content>
 
@@ -85,11 +85,11 @@
             </content>
             
             <trigger>
-                <create ref="XSQL_User_Init_UserAccount" />
+                <create ref="XSQL_User_Init_UserRoleInfo" />
             </trigger>
             
             <comment>用户角色信息</comment>
-            <create>XSQL_User_Init_UserRoleInfo</create>
+            <create>UserRoleInfo</create>
             
         </sql>
         
