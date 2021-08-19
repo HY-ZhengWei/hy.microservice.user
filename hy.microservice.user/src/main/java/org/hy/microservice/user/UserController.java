@@ -101,6 +101,11 @@ public class UserController
             {
                 return v_RetResp.setCode("-901").setMessage("非法访问");
             }
+            
+            if ( !v_User.getAppKey().equals(i_CreateUser.getAppKey()) )
+            {
+                return v_RetResp.setCode("-901").setMessage("无权访问");
+            }
         }
         
         if ( i_CreateUser == null || Help.isNull(i_CreateUser.getUserName()) )
@@ -111,8 +116,8 @@ public class UserController
         
         if ( Help.isNull(i_CreateUser.getAppKey()) )
         {
-            $Logger.info("创建用户：属于系统编号为空");
-            return v_RetResp.setCode("903").setMessage("创建用户：属于系统编号为空");
+            $Logger.info("创建用户：所属系统编号为空");
+            return v_RetResp.setCode("903").setMessage("创建用户：所属系统编号为空");
         }
         
         if ( Help.isNull(i_CreateUser.getCardID())

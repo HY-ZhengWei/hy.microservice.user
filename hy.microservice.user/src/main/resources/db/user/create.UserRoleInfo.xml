@@ -80,7 +80,7 @@
 
                 ALTER TABLE UserRoleInfo ADD CONSTRAINT PK_UserRoleInfo PRIMARY KEY (roleID ,appKey);/
                 
-                Alter TABLE UserRoleInfo COMMENT                              = '用户账户信息';/
+                Alter TABLE UserRoleInfo COMMENT                              = '用户角色信息';/
                 ]]>
             </content>
             
