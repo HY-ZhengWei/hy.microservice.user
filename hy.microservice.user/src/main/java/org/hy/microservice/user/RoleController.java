@@ -70,13 +70,7 @@ public class RoleController
      * @param i_CreateRole   创建的角色信息
      * @param i_Request
      * @param i_Response
-     * @return             登录成功时，
-     *                         1. 不返回密码
-     *                         2. 会返回loginAccount：当时用于登录的账号
-     *                         3. 会返回会话级票据
-     *                         4. 首次登录时，会绑定微信OpenID，防止账号被盗号
-     *                      登录失败时，
-     *                         1. 记录一定时间内的失败次数，防止暴力破解
+     * @return
      */
     @RequestMapping(value="addRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -140,12 +134,244 @@ public class RoleController
         if ( v_Role == null )
         {
             $Logger.info("创建角色失败：" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
-            return v_RetResp.setCode("-911").setMessage("创建角色失败");
+            return v_RetResp.setCode("911").setMessage("创建角色失败");
         }
         else
         {
             $Logger.info("创建角色成功" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
             return v_RetResp.setData(v_Role);
+        }
+    }
+    
+    
+    
+    /**
+     * 修改角色接口
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-19
+     * @version     v1.0
+     * 
+     * @param i_Token     认证票据号
+     * @param i_Role      角色信息
+     * @param i_Request
+     * @param i_Response
+     * @return
+     */
+    @RequestMapping(value="editRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse<String> editRole(@RequestParam(value="token" ,required=false) String i_Token
+                                        ,@RequestBody RoleInfo i_Role
+                                        ,HttpServletRequest    i_Request
+                                        ,HttpServletResponse   i_Response)
+    {
+        BaseResponse<String> v_RetResp = new BaseResponse<String>();
+        
+        UserSSO v_User = null;
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            // 验证票据及用户登录状态
+            if ( Help.isNull(i_Token) )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            v_User = this.userService.getUser(i_Token);
+            if ( v_User == null )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            if ( !v_User.getAppKey().equals(i_Role.getAppKey()) )
+            {
+                return v_RetResp.setCode("-901").setMessage("无权访问");
+            }
+        }
+        
+        if ( i_Role == null || Help.isNull(i_Role.getRoleID()) )
+        {
+            $Logger.info("编辑角色：角色ID为空");
+            return v_RetResp.setCode("902").setMessage("编辑角色：角色ID为空");
+        }
+        
+        if ( Help.isNull(i_Role.getRoleName()) )
+        {
+            $Logger.info("编辑角色：角色名称为空");
+            return v_RetResp.setCode("903").setMessage("编辑角色：角色名称为空");
+        }
+        
+        if ( Help.isNull(i_Role.getAppKey()) )
+        {
+            $Logger.info("编辑角色：所属系统编号为空");
+            return v_RetResp.setCode("904").setMessage("编辑角色：所属系统编号为空");
+        }
+        
+        String [] v_RoleIllegalChar = this.roleIllegalChar.getValue().split("-");
+        if ( StringHelp.isContains(i_Role.getRoleName() ,v_RoleIllegalChar) )
+        {
+            $Logger.info("创建角色：角色名称禁止非法字符" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
+            return v_RetResp.setCode("905").setMessage("编辑角色：角色名称禁止非法字符");
+        }
+        
+        if ( !Help.isNull(i_Role.getRemarks()) )
+        {
+            if ( StringHelp.isContains(i_Role.getRemarks() ,v_RoleIllegalChar) )
+            {
+                $Logger.info("编辑角色：角色说明禁止非法字符" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
+                return v_RetResp.setCode("906").setMessage("编辑角色：角色说明禁止非法字符");
+            }
+        }
+        
+        boolean v_EditRet = this.roleService.updateRole(i_Role);
+        if ( !v_EditRet )
+        {
+            $Logger.info("编辑角色异常：" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
+            return v_RetResp.setCode("911").setMessage("编辑角色失败");
+        }
+        else
+        {
+            $Logger.info("编辑角色成功" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
+            return v_RetResp;
+        }
+    }
+    
+    
+    
+    /**
+     * 删除角色接口
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-19
+     * @version     v1.0
+     * 
+     * @param i_Token    认证票据号
+     * @param i_Role     角色信息
+     * @param i_Request
+     * @param i_Response
+     * @return
+     */
+    @RequestMapping(value="delRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse<String> delRole(@RequestParam(value="token" ,required=false) String i_Token
+                                       ,@RequestBody RoleInfo i_Role
+                                       ,HttpServletRequest    i_Request
+                                       ,HttpServletResponse   i_Response)
+    {
+        BaseResponse<String> v_RetResp = new BaseResponse<String>();
+        
+        UserSSO v_User = null;
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            // 验证票据及用户登录状态
+            if ( Help.isNull(i_Token) )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            v_User = this.userService.getUser(i_Token);
+            if ( v_User == null )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            if ( !v_User.getAppKey().equals(i_Role.getAppKey()) )
+            {
+                return v_RetResp.setCode("-901").setMessage("无权访问");
+            }
+        }
+        
+        if ( i_Role == null || Help.isNull(i_Role.getRoleID()) )
+        {
+            $Logger.info("删除角色：角色ID为空");
+            return v_RetResp.setCode("902").setMessage("删除角色：角色ID为空");
+        }
+        
+        if ( Help.isNull(i_Role.getAppKey()) )
+        {
+            $Logger.info("删除角色：所属系统编号为空");
+            return v_RetResp.setCode("903").setMessage("删除角色：所属系统编号为空");
+        }
+        
+        boolean v_DelRet = this.roleService.delRole(i_Role);
+        if ( !v_DelRet )
+        {
+            $Logger.info("删除角色失败：" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+            return v_RetResp.setCode("911").setMessage("删除角色失败");
+        }
+        else
+        {
+            $Logger.info("删除角色成功" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+            return v_RetResp;
+        }
+    }
+    
+    
+    
+    /**
+     * 查询角色接口
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-19
+     * @version     v1.0
+     * 
+     * @param i_Token    认证票据号
+     * @param i_Role     角色信息
+     * @param i_Request
+     * @param i_Response
+     * @return
+     */
+    @RequestMapping(value="list" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse<String> query(@RequestParam(value="token" ,required=false) String i_Token
+                                     ,@RequestBody RoleInfo i_Role
+                                     ,HttpServletRequest    i_Request
+                                     ,HttpServletResponse   i_Response)
+    {
+        BaseResponse<String> v_RetResp = new BaseResponse<String>();
+        
+        UserSSO v_User = null;
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            // 验证票据及用户登录状态
+            if ( Help.isNull(i_Token) )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            v_User = this.userService.getUser(i_Token);
+            if ( v_User == null )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            if ( !v_User.getAppKey().equals(i_Role.getAppKey()) )
+            {
+                return v_RetResp.setCode("-901").setMessage("无权访问");
+            }
+        }
+        
+        if ( i_Role == null || Help.isNull(i_Role.getRoleID()) )
+        {
+            $Logger.info("删除角色：角色ID为空");
+            return v_RetResp.setCode("902").setMessage("删除角色：角色ID为空");
+        }
+        
+        if ( Help.isNull(i_Role.getAppKey()) )
+        {
+            $Logger.info("删除角色：所属系统编号为空");
+            return v_RetResp.setCode("903").setMessage("删除角色：所属系统编号为空");
+        }
+        
+        boolean v_DelRet = this.roleService.delRole(i_Role);
+        if ( !v_DelRet )
+        {
+            $Logger.info("删除角色失败：" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+            return v_RetResp.setCode("911").setMessage("删除角色失败");
+        }
+        else
+        {
+            $Logger.info("删除角色成功" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+            return v_RetResp;
         }
     }
     

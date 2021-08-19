@@ -79,8 +79,8 @@
                    SET  roleName   = ':roleName'
                        ,remarks    = ':remarks'
                        ,updateTime = NOW()
-                 WHERE  A.appKey   = ':appKey'
-                   AND  A.roleID   = ':roleID'
+                 WHERE  appKey     = ':appKey'
+                   AND  roleID     = ':roleID'
                 ]]>
             </content>
             
@@ -95,8 +95,8 @@
             <content>
                 <![CDATA[
                 DELETE  FROM UserRoleInfo
-                 WHERE  A.appKey = ':appKey'
-                   AND  A.roleID = ':roleID'
+                 WHERE  appKey = ':appKey'
+                   AND  roleID = ':roleID'
                 ]]>
             </content>
             
