@@ -34,11 +34,16 @@
                        ,nickname     
                        ,userType     
                        ,userLevel    
-                       ,userSource   
+                       ,userSource 
+                       ,userIconID  
                        ,orgCode      
                        ,orgName      
                        ,sex          
-                       ,cardID       
+                       ,cardID  
+                       ,cardAIconID
+                       ,cardBIconID 
+                       ,BankNo
+                       ,BankName    
                        ,password     
                        ,pwdExpireTime
                        ,startDate    
@@ -66,6 +71,11 @@
                        ,''
                        ,''
                        ,'超级管理员'
+                       ,''
+                       ,''
+                       ,''
+                       ,''
+                       ,''
                        ,''
                        ,''
                        ,''
@@ -122,10 +132,15 @@
                 ,userType        VARCHAR(64)                        COMMENT '用户类型'
                 ,userLevel       VARCHAR(64)                        COMMENT '用户级别'
                 ,userSource      VARCHAR(64)                        COMMENT '用户来源'
+                ,userIconID      VARCHAR(64)                        COMMENT '用户照片ID'
                 ,orgCode         VARCHAR(64)                        COMMENT '组织编码'
                 ,orgName         VARCHAR(128)                       COMMENT '组织名称'
                 ,sex             VARCHAR(5)                         COMMENT '用户性别'
                 ,cardID          VARCHAR(24)                        COMMENT '身份证号'
+                ,cardAIconID     VARCHAR(64)                        COMMENT '身份证A面照片ID'
+                ,cardBIconID     VARCHAR(64)                        COMMENT '身份证A面照片ID'
+                ,bankNo          VARCHAR(64)                        COMMENT '银行卡号'
+                ,bankName        VARCHAR(128)                       COMMENT '银行名称'
                 ,password        VARCHAR(256)    NOT NULL           COMMENT '密码'
                 ,pwdExpireTime   DATETIME                           COMMENT '密码过期时间'
                 ,startDate       DATETIME                           COMMENT '入职日期'

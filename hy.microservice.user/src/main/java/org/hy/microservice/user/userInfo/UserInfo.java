@@ -30,8 +30,23 @@ public class UserInfo extends UserSSO
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     private Date    pwdExpireTime;
     
+    /** 用户照片ID */
+    private String  userIconID;
+    
     /** 身份证号 */
     private String  cardID;
+    
+    /** 身份证A面照片ID */
+    private String  cardAIconID;
+    
+    /** 身份证A面照片ID */
+    private String  cardBIconID;
+    
+    /** 银行卡号 */
+    private String  bankNo;
+    
+    /** 银行名称 */
+    private String  bankName;
     
     /** 入职日期 */
     @JsonFormat(pattern = "yyyy-MM-dd" ,timezone = "GMT+8")
@@ -404,6 +419,116 @@ public class UserInfo extends UserSSO
     public void setToken(TokenInfo token)
     {
         this.token = token;
+    }
+
+
+    /**
+     * 获取：用户照片ID
+     * 
+     * @param
+     */
+    public String getUserIconID()
+    {
+        return userIconID;
+    }
+
+
+    /**
+     * 设置：用户照片ID
+     * 
+     * @param
+     */
+    public void setUserIconID(String userIconID)
+    {
+        this.userIconID = userIconID;
+    }
+
+
+    /**
+     * 获取：身份证A面照片ID
+     * 
+     * @param
+     */
+    public String getCardAIconID()
+    {
+        return cardAIconID;
+    }
+
+
+    /**
+     * 设置：身份证A面照片ID
+     * 
+     * @param
+     */
+    public void setCardAIconID(String cardAIconID)
+    {
+        this.cardAIconID = cardAIconID;
+    }
+
+
+    /**
+     * 获取：身份证B面照片ID
+     * 
+     * @param
+     */
+    public String getCardBIconID()
+    {
+        return cardBIconID;
+    }
+
+
+    /**
+     * 设置：身份证B面照片ID
+     * 
+     * @param
+     */
+    public void setCardBIconID(String cardBIconID)
+    {
+        this.cardBIconID = cardBIconID;
+    }
+
+
+    /**
+     * 获取：银行卡号
+     * 
+     * @param
+     */
+    public String getBankNo()
+    {
+        return bankNo;
+    }
+
+
+    /**
+     * 设置：银行卡号
+     * 
+     * @param
+     */
+    public void setBankNo(String bankNo)
+    {
+        this.bankNo = bankNo;
+    }
+
+
+    /**
+     * 获取：银行名称
+     * 
+     * @param
+     */
+    public String getBankName()
+    {
+        return bankName;
+    }
+
+
+    /**
+     * 设置：银行名称
+     * 
+     * @param
+     */
+    public void setBankName(String bankName)
+    {
+        this.bankName = bankName;
     }
     
 }

@@ -31,10 +31,15 @@
                        ,A.userType  
                        ,A.userLevel 
                        ,A.userSource
+                       ,A.userIconID
                        ,A.orgCode   
                        ,A.orgName   
                        ,A.sex       
                        ,A.cardID    
+                       ,A.cardAIconID    
+                       ,A.cardBIconID    
+                       ,A.bankNo    
+                       ,A.bankName    
                        ,A.password    
                        ,A.pwdExpireTime    
                        ,A.startDate 
@@ -86,10 +91,15 @@
                        ,userType     
                        ,userLevel    
                        ,userSource   
+                       ,userIconID
                        ,orgCode      
                        ,orgName      
                        ,sex          
                        ,cardID       
+                       ,cardAIconID       
+                       ,cardBIconID       
+                       ,bankNo       
+                       ,bankName       
                        ,password     
                        ,pwdExpireTime
                        ,startDate    
@@ -121,10 +131,15 @@
                        ,':userType'
                        ,':userLevel'
                        ,':userSource'
+                       ,':userIconID'
                        ,':orgCode'
                        ,':orgName'
                        ,':sex'
                        ,':cardID'
+                       ,':cardAIconID'
+                       ,':cardBIconID'
+                       ,':bankNo'
+                       ,':bankName'
                        ,':password'
                        ,NULL
                        ,NULL
