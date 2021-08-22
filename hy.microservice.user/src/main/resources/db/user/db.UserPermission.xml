@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <sqls>
+    
+        <sql id="XSQL_User_UserPermission_QueryByID"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.permissionID
+                       ,A.permissionCode
+                       ,A.permissionName
+                       ,A.appKey
+                       ,A.permissionType
+                       ,A.permissionLevel
+                       ,A.remarks
+                       ,A.createTime
+                       ,A.updateTime
+                       ,A.createrID
+                       ,A.updaterID
+                  FROM  UserPermission  A
+                 WHERE  A.permissionID = ':permissionID' 
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.permission.Permission</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+    
+        <sql id="XSQL_User_UserPermission_Query"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.permissionID
+                       ,A.permissionCode
+                       ,A.permissionName
+                       ,A.appKey
+                       ,A.permissionType
+                       ,A.permissionLevel
+                       ,A.remarks
+                       ,A.createTime
+                       ,A.updateTime
+                       ,A.createrID
+                       ,A.updaterID
+                  FROM  UserPermission  A
+                 WHERE  A.appKey          = ':appKey'
+              <[   AND  A.permissionCode  = ':permissionCode'                      ]>
+              <[   AND  A.permissionType  = ':permissionType'                      ]>
+              <[   AND  A.permissionLevel = ':permissionLevel'                     ]>
+              <[   AND  A.permissionName LIKE CONCAT('%' ,':permissionName' ,'%')  ]>
+                 ORDER  BY A.roleID 
+                          ,A.userGID
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.permission.Permission</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserPermission_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserPermission
+                       (
+                        permissionID
+                       ,permissionCode
+                       ,permissionName
+                       ,appKey
+                       ,permissionType
+                       ,permissionLevel
+                       ,remarks
+                       ,createTime
+                       ,updateTime
+                       ,createrID
+                       ,updaterID
+                       )
+                VALUES (
+                        ':permissionID'
+                       ,':permissionCode'
+                       ,':permissionName'
+                       ,':appKey'
+                       ,':permissionType'
+                       ,':permissionLevel'
+                       ,':remarks'
+                       ,NOW()
+                       ,NOW()
+                       ,':createrID'
+                       ,':createrID'
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserPermission_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  UserPermission
+                   SET  permissionName  = ':permissionName'
+                        permissionType  = ':permissionType'
+                        permissionLevel = ':permissionLevel'
+                        remarks         = ':remarks'
+                       ,updateTime      = NOW()
+                       ,updaterID       = ':updaterID'
+                 WHERE  permissionID    = ':permissionID'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserPermission_Delete"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                DELETE  FROM UserPermission
+                 WHERE  permissionID = ':permissionID'
+                ]]>
+            </content>
+            
+        </sql>
+
+    </sqls>
+    
+</config>

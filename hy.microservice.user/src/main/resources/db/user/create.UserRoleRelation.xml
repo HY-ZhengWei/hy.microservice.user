@@ -39,11 +39,11 @@
                        ,NOW()
                        ,'94AB32E9B50D4D2DB713621061303350'
                        ,'94AB32E9B50D4D2DB713621061303350'
-                       );/
+                       )
                 ]]>
             </content>
 
-            <comment>初始化角色</comment>
+            <comment>初始化用户与角色关系</comment>
             
         </sql>
         
@@ -70,7 +70,7 @@
 
                 ALTER TABLE UserRoleRelaction ADD CONSTRAINT PK_UserRoleRelaction PRIMARY KEY (urrID);/
                 
-                ALTER TABLE UserRoleRelaction ADD UNIQUE KEY UK_UserRoleRelaction (userGID ,roleID ,appKey);
+                ALTER TABLE UserRoleRelaction ADD UNIQUE KEY UK_UserRoleRelaction (userGID ,roleID ,appKey);/
                 
                 Alter TABLE UserRoleRelaction COMMENT                              = '用户与角色关系';/
                 ]]>

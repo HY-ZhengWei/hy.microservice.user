@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 权限项信息的创建（自动创建）的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_User_Init_UserPermission">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserPermission
+                       (
+                        permissionID
+                       ,permissionCode
+                       ,permissionName
+                       ,appKey
+                       ,permissionType
+                       ,permissionLevel
+                       ,remarks
+                       ,createTime
+                       ,updateTime
+                       ,createrID
+                       ,updaterID
+                       )
+                VALUES (
+                        'UP-Role-CUD'
+                       ,'UP-Role-CUD'
+                       ,'角色的创建\编辑\删除'
+                       ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,''
+                       ,''
+                       ,''
+                       ,NOW()
+                       ,NOW()
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       );/
+                       
+                INSERT  INTO UserPermission
+                       (
+                        permissionID
+                       ,permissionCode
+                       ,permissionName
+                       ,appKey
+                       ,permissionType
+                       ,permissionLevel
+                       ,remarks
+                       ,createTime
+                       ,updateTime
+                       ,createrID
+                       ,updaterID
+                       )
+                VALUES (
+                        'UP-Role-R'
+                       ,'UP-Role-R'
+                       ,'角色的查询'
+                       ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,''
+                       ,''
+                       ,''
+                       ,NOW()
+                       ,NOW()
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       );/
+                       
+                INSERT  INTO UserPermission
+                       (
+                        permissionID
+                       ,permissionCode
+                       ,permissionName
+                       ,appKey
+                       ,permissionType
+                       ,permissionLevel
+                       ,remarks
+                       ,createTime
+                       ,updateTime
+                       ,createrID
+                       ,updaterID
+                       )
+                VALUES (
+                        'UP-User-C'
+                       ,'UP-User-C'
+                       ,'用户的创建'
+                       ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,''
+                       ,''
+                       ,''
+                       ,NOW()
+                       ,NOW()
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       );/
+                       
+            INSERT  INTO UserPermission
+                       (
+                        permissionID
+                       ,permissionCode
+                       ,permissionName
+                       ,appKey
+                       ,permissionType
+                       ,permissionLevel
+                       ,remarks
+                       ,createTime
+                       ,updateTime
+                       ,createrID
+                       ,updaterID
+                       )
+                VALUES (
+                        'UP-User-R'
+                       ,'UP-User-R'
+                       ,'用户的查询'
+                       ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,''
+                       ,''
+                       ,''
+                       ,NOW()
+                       ,NOW()
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       );/
+                ]]>
+            </content>
+
+            <comment>初始化权限项信息</comment>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_Create_UserPermission">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE UserPermission
+                (
+                 permissionID    VARCHAR(64)     NOT NULL           COMMENT '权限项的主键'
+                ,permissionCode  VARCHAR(16)     NOT NULL           COMMENT '权限项的编码'
+                ,permissionName  VARCHAR(64)     NOT NULL           COMMENT '权限项的名称'
+                ,appKey          VARCHAR(64)     NOT NULL           COMMENT '应用编号'
+                ,permissionType  VARCHAR(64)                        COMMENT '权限项的类型'
+                ,permissionLevel VARCHAR(64)                        COMMENT '权限项的级别'
+                ,remarks         VARCHAR(500)                       COMMENT '备注说明'
+                ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
+                ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
+                ,createrID       VARCHAR(64)     NOT NULL           COMMENT '创建者的用户全域编号'
+                ,updaterID       VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+
+                ALTER TABLE UserPermission ADD CONSTRAINT PK_UserPermission PRIMARY KEY (permissionID);/
+                
+                ALTER TABLE UserPermission ADD UNIQUE KEY UK_UserPermission (permissionCode ,appKey);/
+                
+                Alter TABLE UserPermission COMMENT                              = '权限项信息';/
+                ]]>
+            </content>
+            
+            <trigger>
+                <create ref="XSQL_User_Init_UserPermission" />
+            </trigger>
+            
+            <comment>权限项信息</comment>
+            <create>UserPermission</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>
