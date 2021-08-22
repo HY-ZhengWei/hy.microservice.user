@@ -280,7 +280,7 @@ public class UserController
         if ( v_CreateUser == null )
         {
             $Logger.info("创建用户失败：" + i_CreateUser.getAppKey() + ":"+ i_CreateUser.getUserName());
-            return v_RetResp.setCode("911").setMessage("创建用户失败");
+            return v_RetResp.setCode("912").setMessage("创建用户失败");
         }
         else
         {
