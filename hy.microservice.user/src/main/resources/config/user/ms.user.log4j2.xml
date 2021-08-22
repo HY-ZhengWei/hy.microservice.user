@@ -12,8 +12,8 @@
     </appenders>
 
     <loggers>
-        <logger name="org.hy.common"            level="debug" />
-        <logger name="org.hy.microservice.user" level="debug" />
+        <logger name="org.hy.common"            level="debug" additivity="false" />
+        <logger name="org.hy.microservice.user" level="debug" additivity="false" />
         <root level="info">
             <appenderref ref="CONSOLE"/>
         </root>

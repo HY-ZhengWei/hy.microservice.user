@@ -263,15 +263,15 @@ public class UserController
         {
             if ( !i_CreateUser.getAppKey().equals(v_User.getAppKey()) )
             {
-                $Logger.info("创建用户：创建用户的用户不能跨权系统创建用户"  + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
-                return v_RetResp.setCode("907").setMessage("创建用户：创建用户的用户不能跨权系统创建用户");
+                $Logger.info("创建用户：创建者不能跨系统创建用户"  + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("907").setMessage("创建用户：创建者不能跨系统创建用户");
             }
             
             // 临时用账号名称来判定是否有创建用户的权限。
             if ( !"administrator".equals(v_User.getUserCode()) )
             {
-                $Logger.info("创建用户：创建用户的用户没有权限"  + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
-                return v_RetResp.setCode("908").setMessage("创建用户：创建用户的用户没有权限");
+                $Logger.info("创建用户：创建者没有权限"  + i_CreateUser.getAppKey() + "：" + i_CreateUser.getLoginAccount() + "：" + i_CreateUser.getUserName());
+                return v_RetResp.setCode("908").setMessage("创建用户：创建者没有权限");
             }
         }
         

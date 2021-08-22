@@ -12,6 +12,8 @@ import org.hy.microservice.user.role.RoleInfo;
 import org.hy.microservice.user.role.RoleInfoService;
 import org.hy.microservice.user.user.UserSSO;
 import org.hy.microservice.user.user.UserService;
+import org.hy.microservice.user.userInfo.UserInfo;
+import org.hy.microservice.user.userInfo.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -52,6 +54,10 @@ public class RoleController
     @Autowired
     @Qualifier("UserService")
     private UserService userService;
+    
+    @Autowired
+    @Qualifier("UserInfoService")
+    private UserInfoService userInfoService;
     
     @Autowired
     @Qualifier("RoleInfoService")
@@ -100,6 +106,9 @@ public class RoleController
             {
                 return v_RetResp.setCode("-901").setMessage("无权访问");
             }
+            
+            // 当验证用户登录会话时，谁登录创建者即是谁
+            i_CreateRole.setCreaterID(v_User.getId());
         }
         
         if ( i_CreateRole == null || Help.isNull(i_CreateRole.getRoleName()) )
@@ -129,6 +138,37 @@ public class RoleController
                 return v_RetResp.setCode("905").setMessage("创建角色：角色说明禁止非法字符");
             }
         }
+        
+        if ( Help.isNull(i_CreateRole.getCreaterID()) )
+        {
+            $Logger.info("创建角色：创建者编号为空或不存在" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
+            return v_RetResp.setCode("906").setMessage("创建角色：创建者编号为空或不存在");
+        }
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            if ( !i_CreateRole.getAppKey().equals(v_User.getAppKey()) )
+            {
+                $Logger.info("创建角色：创建者不能跨系统操作" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
+                return v_RetResp.setCode("907").setMessage("创建角色：创建者不能跨系统操作");
+            }
+        }
+        else
+        {
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_CreateRole.getCreaterID());
+            
+            if ( v_Creater == null )
+            {
+                $Logger.info("创建角色：创建者编号为空或不存在" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
+                return v_RetResp.setCode("906").setMessage("创建角色：创建者编号为空或不存在");
+            }
+            
+            if ( !i_CreateRole.getAppKey().equals(v_Creater.getAppKey()) )
+            {
+                $Logger.info("创建角色：创建者不能跨系统操作" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
+                return v_RetResp.setCode("907").setMessage("创建角色：创建者不能跨系统操作");
+            }
+        }
+        
         
         RoleInfo v_Role = this.roleService.addRole(i_CreateRole);
         if ( v_Role == null )
@@ -186,6 +226,9 @@ public class RoleController
             {
                 return v_RetResp.setCode("-901").setMessage("无权访问");
             }
+            
+            // 当验证用户登录会话时，谁登录创建者即是谁
+            i_Role.setUpdaterID(v_User.getId());
         }
         
         if ( i_Role == null || Help.isNull(i_Role.getRoleID()) )
@@ -221,6 +264,37 @@ public class RoleController
                 return v_RetResp.setCode("906").setMessage("编辑角色：角色说明禁止非法字符");
             }
         }
+        
+        if ( Help.isNull(i_Role.getUpdaterID()) )
+        {
+            $Logger.info("编辑角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
+            return v_RetResp.setCode("907").setMessage("编辑角色：编辑者编号为空或不存在");
+        }
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            if ( !i_Role.getAppKey().equals(v_User.getAppKey()) )
+            {
+                $Logger.info("编辑角色：编辑者不能跨系统操作" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
+                return v_RetResp.setCode("908").setMessage("编辑角色：编辑者不能跨系统操作");
+            }
+        }
+        else
+        {
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getUpdaterID());
+            
+            if ( v_Updater == null )
+            {
+                $Logger.info("编辑角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
+                return v_RetResp.setCode("907").setMessage("编辑角色：编辑者编号为空或不存在");
+            }
+            
+            if ( !i_Role.getAppKey().equals(v_Updater.getAppKey()) )
+            {
+                $Logger.info("编辑角色：编辑者不能跨系统操作" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
+                return v_RetResp.setCode("908").setMessage("编辑角色：编辑者不能跨系统操作");
+            }
+        }
+        
         
         boolean v_EditRet = this.roleService.updateRole(i_Role);
         if ( !v_EditRet )
@@ -278,6 +352,9 @@ public class RoleController
             {
                 return v_RetResp.setCode("-901").setMessage("无权访问");
             }
+            
+            // 当验证用户登录会话时，谁登录创建者即是谁
+            i_Role.setUpdaterID(v_User.getId());
         }
         
         if ( i_Role == null || Help.isNull(i_Role.getRoleID()) )
@@ -291,6 +368,37 @@ public class RoleController
             $Logger.info("删除角色：所属系统编号为空");
             return v_RetResp.setCode("903").setMessage("删除角色：所属系统编号为空");
         }
+        
+        if ( Help.isNull(i_Role.getUpdaterID()) )
+        {
+            $Logger.info("删除角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+            return v_RetResp.setCode("904").setMessage("删除角色：编辑者编号为空或不存在");
+        }
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            if ( !i_Role.getAppKey().equals(v_User.getAppKey()) )
+            {
+                $Logger.info("删除角色：编辑者不能跨系统操作" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+                return v_RetResp.setCode("905").setMessage("删除角色：编辑者不能跨系统操作");
+            }
+        }
+        else
+        {
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getUpdaterID());
+            
+            if ( v_Updater == null )
+            {
+                $Logger.info("删除角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+                return v_RetResp.setCode("904").setMessage("删除角色：编辑者编号为空或不存在");
+            }
+            
+            if ( !i_Role.getAppKey().equals(v_Updater.getAppKey()) )
+            {
+                $Logger.info("删除角色：编辑者不能跨系统操作" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+                return v_RetResp.setCode("905").setMessage("删除角色：编辑者不能跨系统操作");
+            }
+        }
+        
         
         boolean v_DelRet = this.roleService.delRole(i_Role);
         if ( !v_DelRet )

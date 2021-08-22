@@ -53,6 +53,23 @@ public class UserInfoService
     
     
     /**
+     * 按用户编号查询用户
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-22
+     * @version     v1.0
+     *
+     * @param i_UserGID
+     * @return
+     */
+    public UserInfo queryUserGID(String i_UserGID)
+    {
+        return this.userInfoDAO.queryByID(i_UserGID);
+    }
+    
+    
+    
+    /**
      * 创建密码加密方式
      * 
      * @author      ZhengWei(HY)
@@ -125,7 +142,7 @@ public class UserInfoService
     {
         String v_ID       = StringHelp.getUUID();
         IHash  v_IHash    = this.createPassowrdSecurity(v_ID);
-        String v_Password = "";
+        String v_Password = null;
                 
         if ( Help.isNull(io_User.getPassword()) )
         {

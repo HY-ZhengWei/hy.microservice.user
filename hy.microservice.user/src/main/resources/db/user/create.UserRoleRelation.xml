@@ -8,20 +8,21 @@
 
 
 
-    <!-- 用户角色的创建（自动创建）的相关SQL -->
+    <!-- 用户与角色关系的创建（自动创建）的相关SQL -->
     <sqls>
     
-        <sql id="XSQL_User_Init_UserRoleInfo">
+        <sql id="XSQL_User_Init_UserRoleRelaction">
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                INSERT  INTO UserRoleInfo
+                INSERT  INTO UserRoleRelaction
                        (
-                        roleID
+                        urrID
+                       ,userGID
+                       ,roleID
                        ,appKey        
-                       ,roleName       
                        ,remarks       
                        ,createTime   
                        ,updateTime  
@@ -29,33 +30,11 @@
                        ,updaterID
                        )
                 VALUES (
-                        'R0000'
+                        'URR0001'
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       ,'R0000'
                        ,'C35C99CCE8914BD184CC2CF87288928D'
                        ,'超级管理员'
-                       ,'拥有创建管理员、审计员、策略员的权限'
-                       ,NOW()
-                       ,NOW()
-                       ,'94AB32E9B50D4D2DB713621061303350'
-                       ,'94AB32E9B50D4D2DB713621061303350'
-                       );/
-                       
-                       
-                INSERT  INTO UserRoleInfo
-                       (
-                        roleID
-                       ,appKey        
-                       ,roleName       
-                       ,remarks       
-                       ,createTime   
-                       ,updateTime  
-                       ,createrID
-                       ,updaterID
-                       )
-                VALUES (
-                        'R0001'
-                       ,'C35C99CCE8914BD184CC2CF87288928D'
-                       ,'管理员'
-                       ,'拥有创建普通用户的权限'
                        ,NOW()
                        ,NOW()
                        ,'94AB32E9B50D4D2DB713621061303350'
@@ -70,17 +49,18 @@
         
         
         
-        <sql id="XSQL_User_Create_UserRoleInfo">
+        <sql id="XSQL_User_Create_UserRoleRelaction">
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                CREATE TABLE UserRoleInfo
+                CREATE TABLE UserRoleRelaction
                 (
-                 roleID          VARCHAR(64)     NOT NULL           COMMENT '角色主键'
+                 urrID           VARCHAR(64)     NOT NULL           COMMENT '用户与角色关系的主键'
+                ,userGID         VARCHAR(64)     NOT NULL           COMMENT '用户全域编号'
+                ,roleID          VARCHAR(64)     NOT NULL           COMMENT '角色主键'
                 ,appKey          VARCHAR(64)     NOT NULL           COMMENT '应用编号'
-                ,roleName        VARCHAR(128)    NOT NULL           COMMENT '角色名称'
                 ,remarks         VARCHAR(500)                       COMMENT '备注说明'
                 ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
                 ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
@@ -88,18 +68,20 @@
                 ,updaterID       VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
 
-                ALTER TABLE UserRoleInfo ADD CONSTRAINT PK_UserRoleInfo PRIMARY KEY (roleID ,appKey);/
+                ALTER TABLE UserRoleRelaction ADD CONSTRAINT PK_UserRoleRelaction PRIMARY KEY (urrID);/
                 
-                Alter TABLE UserRoleInfo COMMENT                              = '用户角色信息';/
+                ALTER TABLE UserRoleRelaction ADD UNIQUE KEY UK_UserRoleRelaction (userGID ,roleID ,appKey);
+                
+                Alter TABLE UserRoleRelaction COMMENT                              = '用户与角色关系';/
                 ]]>
             </content>
             
             <trigger>
-                <create ref="XSQL_User_Init_UserRoleInfo" />
+                <create ref="XSQL_User_Init_UserRoleRelaction" />
             </trigger>
             
-            <comment>用户角色信息</comment>
-            <create>UserRoleInfo</create>
+            <comment>用户与角色关系</comment>
+            <create>UserRoleRelaction</create>
             
         </sql>
         

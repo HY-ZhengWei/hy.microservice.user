@@ -22,6 +22,8 @@
                        ,A.remarks       
                        ,A.createTime   
                        ,A.updateTime 
+                       ,A.createrID
+                       ,A.updaterID
                   FROM  UserRoleInfo  A
                  WHERE  A.appKey      = ':appKey'
               <[   AND  A.roleID      = ':roleID'                      ]>
@@ -53,6 +55,8 @@
                        ,remarks       
                        ,createTime   
                        ,updateTime  
+                       ,createrID
+                       ,updaterID
                        )
                 VALUES (
                         ':roleID'
@@ -61,6 +65,8 @@
                        ,':remarks'
                        ,NOW()
                        ,NOW()
+                       ,':createrID'
+                       ,':createrID'
                        )
                 ]]>
             </content>
@@ -79,6 +85,7 @@
                    SET  roleName   = ':roleName'
                        ,remarks    = ':remarks'
                        ,updateTime = NOW()
+                       ,updaterID  = ':updaterID'
                  WHERE  appKey     = ':appKey'
                    AND  roleID     = ':roleID'
                 ]]>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <sqls>
+    
+        <sql id="XSQL_User_UserRoleRelaction_QueryByID"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.urrID
+                       ,A.userGID
+                       ,A.roleID        
+                       ,A.appKey        
+                       ,A.remarks       
+                       ,A.createTime   
+                       ,A.updateTime 
+                       ,A.createrID
+                       ,A.updaterID
+                  FROM  UserRoleRelaction  A
+                 WHERE  A.urrID = ':urrID' 
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.role.RoleRelaction</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+    
+        <sql id="XSQL_User_UserRoleRelaction_Query"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.urrID
+                       ,A.userGID
+                       ,A.roleID        
+                       ,A.appKey        
+                       ,A.remarks       
+                       ,A.createTime   
+                       ,A.updateTime 
+                       ,A.createrID
+                       ,A.updaterID
+                  FROM  UserRoleRelaction  A
+                 WHERE  A.appKey     = ':appKey'
+              <[   AND  A.userGID    = ':userGID'                    ]>
+              <[   AND  A.roleID     = ':roleID'                     ]>
+              <[   AND  A.remarks LIKE CONCAT('%' ,':remarks' ,'%')  ]>
+                 ORDER  BY A.roleID 
+                          ,A.userGID
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.role.RoleRelaction</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserRoleRelaction_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserRoleRelaction
+                       (
+                        urrID
+                       ,userGID
+                       ,roleID
+                       ,appKey        
+                       ,remarks       
+                       ,createTime   
+                       ,updateTime  
+                       ,createrID
+                       ,updaterID
+                       )
+                VALUES (
+                        ':urrID'
+                       ,':userGID'
+                       ,':roleID'
+                       ,':appKey'
+                       ,':remarks'
+                       ,NOW()
+                       ,NOW()
+                       ,':createrID'
+                       ,':createrID'
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserRoleRelaction_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  UserRoleRelaction
+                   SET  remarks    = ':remarks'
+                       ,updateTime = NOW()
+                       ,updaterID  = ':updaterID'
+                 WHERE  urrID      = ':urrID'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserRoleRelaction_Delete"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                DELETE  FROM UserRoleRelaction
+                 WHERE  urrID = ':urrID'
+                ]]>
+            </content>
+            
+        </sql>
+
+    </sqls>
+    
+</config>

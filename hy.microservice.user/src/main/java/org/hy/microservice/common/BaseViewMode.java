@@ -60,6 +60,12 @@ public class BaseViewMode extends SerializableDef
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" ,timezone = "GMT+8")
     private Date    updateTime;
     
+    /** 创建者编号 */
+    private String  createrID;
+    
+    /** 修改者编号 */
+    private String  updaterID;
+    
     /** 删除标记。1删除；0未删除 */
     private Integer isDel;
     
@@ -620,6 +626,46 @@ public class BaseViewMode extends SerializableDef
     public void setRemarks(String remarks)
     {
         this.remarks = remarks;
+    }
+
+
+    /**
+     * 获取：创建者编号
+     */
+    public String getCreaterID()
+    {
+        return createrID;
+    }
+
+
+    /**
+     * 设置：创建者编号
+     * 
+     * @param createrID
+     */
+    public void setCreaterID(String createrID)
+    {
+        this.createrID = createrID;
+    }
+
+
+    /**
+     * 获取：修改者编号
+     */
+    public String getUpdaterID()
+    {
+        return updaterID;
+    }
+
+
+    /**
+     * 设置：修改者编号
+     * 
+     * @param updaterID
+     */
+    public void setUpdaterID(String updaterID)
+    {
+        this.updaterID = updaterID;
     }
 
 }
