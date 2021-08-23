@@ -20,6 +20,7 @@
                        ,A.permissionCode
                        ,A.permissionName
                        ,A.appKey
+                       ,A.isSystem
                        ,A.permissionType
                        ,A.permissionLevel
                        ,A.remarks
@@ -29,6 +30,39 @@
                        ,A.updaterID
                   FROM  UserPermission  A
                  WHERE  A.permissionID = ':permissionID' 
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.permission.Permission</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserPermission_QueryByCode"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.permissionID
+                       ,A.permissionCode
+                       ,A.permissionName
+                       ,A.appKey
+                       ,A.isSystem
+                       ,A.permissionType
+                       ,A.permissionLevel
+                       ,A.remarks
+                       ,A.createTime
+                       ,A.updateTime
+                       ,A.createrID
+                       ,A.updaterID
+                  FROM  UserPermission  A
+                 WHERE  A.appKey          = ':appKey'
+                   AND  A.permissionCode  = ':permissionCode'
                 ]]>
             </content>
             
@@ -51,6 +85,7 @@
                        ,A.permissionCode
                        ,A.permissionName
                        ,A.appKey
+                       ,A.isSystem
                        ,A.permissionType
                        ,A.permissionLevel
                        ,A.remarks
@@ -60,12 +95,12 @@
                        ,A.updaterID
                   FROM  UserPermission  A
                  WHERE  A.appKey          = ':appKey'
+              <[   AND  A.isSystem        = ':isSystem'                            ]>
               <[   AND  A.permissionCode  = ':permissionCode'                      ]>
               <[   AND  A.permissionType  = ':permissionType'                      ]>
               <[   AND  A.permissionLevel = ':permissionLevel'                     ]>
               <[   AND  A.permissionName LIKE CONCAT('%' ,':permissionName' ,'%')  ]>
-                 ORDER  BY A.roleID 
-                          ,A.userGID
+                 ORDER  BY A.permissionCode
                 ]]>
             </content>
             
@@ -90,6 +125,7 @@
                        ,permissionCode
                        ,permissionName
                        ,appKey
+                       ,isSystem
                        ,permissionType
                        ,permissionLevel
                        ,remarks
@@ -103,6 +139,7 @@
                        ,':permissionCode'
                        ,':permissionName'
                        ,':appKey'
+                       ,0
                        ,':permissionType'
                        ,':permissionLevel'
                        ,':remarks'
@@ -132,6 +169,7 @@
                        ,updateTime      = NOW()
                        ,updaterID       = ':updaterID'
                  WHERE  permissionID    = ':permissionID'
+                   ANd  isSystem        = 0
                 ]]>
             </content>
             
@@ -147,6 +185,7 @@
                 <![CDATA[
                 DELETE  FROM UserPermission
                  WHERE  permissionID = ':permissionID'
+                   ANd  isSystem     = 0
                 ]]>
             </content>
             

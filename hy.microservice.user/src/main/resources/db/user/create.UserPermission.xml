@@ -23,6 +23,7 @@
                        ,permissionCode
                        ,permissionName
                        ,appKey
+                       ,isSystem
                        ,permissionType
                        ,permissionLevel
                        ,remarks
@@ -36,6 +37,7 @@
                        ,'UP-Role-CUD'
                        ,'角色的创建\编辑\删除'
                        ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,1
                        ,''
                        ,''
                        ,''
@@ -51,6 +53,7 @@
                        ,permissionCode
                        ,permissionName
                        ,appKey
+                       ,isSystem
                        ,permissionType
                        ,permissionLevel
                        ,remarks
@@ -64,6 +67,7 @@
                        ,'UP-Role-R'
                        ,'角色的查询'
                        ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,1
                        ,''
                        ,''
                        ,''
@@ -79,6 +83,7 @@
                        ,permissionCode
                        ,permissionName
                        ,appKey
+                       ,isSystem
                        ,permissionType
                        ,permissionLevel
                        ,remarks
@@ -92,6 +97,7 @@
                        ,'UP-User-C'
                        ,'用户的创建'
                        ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,1
                        ,''
                        ,''
                        ,''
@@ -107,6 +113,7 @@
                        ,permissionCode
                        ,permissionName
                        ,appKey
+                       ,isSystem
                        ,permissionType
                        ,permissionLevel
                        ,remarks
@@ -120,6 +127,7 @@
                        ,'UP-User-R'
                        ,'用户的查询'
                        ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,1
                        ,''
                        ,''
                        ,''
@@ -149,6 +157,7 @@
                 ,permissionCode  VARCHAR(16)     NOT NULL           COMMENT '权限项的编码'
                 ,permissionName  VARCHAR(64)     NOT NULL           COMMENT '权限项的名称'
                 ,appKey          VARCHAR(64)     NOT NULL           COMMENT '应用编号'
+                ,isSystem        INT             NOT NULL DEFAULT 0 COMMENT '是否为系统权限（1：是），系统权限只能通过DB脚本创建'
                 ,permissionType  VARCHAR(64)                        COMMENT '权限项的类型'
                 ,permissionLevel VARCHAR(64)                        COMMENT '权限项的级别'
                 ,remarks         VARCHAR(500)                       COMMENT '备注说明'

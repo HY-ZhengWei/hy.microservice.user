@@ -435,12 +435,12 @@ public class RoleController
      */
     @RequestMapping(value="list" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public BaseResponse<String> query(@RequestParam(value="token" ,required=false) String i_Token
-                                     ,@RequestBody RoleInfo i_Role
-                                     ,HttpServletRequest    i_Request
-                                     ,HttpServletResponse   i_Response)
+    public BaseResponse<List<RoleInfo>> query(@RequestParam(value="token" ,required=false) String i_Token
+                                             ,@RequestBody RoleInfo i_Role
+                                             ,HttpServletRequest    i_Request
+                                             ,HttpServletResponse   i_Response)
     {
-        BaseResponse<String> v_RetResp = new BaseResponse<String>();
+        BaseResponse<List<RoleInfo>> v_RetResp = new BaseResponse<List<RoleInfo>>();
         
         UserSSO v_User = null;
         if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
@@ -463,28 +463,28 @@ public class RoleController
             }
         }
         
-        if ( i_Role == null || Help.isNull(i_Role.getRoleID()) )
+        if ( i_Role == null )
         {
-            $Logger.info("删除角色：角色ID为空");
-            return v_RetResp.setCode("902").setMessage("删除角色：角色ID为空");
+            $Logger.info("查询角色：角色为空");
+            return v_RetResp.setCode("902").setMessage("查询角色：角色为空");
         }
         
         if ( Help.isNull(i_Role.getAppKey()) )
         {
-            $Logger.info("删除角色：所属系统编号为空");
-            return v_RetResp.setCode("903").setMessage("删除角色：所属系统编号为空");
+            $Logger.info("查询角色：所属系统编号为空");
+            return v_RetResp.setCode("903").setMessage("查询角色：所属系统编号为空");
         }
         
-        boolean v_DelRet = this.roleService.delRole(i_Role);
-        if ( !v_DelRet )
+        List<RoleInfo> v_Roles = this.roleService.query(i_Role);
+        if ( Help.isNull(v_Roles) )
         {
-            $Logger.info("删除角色失败：" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
+            $Logger.info("查询角色失败：" + i_Role.getAppKey());
             return v_RetResp.setCode("911").setMessage("删除角色失败");
         }
         else
         {
-            $Logger.info("删除角色成功" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
-            return v_RetResp;
+            $Logger.info("查询角色成功" + i_Role.getAppKey());
+            return v_RetResp.setData(v_Roles);
         }
     }
     
