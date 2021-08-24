@@ -66,6 +66,9 @@ public class BaseViewMode extends SerializableDef
     /** 修改者编号 */
     private String  updaterID;
     
+    /** 有效标记。1有效；-1无效 */
+    private Integer isValid;
+    
     /** 删除标记。1删除；0未删除 */
     private Integer isDel;
     
@@ -666,6 +669,26 @@ public class BaseViewMode extends SerializableDef
     public void setUpdaterID(String updaterID)
     {
         this.updaterID = updaterID;
+    }
+
+
+    /**
+     * 获取：有效标记。1有效；-1无效
+     */
+    public Integer getIsValid()
+    {
+        return isValid;
+    }
+
+
+    /**
+     * 设置：有效标记。1有效；-1无效
+     * 
+     * @param isValid
+     */
+    public void setIsValid(Integer isValid)
+    {
+        this.isValid = isValid;
     }
 
 }

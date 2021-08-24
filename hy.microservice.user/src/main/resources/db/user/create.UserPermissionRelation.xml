@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <!-- 用户与角色关系的创建（自动创建）的相关SQL -->
+    <sqls>
+    
+        <sql id="XSQL_User_Init_UserPermissionRelaction">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserPermissionRelaction
+                       (
+                        uprID
+                       ,appKey
+                       ,permissionID
+                       ,ownerID
+                       ,ownerType
+                       ,remarks
+                       ,isValid
+                       ,createTime
+                       ,updateTime
+                       ,createrID
+                       ,updaterID
+                       )
+                VALUES (
+                        'UPR0001'
+                       ,'C35C99CCE8914BD184CC2CF87288928D'
+                       ,'UP-Role-CUD'
+                       ,'R0000'
+                       ,1
+                       ,''
+                       ,1
+                       ,NOW()
+                       ,NOW()
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       ,'94AB32E9B50D4D2DB713621061303350'
+                       )
+                ]]>
+            </content>
+
+            <comment>初始化权限项关系</comment>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_Create_UserPermissionRelaction">
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                CREATE TABLE UserPermissionRelaction
+                (
+                 uprID           VARCHAR(64)     NOT NULL           COMMENT '权限项关系的主键'
+                ,appKey          VARCHAR(64)     NOT NULL           COMMENT '应用编号'
+                ,permissionID    VARCHAR(64)     NOT NULL           COMMENT '权限项的ID'
+                ,ownerID         VARCHAR(64)     NOT NULL           COMMENT '权限的所有者ID'
+                ,ownerType       INT(1)          NOT NULL DEFAULT 1 COMMENT '权限的所有者类型（1: 角色； 2：用户）'
+                ,remarks         VARCHAR(500)                       COMMENT '备注说明'
+                ,isValid         INT(1)          NOT NULL DEFAULT 1 COMMENT '有效标记（1有效；-1无效）'
+                ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
+                ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
+                ,createrID       VARCHAR(64)     NOT NULL           COMMENT '创建者的用户全域编号'
+                ,updaterID       VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
+
+                ALTER TABLE UserPermissionRelaction ADD CONSTRAINT PK_UserPermissionRelaction PRIMARY KEY (uprID);/
+                
+                ALTER TABLE UserPermissionRelaction ADD UNIQUE KEY UK_UserPermissionRelaction (ownerID ,permissionID ,appKey);/
+                
+                Alter TABLE UserPermissionRelaction COMMENT               = '权限项关系表';/
+                ]]>
+            </content>
+            
+            <trigger>
+                <create ref="XSQL_User_Init_UserPermissionRelaction" />
+            </trigger>
+            
+            <comment>权限项关系表</comment>
+            <create>UserPermissionRelaction</create>
+            
+        </sql>
+        
+    </sqls>
+    
+</config>

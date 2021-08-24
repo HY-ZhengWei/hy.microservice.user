@@ -29,11 +29,28 @@ public interface IPermissionDAO
      * @createDate  2021-08-23
      * @version     v1.0
      *
+     * @param i_AppKey
      * @param i_PermissionID
      * @return
      */
     @Xsql(id="XSQL_User_UserPermission_QueryByID" ,returnOne=true)
-    public Permission queryByID(@Xparam(id="permissionID" ,notNull=true) String i_PermissionID);
+    public Permission queryByID(@Xparam(id="appKey"       ,notNull=true) String i_AppKey
+                               ,@Xparam(id="permissionID" ,notNull=true) String i_PermissionID);
+    
+    
+    
+    /**
+     * 按主键查询权限项
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-24
+     * @version     v1.0
+     *
+     * @param i_Permission
+     * @return
+     */
+    @Xsql(id="XSQL_User_UserPermission_QueryByID" ,returnOne=true)
+    public Permission queryByID(@Xparam(notNulls={"appKey" ,"permissionID"})  Permission i_Permission);
     
     
     
@@ -84,7 +101,7 @@ public interface IPermissionDAO
      * @return
      */
     @Xsql("XSQL_User_UserPermission_Insert")
-    public int addPermission(@Xparam(notNulls= {"permissionID" ,"appKey" ,"permissionCode" ,"permissionName" ,"createrID"}) Permission i_Permission);
+    public int addPermission(@Xparam(notNulls= {"appKey" ,"permissionID" ,"permissionCode" ,"permissionName" ,"createrID"}) Permission i_Permission);
     
     
     
@@ -101,7 +118,7 @@ public interface IPermissionDAO
      * @return
      */
     @Xsql("XSQL_User_UserPermission_Delete")
-    public int delPermission(@Xparam(notNulls= {"permissionID"}) Permission i_Permission);
+    public int delPermission(@Xparam(notNulls= {"appKey" ,"permissionID"}) Permission i_Permission);
     
     
     
@@ -118,6 +135,6 @@ public interface IPermissionDAO
      * @return
      */
     @Xsql("XSQL_User_UserPermission_Update")
-    public int updatePermission(@Xparam(notNulls= {"permissionID" ,"permissionName" ,"updaterID"}) Permission i_Permission);
+    public int updatePermission(@Xparam(notNulls= {"appKey" ,"permissionID" ,"permissionName" ,"updaterID"}) Permission i_Permission);
     
 }

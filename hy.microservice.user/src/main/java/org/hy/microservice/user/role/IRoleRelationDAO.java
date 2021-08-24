@@ -29,11 +29,28 @@ public interface IRoleRelationDAO
      * @createDate  2021-08-22
      * @version     v1.0
      *
+     * @param i_AppKey
      * @param i_UrrID
      * @return
      */
     @Xsql(id="XSQL_User_UserRoleRelaction_QueryByID" ,returnOne=true)
-    public RoleRelaction queryByID(@Xparam(id="urrID" ,notNull=true) String i_UrrID);
+    public RoleRelaction queryByID(@Xparam(id="appKey" ,notNull=true) String i_AppKey
+                                  ,@Xparam(id="urrID"  ,notNull=true) String i_UrrID);
+    
+    
+    
+    /**
+     * 按编号查询用户与角色关系
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-24
+     * @version     v1.0
+     *
+     * @param i_RoleRelaction
+     * @return
+     */
+    @Xsql(id="XSQL_User_UserRoleRelaction_QueryByID" ,returnOne=true)
+    public RoleRelaction queryByID(@Xparam(notNulls={"appKey" ,"urrID"} ,notNull=true) RoleRelaction i_RoleRelaction);
     
     
     
@@ -65,7 +82,7 @@ public interface IRoleRelationDAO
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Insert")
-    public int addRelation(@Xparam(notNulls= {"urrID" ,"appKey" ,"userGID" ,"roleID" ,"createrID"}) RoleRelaction i_RoleRelaction);
+    public int addRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"userGID" ,"roleID" ,"createrID"}) RoleRelaction i_RoleRelaction);
     
     
     
@@ -80,7 +97,7 @@ public interface IRoleRelationDAO
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Delete")
-    public int delRelation(@Xparam(notNulls= {"urrID"}) RoleRelaction i_RoleRelaction);
+    public int delRelation(@Xparam(notNulls= {"appKey" ,"urrID"}) RoleRelaction i_RoleRelaction);
     
     
     
@@ -95,6 +112,6 @@ public interface IRoleRelationDAO
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Update")
-    public int updateRelation(@Xparam(notNulls= {"urrID" ,"updaterID"}) RoleRelaction i_RoleRelaction);
+    public int updateRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"updaterID"}) RoleRelaction i_RoleRelaction);
     
 }

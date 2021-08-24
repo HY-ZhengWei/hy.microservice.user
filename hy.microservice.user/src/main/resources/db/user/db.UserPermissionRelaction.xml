@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="sqls"            class="java.util.ArrayList" />
+    <import name="sqlGroup"        class="org.hy.common.xml.plugins.XSQLGroup" />
+    <import name="sql"             class="org.hy.common.xml.XSQL" />
+
+
+
+    <sqls>
+    
+        <sql id="XSQL_User_UserPermissionRelaction_QueryByID"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.uprID
+                       ,A.appKey
+                       ,A.permissionID
+                       ,A.ownerID
+                       ,A.ownerType   
+                       ,A.remarks
+                       ,A.isValid     
+                       ,A.createTime  
+                       ,A.updateTime  
+                       ,A.createrID   
+                       ,A.updaterID
+                  FROM  UserPermissionRelaction  A
+                 WHERE  A.uprID  = ':uprID' 
+                   AND  A.appKey = ':appKey'
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.permission.PermissionRelaction</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+    
+        <sql id="XSQL_User_UserPermissionRelaction_Query"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                SELECT  A.uprID
+                       ,A.appKey
+                       ,A.permissionID
+                       ,A.ownerID
+                       ,A.ownerType   
+                       ,A.remarks
+                       ,A.isValid     
+                       ,A.createTime  
+                       ,A.updateTime  
+                       ,A.createrID   
+                       ,A.updaterID 
+                  FROM  UserPermissionRelaction  A
+                 WHERE  A.appKey       = ':appKey'
+              <[   AND  A.permissionID = ':permissionID'               ]>
+              <[   AND  A.ownerID      = ':ownerID'                    ]>
+              <[   AND  A.ownerType    =  :ownerType                   ]>
+              <[   AND  A.isValid      =  :isValid                     ]>
+              <[   AND  A.remarks   LIKE CONCAT('%' ,':remarks' ,'%')  ]>
+                 ORDER  BY A.ownerID 
+                          ,A.permissionID
+                ]]>
+            </content>
+            
+            <result>
+                <row>org.hy.microservice.user.permission.PermissionRelaction</row>
+                <cfill>setter(colValue)</cfill>
+            </result>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserPermissionRelaction_Insert"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                INSERT  INTO UserPermissionRelaction
+                       (
+                        uprID
+                       ,appKey
+                       ,permissionID
+                       ,ownerID
+                       ,ownerType   
+                       ,remarks
+                       ,isValid     
+                       ,createTime  
+                       ,updateTime  
+                       ,createrID   
+                       ,updaterID   
+                       )
+                VALUES (
+                        ':uprID'
+                       ,':appKey'
+                       ,':permissionID'
+                       ,':ownerID'
+                       , :ownerType
+                       ,':remarks'
+                       ,1
+                       ,NOW()
+                       ,NOW()
+                       ,':createrID'
+                       ,':createrID'
+                       )
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserPermissionRelaction_Update"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  UserPermissionRelaction
+                   SET  remarks    = ':remarks'
+                       ,updateTime = NOW()
+                       ,updaterID  = ':updaterID'
+                 WHERE  uprID      = ':uprID'
+                   AND  appKey     = ':appKey'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserPermissionRelaction_Update_IsValid"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                UPDATE  UserPermissionRelaction
+                   SET  isValid    = isValid * -1
+                       ,updateTime = NOW()
+                       ,updaterID  = ':updaterID'
+                 WHERE  uprID      = ':uprID'
+                   AND  appKey     = ':appKey'
+                ]]>
+            </content>
+            
+        </sql>
+        
+        
+        
+        <sql id="XSQL_User_UserPermissionRelaction_Delete"> 
+        
+            <dataSourceGroup ref="DSG_MS_User" />
+            
+            <content>
+                <![CDATA[
+                DELETE  FROM UserPermissionRelaction
+                 WHERE  uprID  = ':uprID'
+                   AND  appKey = ':appKey'
+                ]]>
+            </content>
+            
+        </sql>
+
+    </sqls>
+    
+</config>

@@ -35,12 +35,30 @@ public class PermissionService
      * @createDate  2021-08-23
      * @version     v1.0
      *
+     * @param i_AppKey
      * @param i_PermissionID
      * @return
      */
-    public Permission queryByID(String i_UrrID)
+    public Permission queryByID(String i_AppKey ,String i_UrrID)
     {
-        return this.permissionDAO.queryByID(i_UrrID);
+        return this.permissionDAO.queryByID(i_AppKey ,i_UrrID);
+    }
+    
+    
+    
+    /**
+     * 按主键查询权限项
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-24
+     * @version     v1.0
+     *
+     * @param i_Permission
+     * @return
+     */
+    public Permission queryByID(Permission i_Permission)
+    {
+        return this.permissionDAO.queryByID(i_Permission);
     }
     
     
@@ -102,7 +120,7 @@ public class PermissionService
         
         if ( this.permissionDAO.addPermission(io_Permission) >= 1 )
         {
-            return this.queryByID(io_Permission.getPermissionID());
+            return this.queryByID(io_Permission);
         }
         
         return null;

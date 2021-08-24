@@ -162,7 +162,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Creater = this.userInfoService.queryUserGID(i_CreateRole.getCreaterID());
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_CreateRole.getAppKey() ,i_CreateRole.getCreaterID());
             if ( v_Creater == null )
             {
                 $Logger.info("创建角色：创建者编号为空或不存在" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
@@ -287,7 +287,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getAppKey() ,i_Role.getUpdaterID());
             if ( v_Updater == null )
             {
                 $Logger.info("编辑角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
@@ -390,7 +390,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getAppKey() ,i_Role.getUpdaterID());
             if ( v_Updater == null )
             {
                 $Logger.info("删除角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
@@ -582,7 +582,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Creater = this.userInfoService.queryUserGID(i_RoleRelaction.getCreaterID());
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_RoleRelaction.getAppKey() ,i_RoleRelaction.getCreaterID());
             if ( v_Creater == null )
             {
                 $Logger.info("授权用户角色：编辑者编号为空或不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
@@ -597,7 +597,7 @@ public class RoleController
         }
         
         
-        UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_RoleRelaction.getUserGID());
+        UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_RoleRelaction.getAppKey() ,i_RoleRelaction.getUserGID());
         if ( v_GrantUser == null )
         {
             $Logger.info("授权用户角色：赋权用户不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
@@ -732,7 +732,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_RoleRelaction.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_RoleRelaction.getAppKey() ,i_RoleRelaction.getUpdaterID());
             if ( v_Updater == null )
             {
                 $Logger.info("撤销用户角色：编辑者编号为空或不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
@@ -747,7 +747,7 @@ public class RoleController
         }
         
         
-        UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_RoleRelaction.getUserGID());
+        UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_RoleRelaction.getAppKey() ,i_RoleRelaction.getUserGID());
         if ( v_GrantUser == null )
         {
             $Logger.info("撤销用户角色：赋权用户不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());

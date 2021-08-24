@@ -26,7 +26,8 @@
                        ,A.createrID
                        ,A.updaterID
                   FROM  UserRoleRelaction  A
-                 WHERE  A.urrID = ':urrID' 
+                 WHERE  A.urrID  = ':urrID' 
+                   AND  A.appKey = ':appKey'
                 ]]>
             </content>
             
@@ -120,6 +121,7 @@
                        ,updateTime = NOW()
                        ,updaterID  = ':updaterID'
                  WHERE  urrID      = ':urrID'
+                   AND  appKey     = ':appKey'
                 ]]>
             </content>
             
@@ -134,7 +136,8 @@
             <content>
                 <![CDATA[
                 DELETE  FROM UserRoleRelaction
-                 WHERE  urrID = ':urrID'
+                 WHERE  urrID  = ':urrID'
+                   AND  appKey = ':appKey'
                 ]]>
             </content>
             

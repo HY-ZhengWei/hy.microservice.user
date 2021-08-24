@@ -30,6 +30,7 @@
                        ,A.updaterID
                   FROM  UserPermission  A
                  WHERE  A.permissionID = ':permissionID' 
+                   AND  A.appKey       = ':appKey'
                 ]]>
             </content>
             
@@ -170,6 +171,7 @@
                        ,updaterID       = ':updaterID'
                  WHERE  permissionID    = ':permissionID'
                    ANd  isSystem        = 0
+                   AND  appKey          = ':appKey'
                 ]]>
             </content>
             
@@ -186,6 +188,7 @@
                 DELETE  FROM UserPermission
                  WHERE  permissionID = ':permissionID'
                    ANd  isSystem     = 0
+                   AND  appKey       = ':appKey'
                 ]]>
             </content>
             

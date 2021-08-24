@@ -194,7 +194,7 @@ public class PermissionController
         }
         else
         {
-            UserInfo v_Creater = this.userInfoService.queryUserGID(i_Permission.getCreaterID());
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getCreaterID());
             if ( v_Creater == null )
             {
                 $Logger.info("创建权限项：创建者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionCode() + "：" + i_Permission.getPermissionName());
@@ -347,7 +347,7 @@ public class PermissionController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Permission.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getUpdaterID());
             if ( v_Updater == null )
             {
                 $Logger.info("编辑权限项：编辑者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionID() + "：" + i_Permission.getPermissionName());
@@ -452,7 +452,7 @@ public class PermissionController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Permission.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getUpdaterID());
             if ( v_Updater == null )
             {
                 $Logger.info("删除权限项：编辑者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionID());

@@ -55,7 +55,8 @@
                        ,A.createTime
                        ,A.updateTime
                   FROM  UserInfo  A
-                 WHERE  A.id = ':id'
+                 WHERE  A.id   = ':id'
+                   AND  appKey = ':appKey'
                 ]]>
             </content>
             
@@ -220,6 +221,7 @@
                        ,appID      = ':appID'
                        ,updateTime = NOW()
                  WHERE  id         = ':id'
+                   AND  appKey     = ':appKey'
                 ]]>
             </content>
             

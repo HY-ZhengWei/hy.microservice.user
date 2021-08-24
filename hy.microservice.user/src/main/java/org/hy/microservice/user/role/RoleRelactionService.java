@@ -35,12 +35,30 @@ public class RoleRelactionService
      * @createDate  2021-08-22
      * @version     v1.0
      *
+     * @param i_AppKey
      * @param i_UrrID
      * @return
      */
-    public RoleRelaction queryByID(String i_UrrID)
+    public RoleRelaction queryByID(String i_AppKey ,String i_UrrID)
     {
-        return this.relactionDAO.queryByID(i_UrrID);
+        return this.relactionDAO.queryByID(i_AppKey ,i_UrrID);
+    }
+    
+    
+    
+    /**
+     * 按编号查询用户与角色关系
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-22
+     * @version     v1.0
+     *
+     * @param i_RoleRelaction
+     * @return
+     */
+    public RoleRelaction queryByID(RoleRelaction i_RoleRelaction)
+    {
+        return this.relactionDAO.queryByID(i_RoleRelaction);
     }
     
     
@@ -81,7 +99,7 @@ public class RoleRelactionService
         
         if ( this.relactionDAO.addRelation(io_RoleRelaction) >= 1 )
         {
-            return this.queryByID(io_RoleRelaction.getUrrID());
+            return this.queryByID(io_RoleRelaction);
         }
         
         return null;

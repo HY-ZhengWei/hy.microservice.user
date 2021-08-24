@@ -59,12 +59,30 @@ public class UserInfoService
      * @createDate  2021-08-22
      * @version     v1.0
      *
+     * @param i_AppKey
      * @param i_UserGID
      * @return
      */
-    public UserInfo queryUserGID(String i_UserGID)
+    public UserInfo queryUserGID(String i_AppKey ,String i_UserGID)
     {
-        return this.userInfoDAO.queryByID(i_UserGID);
+        return this.userInfoDAO.queryByID(i_AppKey ,i_UserGID);
+    }
+    
+    
+    
+    /**
+     * 按用户编号查询用户
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-24
+     * @version     v1.0
+     *
+     * @param i_User
+     * @return
+     */
+    public UserInfo queryUserGID(UserInfo i_User)
+    {
+        return this.userInfoDAO.queryByID(i_User);
     }
     
     
@@ -99,7 +117,7 @@ public class UserInfoService
      */
     public UserInfo checkLogin(UserInfo i_UserInfo)
     {
-        UserInfo v_User = this.userInfoDAO.queryByID(i_UserInfo.getId());
+        UserInfo v_User = this.userInfoDAO.queryByID(i_UserInfo);
         
         if ( v_User != null )
         {
@@ -160,7 +178,7 @@ public class UserInfoService
         {
             try
             {
-                UserInfo v_User = this.userInfoDAO.queryByID(io_User.getId());
+                UserInfo v_User = this.userInfoDAO.queryByID(io_User);
                 
                 v_User.setPassword(v_Password);
                 
