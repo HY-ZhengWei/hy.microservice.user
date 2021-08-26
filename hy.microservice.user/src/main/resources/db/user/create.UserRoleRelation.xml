@@ -11,13 +11,13 @@
     <!-- 用户与角色关系的创建（自动创建）的相关SQL -->
     <sqls>
     
-        <sql id="XSQL_User_Init_UserRoleRelaction">
+        <sql id="XSQL_User_Init_UserRoleRelation">
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                INSERT  INTO UserRoleRelaction
+                INSERT  INTO UserRoleRelation
                        (
                         urrID
                        ,userGID
@@ -49,13 +49,13 @@
         
         
         
-        <sql id="XSQL_User_Create_UserRoleRelaction">
+        <sql id="XSQL_User_Create_UserRoleRelation">
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                CREATE TABLE UserRoleRelaction
+                CREATE TABLE UserRoleRelation
                 (
                  urrID           VARCHAR(64)     NOT NULL           COMMENT '用户与角色关系的主键'
                 ,userGID         VARCHAR(64)     NOT NULL           COMMENT '用户全域编号'
@@ -68,20 +68,20 @@
                 ,updaterID       VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
 
-                ALTER TABLE UserRoleRelaction ADD CONSTRAINT PK_UserRoleRelaction PRIMARY KEY (urrID);/
+                ALTER TABLE UserRoleRelation ADD CONSTRAINT PK_UserRoleRelation PRIMARY KEY (urrID);/
                 
-                ALTER TABLE UserRoleRelaction ADD UNIQUE KEY UK_UserRoleRelaction (userGID ,roleID ,appKey);/
+                ALTER TABLE UserRoleRelation ADD UNIQUE KEY UK_UserRoleRelation (userGID ,roleID ,appKey);/
                 
-                Alter TABLE UserRoleRelaction COMMENT                              = '用户与角色关系';/
+                Alter TABLE UserRoleRelation COMMENT                              = '用户与角色关系';/
                 ]]>
             </content>
             
             <trigger>
-                <create ref="XSQL_User_Init_UserRoleRelaction" />
+                <create ref="XSQL_User_Init_UserRoleRelation" />
             </trigger>
             
             <comment>用户与角色关系</comment>
-            <create>UserRoleRelaction</create>
+            <create>UserRoleRelation</create>
             
         </sql>
         

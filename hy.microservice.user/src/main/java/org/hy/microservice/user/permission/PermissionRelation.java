@@ -13,7 +13,7 @@ import org.hy.microservice.common.BaseViewMode;
  * @createDate  2021-08-24
  * @version     v1.0
  */
-public class PermissionRelaction extends BaseViewMode
+public class PermissionRelation extends BaseViewMode
 {
 
     private static final long serialVersionUID = -151430567939898212L;

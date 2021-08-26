@@ -10,9 +10,14 @@ import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
 import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
+import org.hy.microservice.user.permission.OwnerType;
 import org.hy.microservice.user.permission.Permission;
+import org.hy.microservice.user.permission.PermissionRelation;
+import org.hy.microservice.user.permission.PermissionRelationService;
 import org.hy.microservice.user.permission.PermissionService;
-import org.hy.microservice.user.role.RoleRelactionService;
+import org.hy.microservice.user.role.RoleInfo;
+import org.hy.microservice.user.role.RoleInfoService;
+import org.hy.microservice.user.role.RoleRelationService;
 import org.hy.microservice.user.user.UserSSO;
 import org.hy.microservice.user.user.UserService;
 import org.hy.microservice.user.userInfo.UserInfo;
@@ -63,12 +68,20 @@ public class PermissionController
     private UserInfoService userInfoService;
     
     @Autowired
+    @Qualifier("RoleInfoService")
+    private RoleInfoService roleInfoService;
+    
+    @Autowired
+    @Qualifier("RoleRelationService")
+    private RoleRelationService roleRelationService;
+    
+    @Autowired
     @Qualifier("PermissionService")
     private PermissionService permissionService;
     
     @Autowired
-    @Qualifier("RoleRelactionService")
-    private RoleRelactionService roleRelactionService;
+    @Qualifier("PermissionRelationService")
+    private PermissionRelationService permissionRelationService;
     
     
     
@@ -548,6 +561,334 @@ public class PermissionController
             $Logger.info("查询权限项成功" + i_Permission.getAppKey());
             return v_RetResp;
         }
+    }
+    
+    
+    
+    /**
+     * 授权使用者权限的接口
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-26
+     * @version     v1.0
+     * 
+     * @param i_Token                认证票据号
+     * @param i_PermissionRelation  权限项关系
+     * @param i_Request
+     * @param i_Response
+     * @return
+     */
+    @RequestMapping(value="grantPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse<PermissionRelation> grantPermission(@RequestParam(value="token" ,required=false) String i_Token
+                                                            ,@RequestBody PermissionRelation i_PermissionRelation
+                                                            ,HttpServletRequest  i_Request
+                                                            ,HttpServletResponse i_Response)
+    {
+        BaseResponse<PermissionRelation> v_RetResp = new BaseResponse<PermissionRelation>();
+        
+        UserSSO v_User = null;
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            // 验证票据及用户登录状态
+            if ( Help.isNull(i_Token) )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            v_User = this.userService.getUser(i_Token);
+            if ( v_User == null )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            if ( !v_User.getAppKey().equals(i_PermissionRelation.getAppKey()) )
+            {
+                return v_RetResp.setCode("-901").setMessage("无权访问");
+            }
+            
+            // 当验证用户登录会话时，谁登录创建者即是谁
+            i_PermissionRelation.setCreaterID(v_User.getId());
+        }
+        
+        if ( i_PermissionRelation == null || Help.isNull(i_PermissionRelation.getPermissionID()) )
+        {
+            $Logger.info("授权使用者权限：权限项ID为空");
+            return v_RetResp.setCode("902").setMessage("授权使用者权限：权限项ID为空");
+        }
+        
+        if ( Help.isNull(i_PermissionRelation.getAppKey()) )
+        {
+            $Logger.info("授权使用者权限：所属系统编号为空");
+            return v_RetResp.setCode("903").setMessage("授权使用者权限：所属系统编号为空");
+        }
+        
+        if ( Help.isNull(i_PermissionRelation.getOwnerID()) )
+        {
+            $Logger.info("授权使用者权限：赋权使用者编号为空");
+            return v_RetResp.setCode("904").setMessage("授权使用者权限：赋权使用者编号为空");
+        }
+        
+        if ( Help.isNull(i_PermissionRelation.getOwnerType()) )
+        {
+            $Logger.info("授权使用者权限：赋权使用者类型为空或非法类型");
+            return v_RetResp.setCode("905").setMessage("授权使用者权限：赋权使用者类型为空或非法类型");
+        }
+        else if ( OwnerType.$Role != i_PermissionRelation.getOwnerType().intValue()
+               && OwnerType.$User != i_PermissionRelation.getOwnerType().intValue() )
+        {
+            $Logger.info("授权使用者权限：赋权使用者类型为空或非法类型");
+            return v_RetResp.setCode("905").setMessage("授权使用者权限：赋权使用者类型为空或非法类型");
+        }
+        
+        String [] v_RoleIllegalChar = this.permissionIllegalChar.getValue().split("-");
+        if ( !Help.isNull(i_PermissionRelation.getRemarks()) )
+        {
+            if ( StringHelp.isContains(i_PermissionRelation.getRemarks() ,v_RoleIllegalChar) )
+            {
+                $Logger.info("授权使用者权限：说明禁止非法字符" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID() + "：" + i_PermissionRelation.getRemarks());
+                return v_RetResp.setCode("906").setMessage("授权使用者权限：说明禁止非法字符");
+            }
+        }
+        
+        
+        if ( Help.isNull(i_PermissionRelation.getCreaterID()) )
+        {
+            $Logger.info("授权使用者权限：编辑者编号为空或不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+            return v_RetResp.setCode("907").setMessage("授权使用者权限：编辑者编号为空或不存在");
+        }
+        
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            if ( !i_PermissionRelation.getAppKey().equals(v_User.getAppKey()) )
+            {
+                $Logger.info("授权使用者权限：编辑者不能跨系统操作" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("908").setMessage("授权使用者权限：编辑者不能跨系统操作");
+            }
+        }
+        else
+        {
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getCreaterID());
+            if ( v_Creater == null )
+            {
+                $Logger.info("授权使用者权限：编辑者编号为空或不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("911").setMessage("授权使用者权限：编辑者编号为空或不存在");
+            }
+            
+            if ( !i_PermissionRelation.getAppKey().equals(v_Creater.getAppKey()) )
+            {
+                $Logger.info("授权使用者权限：编辑者不能跨系统操作" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("912").setMessage("授权使用者权限：编辑者不能跨系统操作");
+            }
+        }
+        
+        
+        if ( OwnerType.$Role == i_PermissionRelation.getOwnerType().intValue() )
+        {
+            RoleInfo v_GrantRole = this.roleInfoService.queryByID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getOwnerID());
+            if ( v_GrantRole == null )
+            {
+                $Logger.info("授权使用者权限：赋权角色不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("913").setMessage("授权使用者权限：赋权角色不存在");
+            }
+            if ( !i_PermissionRelation.getAppKey().equals(v_GrantRole.getAppKey()) )
+            {
+                $Logger.info("授权使用者权限：赋权角色非本系统角色" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("914").setMessage("授权使用者权限：赋权角色非本系统角色");
+            }
+        }
+        else if ( OwnerType.$User == i_PermissionRelation.getOwnerType().intValue() )
+        {
+            UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getOwnerID());
+            if ( v_GrantUser == null )
+            {
+                $Logger.info("授权使用者权限：赋权用户不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("915").setMessage("授权使用者权限：赋权用户不存在");
+            }
+            if ( !i_PermissionRelation.getAppKey().equals(v_GrantUser.getAppKey()) )
+            {
+                $Logger.info("授权使用者权限：赋权用户非本系统用户" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("916").setMessage("授权使用者权限：赋权用户非本系统用户");
+            }
+        }
+        
+        
+        PermissionRelation v_IsExistsObj = new PermissionRelation();
+        v_IsExistsObj.setAppKey(      i_PermissionRelation.getAppKey());
+        v_IsExistsObj.setPermissionID(i_PermissionRelation.getPermissionID());
+        v_IsExistsObj.setOwnerID(     i_PermissionRelation.getOwnerID());
+        List<PermissionRelation> v_GrantRelations = this.permissionRelationService.query(v_IsExistsObj);
+        if ( !Help.isNull(v_GrantRelations) )
+        {
+            $Logger.info("授权使用者权限：使用者已有授权，请勿重复授权" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+            return v_RetResp.setCode("917").setMessage("授权使用者权限：使用者已有授权，请勿重复授权");
+        }
+        
+        
+        PermissionRelation v_AddRet = this.permissionRelationService.addRelation(i_PermissionRelation);
+        if ( v_AddRet == null )
+        {
+            $Logger.info("授权使用者权限失败：" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+            return v_RetResp.setCode("918").setMessage("授权使用者权限失败");
+        }
+        else
+        {
+            $Logger.info("授权使用者权限成功" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+            return v_RetResp.setData(v_AddRet);
+        }
+    }
+    
+    
+    
+    /**
+     * 撤销使用者权限的接口
+     * 
+     * @author      ZhengWei(HY)
+     * @createDate  2021-08-26
+     * @version     v1.0
+     * 
+     * @param i_Token                认证票据号
+     * @param i_PermissionRelation  权限项关系
+     * @param i_Request
+     * @param i_Response
+     * @return
+     */
+    @RequestMapping(value="revokePermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse<PermissionRelation> revokePermission(@RequestParam(value="token" ,required=false) String i_Token
+                                                             ,@RequestBody PermissionRelation i_PermissionRelation
+                                                             ,HttpServletRequest  i_Request
+                                                             ,HttpServletResponse i_Response)
+    {
+        BaseResponse<PermissionRelation> v_RetResp = new BaseResponse<PermissionRelation>();
+        
+        UserSSO v_User = null;
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            // 验证票据及用户登录状态
+            if ( Help.isNull(i_Token) )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            v_User = this.userService.getUser(i_Token);
+            if ( v_User == null )
+            {
+                return v_RetResp.setCode("-901").setMessage("非法访问");
+            }
+            
+            if ( !v_User.getAppKey().equals(i_PermissionRelation.getAppKey()) )
+            {
+                return v_RetResp.setCode("-901").setMessage("无权访问");
+            }
+            
+            // 当验证用户登录会话时，谁登录创建者即是谁
+            i_PermissionRelation.setUpdaterID(v_User.getId());
+        }
+        
+        if ( i_PermissionRelation == null || Help.isNull(i_PermissionRelation.getPermissionID()) )
+        {
+            $Logger.info("撤销使用者权限：权限项ID为空");
+            return v_RetResp.setCode("902").setMessage("撤销使用者权限：权限项ID为空");
+        }
+        
+        if ( Help.isNull(i_PermissionRelation.getAppKey()) )
+        {
+            $Logger.info("撤销使用者权限：所属系统编号为空");
+            return v_RetResp.setCode("903").setMessage("撤销使用者权限：所属系统编号为空");
+        }
+        
+        
+        if ( Help.isNull(i_PermissionRelation.getOwnerID()) )
+        {
+            $Logger.info("撤销使用者权限：撤销使用者编号为空");
+            return v_RetResp.setCode("904").setMessage("撤销使用者权限：撤权使用者编号为空");
+        }
+        
+        
+        if ( Help.isNull(i_PermissionRelation.getUpdaterID()) )
+        {
+            $Logger.info("撤销使用者权限：编辑者编号为空或不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+            return v_RetResp.setCode("905").setMessage("撤销使用者权限：编辑者编号为空或不存在");
+        }
+        
+        if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
+        {
+            if ( !i_PermissionRelation.getAppKey().equals(v_User.getAppKey()) )
+            {
+                $Logger.info("撤销使用者权限：编辑者不能跨系统操作" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("906").setMessage("撤销使用者权限：编辑者不能跨系统操作");
+            }
+        }
+        else
+        {
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getUpdaterID());
+            if ( v_Updater == null )
+            {
+                $Logger.info("撤销使用者权限：编辑者编号为空或不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("911").setMessage("撤销使用者权限：编辑者编号为空或不存在");
+            }
+            
+            if ( !i_PermissionRelation.getAppKey().equals(v_Updater.getAppKey()) )
+            {
+                $Logger.info("撤销使用者权限：编辑者不能跨系统操作" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("912").setMessage("撤销使用者权限：编辑者不能跨系统操作");
+            }
+        }
+        
+        
+        if ( OwnerType.$Role == i_PermissionRelation.getOwnerType().intValue() )
+        {
+            RoleInfo v_GrantRole = this.roleInfoService.queryByID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getOwnerID());
+            if ( v_GrantRole == null )
+            {
+                $Logger.info("撤销使用者权限：赋权角色不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("913").setMessage("授权使用者权限：赋权角色不存在");
+            }
+            if ( !i_PermissionRelation.getAppKey().equals(v_GrantRole.getAppKey()) )
+            {
+                $Logger.info("撤销使用者权限：赋权角色非本系统角色" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("914").setMessage("授权使用者权限：赋权角色非本系统角色");
+            }
+        }
+        else if ( OwnerType.$User == i_PermissionRelation.getOwnerType().intValue() )
+        {
+            UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getOwnerID());
+            if ( v_GrantUser == null )
+            {
+                $Logger.info("撤销使用者权限：赋权用户不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("915").setMessage("授权使用者权限：赋权用户不存在");
+            }
+            if ( !i_PermissionRelation.getAppKey().equals(v_GrantUser.getAppKey()) )
+            {
+                $Logger.info("撤销使用者权限：赋权用户非本系统用户" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("916").setMessage("授权使用者权限：赋权用户非本系统用户");
+            }
+        }
+        
+        
+        PermissionRelation v_IsExistsObj = new PermissionRelation();
+        v_IsExistsObj.setAppKey(      i_PermissionRelation.getAppKey());
+        v_IsExistsObj.setPermissionID(i_PermissionRelation.getPermissionID());
+        v_IsExistsObj.setOwnerID(     i_PermissionRelation.getOwnerID());
+        List<PermissionRelation> v_DelRelations = this.permissionRelationService.query(v_IsExistsObj);
+        if ( !Help.isNull(v_DelRelations) )
+        {
+            $Logger.info("撤销使用者权限：权限项关系未查到" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+            return v_RetResp.setCode("917").setMessage("撤销使用者权限：权限项关系未查到");
+        }
+        
+        for (PermissionRelation v_Relation : v_DelRelations)
+        {
+            if ( !this.permissionRelationService.delRelation(v_Relation) )
+            {
+                $Logger.info("撤销使用者权限失败：" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+                return v_RetResp.setCode("919").setMessage("撤销使用者权限失败");
+            }
+        }
+        
+        $Logger.info("撤销使用者权限成功" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
+        return v_RetResp;
     }
     
 }

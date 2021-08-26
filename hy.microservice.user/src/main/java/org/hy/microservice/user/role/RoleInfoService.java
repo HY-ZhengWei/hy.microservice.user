@@ -32,6 +32,23 @@ public class RoleInfoService
      * 查询某一应用中，按编号查询角色
      * 
      * @author      ZhengWei(HY)
+     * @createDate  2021-08-26
+     * @version     v1.0
+     *
+     * @param i_AppKey
+     * @param i_UrrID
+     * @return
+     */
+    public RoleInfo queryByID(String i_AppKey ,String i_RoleID)
+    {
+        return this.roleDAO.queryByID(i_AppKey ,i_RoleID);
+    }
+    
+    
+    /**
+     * 查询某一应用中，按编号查询角色
+     * 
+     * @author      ZhengWei(HY)
      * @createDate  2021-08-18
      * @version     v1.0
      *

@@ -26,6 +26,23 @@ public interface IRoleInfoDAO
      * 查询某一应用中，按编号查询角色
      * 
      * @author      ZhengWei(HY)
+     * @createDate  2021-08-26
+     * @version     v1.0
+     *
+     * @param i_AppKey
+     * @param i_UrrID
+     * @return
+     */
+    @Xsql(id="XSQL_User_UserRoleInfo_Query" ,returnOne=true)
+    public RoleInfo queryByID(@Xparam(id="appKey" ,notNull=true) String i_AppKey
+                             ,@Xparam(id="roleID" ,notNull=true) String i_RoleID);
+    
+    
+    
+    /**
+     * 查询某一应用中，按编号查询角色
+     * 
+     * @author      ZhengWei(HY)
      * @createDate  2021-08-18
      * @version     v1.0
      *

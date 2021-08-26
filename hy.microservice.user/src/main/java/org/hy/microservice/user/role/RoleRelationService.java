@@ -18,13 +18,13 @@ import org.hy.common.xml.log.Logger;
  * @version     v1.0
  */
 @Xjava
-public class RoleRelactionService
+public class RoleRelationService
 {
     
-    private static final Logger $Logger = new Logger(RoleRelactionService.class);
+    private static final Logger $Logger = new Logger(RoleRelationService.class);
     
     @Xjava
-    private IRoleRelationDAO relactionDAO;
+    private IRoleRelationDAO relationDAO;
     
     
     
@@ -39,9 +39,9 @@ public class RoleRelactionService
      * @param i_UrrID
      * @return
      */
-    public RoleRelaction queryByID(String i_AppKey ,String i_UrrID)
+    public RoleRelation queryByID(String i_AppKey ,String i_UrrID)
     {
-        return this.relactionDAO.queryByID(i_AppKey ,i_UrrID);
+        return this.relationDAO.queryByID(i_AppKey ,i_UrrID);
     }
     
     
@@ -53,12 +53,12 @@ public class RoleRelactionService
      * @createDate  2021-08-22
      * @version     v1.0
      *
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
-    public RoleRelaction queryByID(RoleRelaction i_RoleRelaction)
+    public RoleRelation queryByID(RoleRelation i_RoleRelation)
     {
-        return this.relactionDAO.queryByID(i_RoleRelaction);
+        return this.relationDAO.queryByID(i_RoleRelation);
     }
     
     
@@ -72,12 +72,12 @@ public class RoleRelactionService
      * @createDate  2021-08-22
      * @version     v1.0
      *
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
-    public List<RoleRelaction> query(RoleRelaction i_RoleRelaction)
+    public List<RoleRelation> query(RoleRelation i_RoleRelation)
     {
-        return this.relactionDAO.query(i_RoleRelaction);
+        return this.relationDAO.query(i_RoleRelation);
     }
     
     
@@ -89,17 +89,17 @@ public class RoleRelactionService
      * @createDate  2021-08-22
      * @version     v1.0
      * 
-     * @param io_RoleRelaction
+     * @param io_RoleRelation
      * @return
      */
-    public RoleRelaction addRelation(RoleRelaction io_RoleRelaction)
+    public RoleRelation addRelation(RoleRelation io_RoleRelation)
     {
-        io_RoleRelaction.setUrrID(StringHelp.getUUID());
-        $Logger.debug(io_RoleRelaction);
+        io_RoleRelation.setUrrID(StringHelp.getUUID());
+        $Logger.debug(io_RoleRelation);
         
-        if ( this.relactionDAO.addRelation(io_RoleRelaction) >= 1 )
+        if ( this.relationDAO.addRelation(io_RoleRelation) >= 1 )
         {
-            return this.queryByID(io_RoleRelaction);
+            return this.queryByID(io_RoleRelation);
         }
         
         return null;
@@ -114,13 +114,13 @@ public class RoleRelactionService
      * @createDate  2021-08-22
      * @version     v1.0
      * 
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
-    public boolean delRelation(RoleRelaction i_RoleRelaction)
+    public boolean delRelation(RoleRelation i_RoleRelation)
     {
-        $Logger.debug(i_RoleRelaction);
-        return this.relactionDAO.delRelation(i_RoleRelaction) >= 1;
+        $Logger.debug(i_RoleRelation);
+        return this.relationDAO.delRelation(i_RoleRelation) >= 1;
     }
     
     
@@ -132,13 +132,13 @@ public class RoleRelactionService
      * @createDate  2021-08-22
      * @version     v1.0
      * 
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
-    public boolean updateRelation(RoleRelaction i_RoleRelaction)
+    public boolean updateRelation(RoleRelation i_RoleRelation)
     {
-        $Logger.debug(i_RoleRelaction);
-        return this.relactionDAO.updateRelation(i_RoleRelaction) >= 1;
+        $Logger.debug(i_RoleRelation);
+        return this.relationDAO.updateRelation(i_RoleRelation) >= 1;
     }
     
 }

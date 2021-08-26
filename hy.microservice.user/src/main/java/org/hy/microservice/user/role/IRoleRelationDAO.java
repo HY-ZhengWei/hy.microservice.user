@@ -33,9 +33,9 @@ public interface IRoleRelationDAO
      * @param i_UrrID
      * @return
      */
-    @Xsql(id="XSQL_User_UserRoleRelaction_QueryByID" ,returnOne=true)
-    public RoleRelaction queryByID(@Xparam(id="appKey" ,notNull=true) String i_AppKey
-                                  ,@Xparam(id="urrID"  ,notNull=true) String i_UrrID);
+    @Xsql(id="XSQL_User_UserRoleRelation_QueryByID" ,returnOne=true)
+    public RoleRelation queryByID(@Xparam(id="appKey" ,notNull=true) String i_AppKey
+                                 ,@Xparam(id="urrID"  ,notNull=true) String i_UrrID);
     
     
     
@@ -46,11 +46,11 @@ public interface IRoleRelationDAO
      * @createDate  2021-08-24
      * @version     v1.0
      *
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
-    @Xsql(id="XSQL_User_UserRoleRelaction_QueryByID" ,returnOne=true)
-    public RoleRelaction queryByID(@Xparam(notNulls={"appKey" ,"urrID"} ,notNull=true) RoleRelaction i_RoleRelaction);
+    @Xsql(id="XSQL_User_UserRoleRelation_QueryByID" ,returnOne=true)
+    public RoleRelation queryByID(@Xparam(notNulls={"appKey" ,"urrID"} ,notNull=true) RoleRelation i_RoleRelation);
     
     
     
@@ -63,11 +63,11 @@ public interface IRoleRelationDAO
      * @createDate  2021-08-22
      * @version     v1.0
      *
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Query")
-    public List<RoleRelaction> query(@Xparam(notNulls={"appKey"}) RoleRelaction i_RoleRelaction);
+    public List<RoleRelation> query(@Xparam(notNulls={"appKey"}) RoleRelation i_RoleRelation);
     
     
     
@@ -78,11 +78,11 @@ public interface IRoleRelationDAO
      * @createDate  2021-08-22
      * @version     v1.0
      * 
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Insert")
-    public int addRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"userGID" ,"roleID" ,"createrID"}) RoleRelaction i_RoleRelaction);
+    public int addRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"userGID" ,"roleID" ,"createrID"}) RoleRelation i_RoleRelation);
     
     
     
@@ -93,11 +93,11 @@ public interface IRoleRelationDAO
      * @createDate  2021-08-22
      * @version     v1.0
      * 
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Delete")
-    public int delRelation(@Xparam(notNulls= {"appKey" ,"urrID"}) RoleRelaction i_RoleRelaction);
+    public int delRelation(@Xparam(notNulls= {"appKey" ,"urrID"}) RoleRelation i_RoleRelation);
     
     
     
@@ -108,10 +108,10 @@ public interface IRoleRelationDAO
      * @createDate  2021-08-22
      * @version     v1.0
      * 
-     * @param i_RoleRelaction
+     * @param i_RoleRelation
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Update")
-    public int updateRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"updaterID"}) RoleRelaction i_RoleRelaction);
+    public int updateRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"updaterID"}) RoleRelation i_RoleRelation);
     
 }

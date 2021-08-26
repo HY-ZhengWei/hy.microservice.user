@@ -11,13 +11,13 @@
     <!-- 用户与角色关系的创建（自动创建）的相关SQL -->
     <sqls>
     
-        <sql id="XSQL_User_Init_UserPermissionRelaction">
+        <sql id="XSQL_User_Init_UserPermissionRelation">
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                INSERT  INTO UserPermissionRelaction
+                INSERT  INTO UserPermissionRelation
                        (
                         uprID
                        ,appKey
@@ -53,13 +53,13 @@
         
         
         
-        <sql id="XSQL_User_Create_UserPermissionRelaction">
+        <sql id="XSQL_User_Create_UserPermissionRelation">
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                CREATE TABLE UserPermissionRelaction
+                CREATE TABLE UserPermissionRelation
                 (
                  uprID           VARCHAR(64)     NOT NULL           COMMENT '权限项关系的主键'
                 ,appKey          VARCHAR(64)     NOT NULL           COMMENT '应用编号'
@@ -74,20 +74,20 @@
                 ,updaterID       VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
 
-                ALTER TABLE UserPermissionRelaction ADD CONSTRAINT PK_UserPermissionRelaction PRIMARY KEY (uprID);/
+                ALTER TABLE UserPermissionRelation ADD CONSTRAINT PK_UserPermissionRelation PRIMARY KEY (uprID);/
                 
-                ALTER TABLE UserPermissionRelaction ADD UNIQUE KEY UK_UserPermissionRelaction (ownerID ,permissionID ,appKey);/
+                ALTER TABLE UserPermissionRelation ADD UNIQUE KEY UK_UserPermissionRelation (ownerID ,permissionID ,appKey);/
                 
-                Alter TABLE UserPermissionRelaction COMMENT               = '权限项关系表';/
+                Alter TABLE UserPermissionRelation COMMENT               = '权限项关系表';/
                 ]]>
             </content>
             
             <trigger>
-                <create ref="XSQL_User_Init_UserPermissionRelaction" />
+                <create ref="XSQL_User_Init_UserPermissionRelation" />
             </trigger>
             
             <comment>权限项关系表</comment>
-            <create>UserPermissionRelaction</create>
+            <create>UserPermissionRelation</create>
             
         </sql>
         

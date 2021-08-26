@@ -12,8 +12,8 @@ import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
 import org.hy.microservice.user.role.RoleInfo;
 import org.hy.microservice.user.role.RoleInfoService;
-import org.hy.microservice.user.role.RoleRelaction;
-import org.hy.microservice.user.role.RoleRelactionService;
+import org.hy.microservice.user.role.RoleRelation;
+import org.hy.microservice.user.role.RoleRelationService;
 import org.hy.microservice.user.user.UserSSO;
 import org.hy.microservice.user.user.UserService;
 import org.hy.microservice.user.userInfo.UserInfo;
@@ -68,8 +68,8 @@ public class RoleController
     private RoleInfoService roleService;
     
     @Autowired
-    @Qualifier("RoleRelactionService")
-    private RoleRelactionService roleRelactionService;
+    @Qualifier("RoleRelationService")
+    private RoleRelationService roleRelationService;
     
     
     
@@ -498,19 +498,19 @@ public class RoleController
      * @version     v1.0
      * 
      * @param i_Token          认证票据号
-     * @param i_RoleRelaction  用户与角色关系
+     * @param i_RoleRelation  用户与角色关系
      * @param i_Request
      * @param i_Response
      * @return
      */
     @RequestMapping(value="grantRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public BaseResponse<RoleRelaction> grantRole(@RequestParam(value="token" ,required=false) String i_Token
-                                                ,@RequestBody RoleRelaction i_RoleRelaction
+    public BaseResponse<RoleRelation> grantRole(@RequestParam(value="token" ,required=false) String i_Token
+                                                ,@RequestBody RoleRelation i_RoleRelation
                                                 ,HttpServletRequest  i_Request
                                                 ,HttpServletResponse i_Response)
     {
-        BaseResponse<RoleRelaction> v_RetResp = new BaseResponse<RoleRelaction>();
+        BaseResponse<RoleRelation> v_RetResp = new BaseResponse<RoleRelation>();
         
         UserSSO v_User = null;
         if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
@@ -527,123 +527,125 @@ public class RoleController
                 return v_RetResp.setCode("-901").setMessage("非法访问");
             }
             
-            if ( !v_User.getAppKey().equals(i_RoleRelaction.getAppKey()) )
+            if ( !v_User.getAppKey().equals(i_RoleRelation.getAppKey()) )
             {
                 return v_RetResp.setCode("-901").setMessage("无权访问");
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_RoleRelaction.setCreaterID(v_User.getId());
+            i_RoleRelation.setCreaterID(v_User.getId());
         }
         
-        if ( i_RoleRelaction == null || Help.isNull(i_RoleRelaction.getRoleID()) )
+        if ( i_RoleRelation == null || Help.isNull(i_RoleRelation.getRoleID()) )
         {
             $Logger.info("授权用户角色：角色ID为空");
             return v_RetResp.setCode("902").setMessage("授权用户角色：角色ID为空");
         }
         
-        if ( Help.isNull(i_RoleRelaction.getAppKey()) )
+        if ( Help.isNull(i_RoleRelation.getAppKey()) )
         {
             $Logger.info("授权用户角色：所属系统编号为空");
             return v_RetResp.setCode("903").setMessage("授权用户角色：所属系统编号为空");
         }
         
         
-        if ( Help.isNull(i_RoleRelaction.getUserGID()) )
+        if ( Help.isNull(i_RoleRelation.getUserGID()) )
         {
             $Logger.info("授权用户角色：赋权用户编号为空");
             return v_RetResp.setCode("904").setMessage("授权用户角色：赋权用户编号为空");
         }
         
         String [] v_RoleIllegalChar = this.roleIllegalChar.getValue().split("-");
-        if ( !Help.isNull(i_RoleRelaction.getRemarks()) )
+        if ( !Help.isNull(i_RoleRelation.getRemarks()) )
         {
-            if ( StringHelp.isContains(i_RoleRelaction.getRemarks() ,v_RoleIllegalChar) )
+            if ( StringHelp.isContains(i_RoleRelation.getRemarks() ,v_RoleIllegalChar) )
             {
-                $Logger.info("授权用户角色：说明禁止非法字符" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID() + "：" + i_RoleRelaction.getRemarks());
+                $Logger.info("授权用户角色：说明禁止非法字符" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID() + "：" + i_RoleRelation.getRemarks());
                 return v_RetResp.setCode("905").setMessage("授权用户角色：说明禁止非法字符");
             }
         }
         
         
-        if ( Help.isNull(i_RoleRelaction.getCreaterID()) )
+        if ( Help.isNull(i_RoleRelation.getCreaterID()) )
         {
-            $Logger.info("授权用户角色：编辑者编号为空或不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("授权用户角色：编辑者编号为空或不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("906").setMessage("授权用户角色：编辑者编号为空或不存在");
         }
         
         if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
         {
-            if ( !i_RoleRelaction.getAppKey().equals(v_User.getAppKey()) )
+            if ( !i_RoleRelation.getAppKey().equals(v_User.getAppKey()) )
             {
-                $Logger.info("授权用户角色：编辑者不能跨系统操作" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+                $Logger.info("授权用户角色：编辑者不能跨系统操作" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
                 return v_RetResp.setCode("907").setMessage("授权用户角色：编辑者不能跨系统操作");
             }
         }
         else
         {
-            UserInfo v_Creater = this.userInfoService.queryUserGID(i_RoleRelaction.getAppKey() ,i_RoleRelaction.getCreaterID());
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_RoleRelation.getAppKey() ,i_RoleRelation.getCreaterID());
             if ( v_Creater == null )
             {
-                $Logger.info("授权用户角色：编辑者编号为空或不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+                $Logger.info("授权用户角色：编辑者编号为空或不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
                 return v_RetResp.setCode("911").setMessage("授权用户角色：编辑者编号为空或不存在");
             }
             
-            if ( !i_RoleRelaction.getAppKey().equals(v_Creater.getAppKey()) )
+            if ( !i_RoleRelation.getAppKey().equals(v_Creater.getAppKey()) )
             {
-                $Logger.info("授权用户角色：编辑者不能跨系统操作" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+                $Logger.info("授权用户角色：编辑者不能跨系统操作" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
                 return v_RetResp.setCode("912").setMessage("授权用户角色：编辑者不能跨系统操作");
             }
         }
         
         
-        UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_RoleRelaction.getAppKey() ,i_RoleRelaction.getUserGID());
+        UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_RoleRelation.getAppKey() ,i_RoleRelation.getUserGID());
         if ( v_GrantUser == null )
         {
-            $Logger.info("授权用户角色：赋权用户不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("授权用户角色：赋权用户不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("913").setMessage("授权用户角色：赋权用户不存在");
         }
-        if ( !i_RoleRelaction.getAppKey().equals(v_GrantUser.getAppKey()) )
+        if ( !i_RoleRelation.getAppKey().equals(v_GrantUser.getAppKey()) )
         {
-            $Logger.info("授权用户角色：赋权用户非本系统用户" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("授权用户角色：赋权用户非本系统用户" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("914").setMessage("授权用户角色：赋权用户非本系统用户");
         }
         
         
         RoleInfo v_Role = new RoleInfo();
-        v_Role.setRoleID(i_RoleRelaction.getRoleID());
+        v_Role.setRoleID(i_RoleRelation.getRoleID());
         v_Role = this.roleService.queryByID(v_Role);
         if ( v_Role == null )
         {
-            $Logger.info("授权用户角色：授权角色不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("授权用户角色：授权角色不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("915").setMessage("授权用户角色：赋权用户不存在");
         }
-        if ( !i_RoleRelaction.getAppKey().equals(v_Role.getAppKey()) )
+        if ( !i_RoleRelation.getAppKey().equals(v_Role.getAppKey()) )
         {
-            $Logger.info("授权用户角色：授权角色非本系统角色" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("授权用户角色：授权角色非本系统角色" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("916").setMessage("授权用户角色：授权角色非本系统角色");
         }
         
         
-        i_RoleRelaction.setUrrID(null);
-        i_RoleRelaction.setRemarks(null);
-        List<RoleRelaction> v_GrantRelations = this.roleRelactionService.query(i_RoleRelaction);
+        RoleRelation v_IsExistsObj = new RoleRelation();
+        v_IsExistsObj.init(i_RoleRelation);
+        v_IsExistsObj.setUrrID(null);
+        v_IsExistsObj.setRemarks(null);
+        List<RoleRelation> v_GrantRelations = this.roleRelationService.query(v_IsExistsObj);
         if ( !Help.isNull(v_GrantRelations) )
         {
-            $Logger.info("授权用户角色：用户已有授权，请勿重复授权" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("授权用户角色：用户已有授权，请勿重复授权" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("916").setMessage("授权用户角色：用户已有授权，请勿重复授权");
         }
         
         
-        RoleRelaction v_AddRet = this.roleRelactionService.addRelation(i_RoleRelaction);
+        RoleRelation v_AddRet = this.roleRelationService.addRelation(i_RoleRelation);
         if ( v_AddRet == null )
         {
-            $Logger.info("授权用户角色失败：" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("授权用户角色失败：" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("918").setMessage("授权用户角色失败");
         }
         else
         {
-            $Logger.info("授权用户角色成功" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("授权用户角色成功" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setData(v_AddRet);
         }
     }
@@ -658,19 +660,19 @@ public class RoleController
      * @version     v1.0
      * 
      * @param i_Token          认证票据号
-     * @param i_RoleRelaction  用户与角色关系
+     * @param i_RoleRelation  用户与角色关系
      * @param i_Request
      * @param i_Response
      * @return
      */
     @RequestMapping(value="revokeRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public BaseResponse<RoleRelaction> revokeRole(@RequestParam(value="token" ,required=false) String i_Token
-                                                 ,@RequestBody RoleRelaction i_RoleRelaction
+    public BaseResponse<RoleRelation> revokeRole(@RequestParam(value="token" ,required=false) String i_Token
+                                                 ,@RequestBody RoleRelation i_RoleRelation
                                                  ,HttpServletRequest  i_Request
                                                  ,HttpServletResponse i_Response)
     {
-        BaseResponse<RoleRelaction> v_RetResp = new BaseResponse<RoleRelaction>();
+        BaseResponse<RoleRelation> v_RetResp = new BaseResponse<RoleRelation>();
         
         UserSSO v_User = null;
         if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
@@ -687,113 +689,115 @@ public class RoleController
                 return v_RetResp.setCode("-901").setMessage("非法访问");
             }
             
-            if ( !v_User.getAppKey().equals(i_RoleRelaction.getAppKey()) )
+            if ( !v_User.getAppKey().equals(i_RoleRelation.getAppKey()) )
             {
                 return v_RetResp.setCode("-901").setMessage("无权访问");
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_RoleRelaction.setUpdaterID(v_User.getId());
+            i_RoleRelation.setUpdaterID(v_User.getId());
         }
         
-        if ( i_RoleRelaction == null || Help.isNull(i_RoleRelaction.getRoleID()) )
+        if ( i_RoleRelation == null || Help.isNull(i_RoleRelation.getRoleID()) )
         {
             $Logger.info("撤销用户角色：角色ID为空");
             return v_RetResp.setCode("902").setMessage("撤销用户角色：角色ID为空");
         }
         
-        if ( Help.isNull(i_RoleRelaction.getAppKey()) )
+        if ( Help.isNull(i_RoleRelation.getAppKey()) )
         {
             $Logger.info("撤销用户角色：所属系统编号为空");
             return v_RetResp.setCode("903").setMessage("撤销用户角色：所属系统编号为空");
         }
         
         
-        if ( Help.isNull(i_RoleRelaction.getUserGID()) )
+        if ( Help.isNull(i_RoleRelation.getUserGID()) )
         {
             $Logger.info("撤销用户角色：撤权用户编号为空");
             return v_RetResp.setCode("904").setMessage("撤销用户角色：撤权用户编号为空");
         }
         
         
-        if ( Help.isNull(i_RoleRelaction.getUpdaterID()) )
+        if ( Help.isNull(i_RoleRelation.getUpdaterID()) )
         {
-            $Logger.info("撤销用户角色：编辑者编号为空或不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("撤销用户角色：编辑者编号为空或不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("905").setMessage("撤销用户角色：编辑者编号为空或不存在");
         }
         
         if ( isCheckToken != null && Boolean.parseBoolean(isCheckToken.getValue()) )
         {
-            if ( !i_RoleRelaction.getAppKey().equals(v_User.getAppKey()) )
+            if ( !i_RoleRelation.getAppKey().equals(v_User.getAppKey()) )
             {
-                $Logger.info("撤销用户角色：编辑者不能跨系统操作" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+                $Logger.info("撤销用户角色：编辑者不能跨系统操作" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
                 return v_RetResp.setCode("906").setMessage("撤销用户角色：编辑者不能跨系统操作");
             }
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_RoleRelaction.getAppKey() ,i_RoleRelaction.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_RoleRelation.getAppKey() ,i_RoleRelation.getUpdaterID());
             if ( v_Updater == null )
             {
-                $Logger.info("撤销用户角色：编辑者编号为空或不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+                $Logger.info("撤销用户角色：编辑者编号为空或不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
                 return v_RetResp.setCode("911").setMessage("撤销用户角色：编辑者编号为空或不存在");
             }
             
-            if ( !i_RoleRelaction.getAppKey().equals(v_Updater.getAppKey()) )
+            if ( !i_RoleRelation.getAppKey().equals(v_Updater.getAppKey()) )
             {
-                $Logger.info("撤销用户角色：编辑者不能跨系统操作" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+                $Logger.info("撤销用户角色：编辑者不能跨系统操作" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
                 return v_RetResp.setCode("912").setMessage("撤销用户角色：编辑者不能跨系统操作");
             }
         }
         
         
-        UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_RoleRelaction.getAppKey() ,i_RoleRelaction.getUserGID());
+        UserInfo v_GrantUser = this.userInfoService.queryUserGID(i_RoleRelation.getAppKey() ,i_RoleRelation.getUserGID());
         if ( v_GrantUser == null )
         {
-            $Logger.info("撤销用户角色：赋权用户不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("撤销用户角色：赋权用户不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("913").setMessage("撤销用户角色：赋权用户不存在");
         }
-        if ( !i_RoleRelaction.getAppKey().equals(v_GrantUser.getAppKey()) )
+        if ( !i_RoleRelation.getAppKey().equals(v_GrantUser.getAppKey()) )
         {
-            $Logger.info("撤销用户角色：赋权用户非本系统用户" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("撤销用户角色：赋权用户非本系统用户" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("914").setMessage("撤销用户角色：赋权用户非本系统用户");
         }
         
         
         RoleInfo v_Role = new RoleInfo();
-        v_Role.setRoleID(i_RoleRelaction.getRoleID());
+        v_Role.setRoleID(i_RoleRelation.getRoleID());
         v_Role = this.roleService.queryByID(v_Role);
         if ( v_Role == null )
         {
-            $Logger.info("撤销用户角色：撤销角色不存在" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("撤销用户角色：撤销角色不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("915").setMessage("撤销用户角色：赋权用户不存在");
         }
-        if ( !i_RoleRelaction.getAppKey().equals(v_Role.getAppKey()) )
+        if ( !i_RoleRelation.getAppKey().equals(v_Role.getAppKey()) )
         {
-            $Logger.info("撤销用户角色：撤销角色非本系统角色" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("撤销用户角色：撤销角色非本系统角色" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("916").setMessage("撤销用户角色：撤销角色非本系统角色");
         }
         
         
-        i_RoleRelaction.setUrrID(null);
-        i_RoleRelaction.setRemarks(null);
-        List<RoleRelaction> v_DelRelations = this.roleRelactionService.query(i_RoleRelaction);
+        RoleRelation v_IsExistsObj = new RoleRelation();
+        v_IsExistsObj.init(i_RoleRelation);
+        v_IsExistsObj.setUrrID(null);
+        v_IsExistsObj.setRemarks(null);
+        List<RoleRelation> v_DelRelations = this.roleRelationService.query(v_IsExistsObj);
         if ( Help.isNull(v_DelRelations) )
         {
-            $Logger.info("撤销用户角色：角色关系未查到" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+            $Logger.info("撤销用户角色：角色关系未查到" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("918").setMessage("撤销用户角色：角色关系未查到");
         }
         
-        for (RoleRelaction v_Relaction : v_DelRelations)
+        for (RoleRelation v_Relation : v_DelRelations)
         {
-            if ( !this.roleRelactionService.delRelation(v_Relaction) )
+            if ( !this.roleRelationService.delRelation(v_Relation) )
             {
-                $Logger.info("撤销用户角色失败：" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+                $Logger.info("撤销用户角色失败：" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
                 return v_RetResp.setCode("919").setMessage("撤销用户角色失败");
             }
         }
         
-        $Logger.info("撤销用户角色成功" + i_RoleRelaction.getAppKey() + "：" + i_RoleRelaction.getRoleID() + "：" + i_RoleRelaction.getUserGID());
+        $Logger.info("撤销用户角色成功" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
         return v_RetResp;
     }
     

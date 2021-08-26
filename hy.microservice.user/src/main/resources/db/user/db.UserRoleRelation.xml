@@ -10,7 +10,7 @@
 
     <sqls>
     
-        <sql id="XSQL_User_UserRoleRelaction_QueryByID"> 
+        <sql id="XSQL_User_UserRoleRelation_QueryByID"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
@@ -25,14 +25,14 @@
                        ,A.updateTime 
                        ,A.createrID
                        ,A.updaterID
-                  FROM  UserRoleRelaction  A
+                  FROM  UserRoleRelation  A
                  WHERE  A.urrID  = ':urrID' 
                    AND  A.appKey = ':appKey'
                 ]]>
             </content>
             
             <result>
-                <row>org.hy.microservice.user.role.RoleRelaction</row>
+                <row>org.hy.microservice.user.role.RoleRelation</row>
                 <cfill>setter(colValue)</cfill>
             </result>
             
@@ -40,7 +40,7 @@
         
         
     
-        <sql id="XSQL_User_UserRoleRelaction_Query"> 
+        <sql id="XSQL_User_UserRoleRelation_Query"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
@@ -55,7 +55,7 @@
                        ,A.updateTime 
                        ,A.createrID
                        ,A.updaterID
-                  FROM  UserRoleRelaction  A
+                  FROM  UserRoleRelation  A
                  WHERE  A.appKey     = ':appKey'
               <[   AND  A.userGID    = ':userGID'                    ]>
               <[   AND  A.roleID     = ':roleID'                     ]>
@@ -66,7 +66,7 @@
             </content>
             
             <result>
-                <row>org.hy.microservice.user.role.RoleRelaction</row>
+                <row>org.hy.microservice.user.role.RoleRelation</row>
                 <cfill>setter(colValue)</cfill>
             </result>
             
@@ -74,13 +74,13 @@
         
         
         
-        <sql id="XSQL_User_UserRoleRelaction_Insert"> 
+        <sql id="XSQL_User_UserRoleRelation_Insert"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                INSERT  INTO UserRoleRelaction
+                INSERT  INTO UserRoleRelation
                        (
                         urrID
                        ,userGID
@@ -110,13 +110,13 @@
         
         
         
-        <sql id="XSQL_User_UserRoleRelaction_Update"> 
+        <sql id="XSQL_User_UserRoleRelation_Update"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                UPDATE  UserRoleRelaction
+                UPDATE  UserRoleRelation
                    SET  remarks    = ':remarks'
                        ,updateTime = NOW()
                        ,updaterID  = ':updaterID'
@@ -129,13 +129,13 @@
         
         
         
-        <sql id="XSQL_User_UserRoleRelaction_Delete"> 
+        <sql id="XSQL_User_UserRoleRelation_Delete"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                DELETE  FROM UserRoleRelaction
+                DELETE  FROM UserRoleRelation
                  WHERE  urrID  = ':urrID'
                    AND  appKey = ':appKey'
                 ]]>

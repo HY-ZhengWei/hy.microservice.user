@@ -10,7 +10,7 @@
 
     <sqls>
     
-        <sql id="XSQL_User_UserPermissionRelaction_QueryByID"> 
+        <sql id="XSQL_User_UserPermissionRelation_QueryByID"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
@@ -27,14 +27,14 @@
                        ,A.updateTime  
                        ,A.createrID   
                        ,A.updaterID
-                  FROM  UserPermissionRelaction  A
+                  FROM  UserPermissionRelation  A
                  WHERE  A.uprID  = ':uprID' 
                    AND  A.appKey = ':appKey'
                 ]]>
             </content>
             
             <result>
-                <row>org.hy.microservice.user.permission.PermissionRelaction</row>
+                <row>org.hy.microservice.user.permission.PermissionRelation</row>
                 <cfill>setter(colValue)</cfill>
             </result>
             
@@ -42,7 +42,7 @@
         
         
     
-        <sql id="XSQL_User_UserPermissionRelaction_Query"> 
+        <sql id="XSQL_User_UserPermissionRelation_Query"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
@@ -59,7 +59,7 @@
                        ,A.updateTime  
                        ,A.createrID   
                        ,A.updaterID 
-                  FROM  UserPermissionRelaction  A
+                  FROM  UserPermissionRelation  A
                  WHERE  A.appKey       = ':appKey'
               <[   AND  A.permissionID = ':permissionID'               ]>
               <[   AND  A.ownerID      = ':ownerID'                    ]>
@@ -72,7 +72,7 @@
             </content>
             
             <result>
-                <row>org.hy.microservice.user.permission.PermissionRelaction</row>
+                <row>org.hy.microservice.user.permission.PermissionRelation</row>
                 <cfill>setter(colValue)</cfill>
             </result>
             
@@ -80,13 +80,13 @@
         
         
         
-        <sql id="XSQL_User_UserPermissionRelaction_Insert"> 
+        <sql id="XSQL_User_UserPermissionRelation_Insert"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                INSERT  INTO UserPermissionRelaction
+                INSERT  INTO UserPermissionRelation
                        (
                         uprID
                        ,appKey
@@ -120,13 +120,13 @@
         
         
         
-        <sql id="XSQL_User_UserPermissionRelaction_Update"> 
+        <sql id="XSQL_User_UserPermissionRelation_Update"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                UPDATE  UserPermissionRelaction
+                UPDATE  UserPermissionRelation
                    SET  remarks    = ':remarks'
                        ,updateTime = NOW()
                        ,updaterID  = ':updaterID'
@@ -139,13 +139,13 @@
         
         
         
-        <sql id="XSQL_User_UserPermissionRelaction_Update_IsValid"> 
+        <sql id="XSQL_User_UserPermissionRelation_Update_IsValid"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                UPDATE  UserPermissionRelaction
+                UPDATE  UserPermissionRelation
                    SET  isValid    = isValid * -1
                        ,updateTime = NOW()
                        ,updaterID  = ':updaterID'
@@ -158,13 +158,13 @@
         
         
         
-        <sql id="XSQL_User_UserPermissionRelaction_Delete"> 
+        <sql id="XSQL_User_UserPermissionRelation_Delete"> 
         
             <dataSourceGroup ref="DSG_MS_User" />
             
             <content>
                 <![CDATA[
-                DELETE  FROM UserPermissionRelaction
+                DELETE  FROM UserPermissionRelation
                  WHERE  uprID  = ':uprID'
                    AND  appKey = ':appKey'
                 ]]>

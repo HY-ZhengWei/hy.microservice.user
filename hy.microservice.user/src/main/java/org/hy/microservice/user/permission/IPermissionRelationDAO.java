@@ -33,9 +33,9 @@ public interface IPermissionRelationDAO
      * @param i_UrrID
      * @return
      */
-    @Xsql(id="XSQL_User_UserPermissionRelaction_QueryByID" ,returnOne=true)
-    public PermissionRelaction queryByID(@Xparam(id="appKey" ,notNull=true) String i_AppKey
-                                        ,@Xparam(id="uprID"  ,notNull=true) String i_UrrID);
+    @Xsql(id="XSQL_User_UserPermissionRelation_QueryByID" ,returnOne=true)
+    public PermissionRelation queryByID(@Xparam(id="appKey" ,notNull=true) String i_AppKey
+                                       ,@Xparam(id="uprID"  ,notNull=true) String i_UrrID);
     
     
     
@@ -46,11 +46,11 @@ public interface IPermissionRelationDAO
      * @createDate  2021-08-24
      * @version     v1.0
      *
-     * @param i_PermissionRelaction
+     * @param i_PermissionRelation
      * @return
      */
-    @Xsql(id="XSQL_User_UserPermissionRelaction_QueryByID" ,returnOne=true)
-    public PermissionRelaction queryByID(@Xparam(notNulls={"appKey" ,"uprID"} ,notNull=true) PermissionRelaction i_PermissionRelaction);
+    @Xsql(id="XSQL_User_UserPermissionRelation_QueryByID" ,returnOne=true)
+    public PermissionRelation queryByID(@Xparam(notNulls={"appKey" ,"uprID"} ,notNull=true) PermissionRelation i_PermissionRelation);
     
     
     
@@ -64,11 +64,11 @@ public interface IPermissionRelationDAO
      * @createDate  2021-08-24
      * @version     v1.0
      *
-     * @param i_PermissionRelaction
+     * @param i_PermissionRelation
      * @return
      */
-    @Xsql("XSQL_User_UserPermissionRelaction_Query")
-    public List<PermissionRelaction> query(@Xparam(notNulls={"appKey"}) PermissionRelaction i_PermissionRelaction);
+    @Xsql("XSQL_User_UserPermissionRelation_Query")
+    public List<PermissionRelation> query(@Xparam(notNulls={"appKey"}) PermissionRelation i_PermissionRelation);
     
     
     
@@ -79,11 +79,11 @@ public interface IPermissionRelationDAO
      * @createDate  2021-08-24
      * @version     v1.0
      * 
-     * @param i_PermissionRelaction
+     * @param i_PermissionRelation
      * @return
      */
-    @Xsql("XSQL_User_UserPermissionRelaction_Insert")
-    public int addRelation(@Xparam(notNulls= {"appKey" ,"uprID" ,"permissionID" ,"ownerID" ,"ownerType" ,"createrID"}) PermissionRelaction i_PermissionRelaction);
+    @Xsql("XSQL_User_UserPermissionRelation_Insert")
+    public int addRelation(@Xparam(notNulls= {"appKey" ,"uprID" ,"permissionID" ,"ownerID" ,"ownerType" ,"createrID"}) PermissionRelation i_PermissionRelation);
     
     
     
@@ -94,11 +94,11 @@ public interface IPermissionRelationDAO
      * @createDate  2021-08-24
      * @version     v1.0
      * 
-     * @param i_PermissionRelaction
+     * @param i_PermissionRelation
      * @return
      */
-    @Xsql("XSQL_User_UserPermissionRelaction_Delete")
-    public int delRelation(@Xparam(notNulls= {"appKey" ,"uprID"}) PermissionRelaction i_PermissionRelaction);
+    @Xsql("XSQL_User_UserPermissionRelation_Delete")
+    public int delRelation(@Xparam(notNulls= {"appKey" ,"uprID"}) PermissionRelation i_PermissionRelation);
     
     
     
@@ -109,11 +109,11 @@ public interface IPermissionRelationDAO
      * @createDate  2021-08-24
      * @version     v1.0
      * 
-     * @param i_PermissionRelaction
+     * @param i_PermissionRelation
      * @return
      */
-    @Xsql("XSQL_User_UserPermissionRelaction_Update")
-    public int updateRelation(@Xparam(notNulls= {"appKey" ,"uprID" ,"updaterID"}) PermissionRelaction i_PermissionRelaction);
+    @Xsql("XSQL_User_UserPermissionRelation_Update")
+    public int updateRelation(@Xparam(notNulls= {"appKey" ,"uprID" ,"updaterID"}) PermissionRelation i_PermissionRelation);
     
     
     
@@ -124,10 +124,10 @@ public interface IPermissionRelationDAO
      * @createDate  2021-08-24
      * @version     v1.0
      * 
-     * @param i_PermissionRelaction
+     * @param i_PermissionRelation
      * @return
      */
-    @Xsql("XSQL_User_UserPermissionRelaction_Update_IsValid")
-    public int updateIsValid(@Xparam(notNulls= {"appKey" ,"uprID" ,"updaterID"}) PermissionRelaction i_PermissionRelaction);
+    @Xsql("XSQL_User_UserPermissionRelation_Update_IsValid")
+    public int updateIsValid(@Xparam(notNulls= {"appKey" ,"uprID" ,"updaterID"}) PermissionRelation i_PermissionRelation);
     
 }
