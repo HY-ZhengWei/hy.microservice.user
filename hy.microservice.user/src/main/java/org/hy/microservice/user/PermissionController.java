@@ -10,6 +10,8 @@ import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
 import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
+import org.hy.microservice.common.user.UserSSO;
+import org.hy.microservice.common.user.UserService;
 import org.hy.microservice.user.permission.OwnerType;
 import org.hy.microservice.user.permission.Permission;
 import org.hy.microservice.user.permission.PermissionRelation;
@@ -18,8 +20,6 @@ import org.hy.microservice.user.permission.PermissionService;
 import org.hy.microservice.user.role.RoleInfo;
 import org.hy.microservice.user.role.RoleInfoService;
 import org.hy.microservice.user.role.RoleRelationService;
-import org.hy.microservice.user.user.UserSSO;
-import org.hy.microservice.user.user.UserService;
 import org.hy.microservice.user.userInfo.UserInfo;
 import org.hy.microservice.user.userInfo.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +130,7 @@ public class PermissionController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_Permission.setCreaterID(v_User.getId());
+            i_Permission.setCreateUserID(v_User.getId());
         }
         
         if ( i_Permission == null || Help.isNull(i_Permission.getPermissionName()) )
@@ -192,7 +192,7 @@ public class PermissionController
         }
         
         
-        if ( Help.isNull(i_Permission.getCreaterID()) )
+        if ( Help.isNull(i_Permission.getCreateUserID()) )
         {
             $Logger.info("创建权限项：创建者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionCode() + "：" + i_Permission.getPermissionName());
             return v_RetResp.setCode("906").setMessage("创建权限项：创建者编号为空或不存在");
@@ -207,7 +207,7 @@ public class PermissionController
         }
         else
         {
-            UserInfo v_Creater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getCreaterID());
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getCreateUserID());
             if ( v_Creater == null )
             {
                 $Logger.info("创建权限项：创建者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionCode() + "：" + i_Permission.getPermissionName());
@@ -289,7 +289,7 @@ public class PermissionController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_Permission.setUpdaterID(v_User.getId());
+            i_Permission.setUpdateUserID(v_User.getId());
         }
         
         if ( i_Permission == null || Help.isNull(i_Permission.getPermissionID()) )
@@ -345,7 +345,7 @@ public class PermissionController
         }
         
         
-        if ( Help.isNull(i_Permission.getUpdaterID()) )
+        if ( Help.isNull(i_Permission.getUpdateUserID()) )
         {
             $Logger.info("编辑权限项：编辑者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionID() + "：" + i_Permission.getPermissionName());
             return v_RetResp.setCode("906").setMessage("编辑权限项：编辑者编号为空或不存在");
@@ -360,7 +360,7 @@ public class PermissionController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getUpdateUserID());
             if ( v_Updater == null )
             {
                 $Logger.info("编辑权限项：编辑者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionID() + "：" + i_Permission.getPermissionName());
@@ -435,7 +435,7 @@ public class PermissionController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_Permission.setUpdaterID(v_User.getId());
+            i_Permission.setUpdateUserID(v_User.getId());
         }
         
         if ( i_Permission == null || Help.isNull(i_Permission.getPermissionID()) )
@@ -450,7 +450,7 @@ public class PermissionController
             return v_RetResp.setCode("903").setMessage("删除权限项：所属系统编号为空");
         }
         
-        if ( Help.isNull(i_Permission.getUpdaterID()) )
+        if ( Help.isNull(i_Permission.getUpdateUserID()) )
         {
             $Logger.info("删除权限项：编辑者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionID());
             return v_RetResp.setCode("904").setMessage("删除权限项：编辑者编号为空或不存在");
@@ -465,7 +465,7 @@ public class PermissionController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Permission.getAppKey() ,i_Permission.getUpdateUserID());
             if ( v_Updater == null )
             {
                 $Logger.info("删除权限项：编辑者编号为空或不存在" + i_Permission.getAppKey() + "：" + i_Permission.getPermissionID());
@@ -608,7 +608,7 @@ public class PermissionController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_PermissionRelation.setCreaterID(v_User.getId());
+            i_PermissionRelation.setCreateUserID(v_User.getId());
         }
         
         if ( i_PermissionRelation == null || Help.isNull(i_PermissionRelation.getPermissionID()) )
@@ -652,7 +652,7 @@ public class PermissionController
         }
         
         
-        if ( Help.isNull(i_PermissionRelation.getCreaterID()) )
+        if ( Help.isNull(i_PermissionRelation.getCreateUserID()) )
         {
             $Logger.info("授权使用者权限：编辑者编号为空或不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
             return v_RetResp.setCode("907").setMessage("授权使用者权限：编辑者编号为空或不存在");
@@ -668,7 +668,7 @@ public class PermissionController
         }
         else
         {
-            UserInfo v_Creater = this.userInfoService.queryUserGID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getCreaterID());
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getCreateUserID());
             if ( v_Creater == null )
             {
                 $Logger.info("授权使用者权限：编辑者编号为空或不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
@@ -783,7 +783,7 @@ public class PermissionController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_PermissionRelation.setUpdaterID(v_User.getId());
+            i_PermissionRelation.setUpdateUserID(v_User.getId());
         }
         
         if ( i_PermissionRelation == null || Help.isNull(i_PermissionRelation.getPermissionID()) )
@@ -806,7 +806,7 @@ public class PermissionController
         }
         
         
-        if ( Help.isNull(i_PermissionRelation.getUpdaterID()) )
+        if ( Help.isNull(i_PermissionRelation.getUpdateUserID()) )
         {
             $Logger.info("撤销使用者权限：编辑者编号为空或不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());
             return v_RetResp.setCode("905").setMessage("撤销使用者权限：编辑者编号为空或不存在");
@@ -822,7 +822,7 @@ public class PermissionController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_PermissionRelation.getAppKey() ,i_PermissionRelation.getUpdateUserID());
             if ( v_Updater == null )
             {
                 $Logger.info("撤销使用者权限：编辑者编号为空或不存在" + i_PermissionRelation.getAppKey() + "：" + i_PermissionRelation.getPermissionID() + "：" + i_PermissionRelation.getOwnerID());

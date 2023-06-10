@@ -25,8 +25,8 @@
                        ,A.isValid     
                        ,A.createTime  
                        ,A.updateTime  
-                       ,A.createrID   
-                       ,A.updaterID
+                       ,A.createUserID   
+                       ,A.updateUserID
                   FROM  UserPermissionRelation  A
                  WHERE  A.uprID  = ':uprID' 
                    AND  A.appKey = ':appKey'
@@ -57,8 +57,8 @@
                        ,A.isValid     
                        ,A.createTime  
                        ,A.updateTime  
-                       ,A.createrID   
-                       ,A.updaterID 
+                       ,A.createUserID   
+                       ,A.updateUserID 
                   FROM  UserPermissionRelation  A
                  WHERE  A.appKey       = ':appKey'
               <[   AND  A.permissionID = ':permissionID'               ]>
@@ -97,8 +97,8 @@
                        ,isValid     
                        ,createTime  
                        ,updateTime  
-                       ,createrID   
-                       ,updaterID   
+                       ,createUserID   
+                       ,updateUserID   
                        )
                 VALUES (
                         ':uprID'
@@ -110,8 +110,8 @@
                        ,1
                        ,NOW()
                        ,NOW()
-                       ,':createrID'
-                       ,':createrID'
+                       ,':createUserID'
+                       ,':createUserID'
                        )
                 ]]>
             </content>
@@ -127,11 +127,11 @@
             <content>
                 <![CDATA[
                 UPDATE  UserPermissionRelation
-                   SET  remarks    = ':remarks'
-                       ,updateTime = NOW()
-                       ,updaterID  = ':updaterID'
-                 WHERE  uprID      = ':uprID'
-                   AND  appKey     = ':appKey'
+                   SET  remarks      = ':remarks'
+                       ,updateTime   = NOW()
+                       ,updateUserID = ':updateUserID'
+                 WHERE  uprID        = ':uprID'
+                   AND  appKey       = ':appKey'
                 ]]>
             </content>
             
@@ -146,11 +146,11 @@
             <content>
                 <![CDATA[
                 UPDATE  UserPermissionRelation
-                   SET  isValid    = isValid * -1
-                       ,updateTime = NOW()
-                       ,updaterID  = ':updaterID'
-                 WHERE  uprID      = ':uprID'
-                   AND  appKey     = ':appKey'
+                   SET  isValid      = isValid * -1
+                       ,updateTime   = NOW()
+                       ,updateUserID = ':updateUserID'
+                 WHERE  uprID        = ':uprID'
+                   AND  appKey       = ':appKey'
                 ]]>
             </content>
             

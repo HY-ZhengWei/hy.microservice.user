@@ -82,7 +82,7 @@ public interface IRoleInfoDAO
      * @return
      */
     @Xsql("XSQL_User_UserRoleInfo_Insert")
-    public int addRole(@Xparam(notNulls= {"appKey" ,"roleID" ,"roleName" ,"createrID"}) RoleInfo i_Role);
+    public int addRole(@Xparam(notNulls= {"appKey" ,"roleID" ,"roleName" ,"createUserID"}) RoleInfo i_Role);
     
     
     
@@ -112,6 +112,6 @@ public interface IRoleInfoDAO
      * @return
      */
     @Xsql("XSQL_User_UserRoleInfo_Update")
-    public int updateRole(@Xparam(notNulls= {"appKey" ,"roleID" ,"roleName" ,"updaterID"}) RoleInfo i_Role);
+    public int updateRole(@Xparam(notNulls= {"appKey" ,"roleID" ,"roleName" ,"updateUserID"}) RoleInfo i_Role);
     
 }

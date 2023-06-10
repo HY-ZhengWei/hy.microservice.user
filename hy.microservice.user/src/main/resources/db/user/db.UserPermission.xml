@@ -26,8 +26,8 @@
                        ,A.remarks
                        ,A.createTime
                        ,A.updateTime
-                       ,A.createrID
-                       ,A.updaterID
+                       ,A.createUserID
+                       ,A.updateUserID
                   FROM  UserPermission  A
                  WHERE  A.permissionID = ':permissionID' 
                    AND  A.appKey       = ':appKey'
@@ -59,8 +59,8 @@
                        ,A.remarks
                        ,A.createTime
                        ,A.updateTime
-                       ,A.createrID
-                       ,A.updaterID
+                       ,A.createUserID
+                       ,A.updateUserID
                   FROM  UserPermission  A
                  WHERE  A.appKey          = ':appKey'
                    AND  A.permissionCode  = ':permissionCode'
@@ -92,8 +92,8 @@
                        ,A.remarks
                        ,A.createTime
                        ,A.updateTime
-                       ,A.createrID
-                       ,A.updaterID
+                       ,A.createUserID
+                       ,A.updateUserID
                   FROM  UserPermission  A
                  WHERE  A.appKey          = ':appKey'
               <[   AND  A.isSystem        = ':isSystem'                            ]>
@@ -132,8 +132,8 @@
                        ,remarks
                        ,createTime
                        ,updateTime
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         ':permissionID'
@@ -146,8 +146,8 @@
                        ,':remarks'
                        ,NOW()
                        ,NOW()
-                       ,':createrID'
-                       ,':createrID'
+                       ,':createUserID'
+                       ,':createUserID'
                        )
                 ]]>
             </content>
@@ -168,7 +168,7 @@
                         permissionLevel = ':permissionLevel'
                         remarks         = ':remarks'
                        ,updateTime      = NOW()
-                       ,updaterID       = ':updaterID'
+                       ,updateUserID    = ':updateUserID'
                  WHERE  permissionID    = ':permissionID'
                    ANd  isSystem        = 0
                    AND  appKey          = ':appKey'

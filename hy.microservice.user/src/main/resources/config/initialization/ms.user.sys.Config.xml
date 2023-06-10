@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+
+    <import name="xconfig"         class="java.util.ArrayList" />
+    <import name="xparam"          class="java.util.Hashtable" />
+    <import name="item"            class="org.hy.common.app.Param" />
+    
+    
+    
+    <!-- 系统配置参数信息 -->
+    <xconfig>
+
+        <xparam id="SYSParam_MS_User" key="name">
+        
+            <item id="MS_User_ProjectName" this="MS_Common_ProjectName">
+                <name>MS_User_ProjectName</name>
+                <value>hy.microservice.user</value>
+                <comment>项目名称，开发测试时使用</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <item id="MS_User_ServiceName" this="MS_Common_ServiceName">
+                <name>MS_User_ServiceName</name>
+                <value>msUser</value>
+                <comment>服务名称，产品运维时使用</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <item id="MS_User_Analyses_Password" this="MS_Common_Analyses_Password">
+                <name>MS_User_Analyses_Password</name>
+                <value encrypt="org.hy.common.StringHelp">msuser@1qaz!QAZ</value>
+                <comment>分析中心的访问密码</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <!-- 停用父项目的数据库初始化 -->
+            <item id="IsInitDSG_MS_Common" this="IsInitDSG_MS_Common">
+                <name>IsInitDSG_MS_Common</name>
+                <value>停用</value>
+                <comment>是否初始化数据库连接池组。如果不在内部初始化，请在外部预先初始化好</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <!-- 启用本项目的数据库初始化 -->
+            <item id="IsInitDSG_MS_User">
+                <name>IsInitDSG_MS_User</name>
+                <value>启用</value>
+                <comment>是否初始化数据库连接池组。如果不在内部初始化，请在外部预先初始化好</comment>
+            </item>
+            
+            
+            <item id="IsCreateDB_MS_User" this="IsCreateDB_MS_Common">
+                <name>IsCreateDB_MS_User</name>
+                <value>启用</value>
+                <comment>是否自动创建数据库对象</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <item id="MS_User_IsCheckToken" this="MS_Common_IsCheckToken">
+                <name>MS_User_IsCheckToken</name>
+                <value>false</value>
+                <comment>是否验证用户登录的票据</comment>
+                <onlyRead>true</onlyRead>
+            </item>
+            
+            
+            <item id="MS_User_CheckIllegalChar">
+                <name>MS_User_CheckIllegalChar</name>
+                <value><![CDATA['-"-,-<- ->-(-)-\-?-%-*]]></value>
+                <comment>非法字符（用横杠分割）</comment>
+            </item>
+            
+            
+            <item id="MS_User_AccountMaxLen">
+                <name>MS_User_AccountMaxLen</name>
+                <value>64</value>
+                <comment>用户登录账号的最大长度</comment>
+            </item>
+            
+            
+            <item id="MS_User_LoginLockMaxCount">
+                <name>MS_User_LoginLockMaxCount</name>
+                <value>5</value>
+                <comment>用户登录失败多少次后，锁定用户</comment>
+            </item>
+            
+            
+            <item id="MS_User_LoginLockTimeLen">
+                <name>MS_User_LoginLockTimeLen</name>
+                <value>5</value>
+                <comment>用户登录失败后的锁定时长(单位：分钟)</comment>
+            </item>
+            
+        </xparam>
+        
+    </xconfig>
+    
+</config>

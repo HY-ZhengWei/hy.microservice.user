@@ -29,8 +29,8 @@
                        ,remarks
                        ,createTime
                        ,updateTime
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         'UP-Role-CUD'
@@ -59,8 +59,8 @@
                        ,remarks
                        ,createTime
                        ,updateTime
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         'UP-Role-R'
@@ -89,8 +89,8 @@
                        ,remarks
                        ,createTime
                        ,updateTime
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         'UP-User-C'
@@ -119,8 +119,8 @@
                        ,remarks
                        ,createTime
                        ,updateTime
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         'UP-User-R'
@@ -163,8 +163,8 @@
                 ,remarks         VARCHAR(500)                       COMMENT '备注说明'
                 ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
                 ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
-                ,createrID       VARCHAR(64)     NOT NULL           COMMENT '创建者的用户全域编号'
-                ,updaterID       VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
+                ,createUserID    VARCHAR(64)     NOT NULL           COMMENT '创建者的用户全域编号'
+                ,updateUserID    VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
 
                 ALTER TABLE UserPermission ADD CONSTRAINT PK_UserPermission PRIMARY KEY (permissionID);/

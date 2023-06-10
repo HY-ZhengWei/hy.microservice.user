@@ -28,8 +28,8 @@
                        ,isValid
                        ,createTime
                        ,updateTime
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         'UPR0001'
@@ -70,8 +70,8 @@
                 ,isValid         INT(1)          NOT NULL DEFAULT 1 COMMENT '有效标记（1有效；-1无效）'
                 ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
                 ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
-                ,createrID       VARCHAR(64)     NOT NULL           COMMENT '创建者的用户全域编号'
-                ,updaterID       VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
+                ,createUserID    VARCHAR(64)     NOT NULL           COMMENT '创建者的用户全域编号'
+                ,updateUserID    VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
 
                 ALTER TABLE UserPermissionRelation ADD CONSTRAINT PK_UserPermissionRelation PRIMARY KEY (uprID);/

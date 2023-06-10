@@ -10,12 +10,12 @@ import org.hy.common.StringHelp;
 import org.hy.common.app.Param;
 import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
+import org.hy.microservice.common.user.UserSSO;
+import org.hy.microservice.common.user.UserService;
 import org.hy.microservice.user.role.RoleInfo;
 import org.hy.microservice.user.role.RoleInfoService;
 import org.hy.microservice.user.role.RoleRelation;
 import org.hy.microservice.user.role.RoleRelationService;
-import org.hy.microservice.user.user.UserSSO;
-import org.hy.microservice.user.user.UserService;
 import org.hy.microservice.user.userInfo.UserInfo;
 import org.hy.microservice.user.userInfo.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +116,7 @@ public class RoleController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_CreateRole.setCreaterID(v_User.getId());
+            i_CreateRole.setCreateUserID(v_User.getId());
         }
         
         if ( i_CreateRole == null || Help.isNull(i_CreateRole.getRoleName()) )
@@ -147,7 +147,7 @@ public class RoleController
             }
         }
         
-        if ( Help.isNull(i_CreateRole.getCreaterID()) )
+        if ( Help.isNull(i_CreateRole.getCreateUserID()) )
         {
             $Logger.info("创建角色：创建者编号为空或不存在" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
             return v_RetResp.setCode("906").setMessage("创建角色：创建者编号为空或不存在");
@@ -162,7 +162,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Creater = this.userInfoService.queryUserGID(i_CreateRole.getAppKey() ,i_CreateRole.getCreaterID());
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_CreateRole.getAppKey() ,i_CreateRole.getCreateUserID());
             if ( v_Creater == null )
             {
                 $Logger.info("创建角色：创建者编号为空或不存在" + i_CreateRole.getAppKey() + "：" + i_CreateRole.getRoleName());
@@ -235,7 +235,7 @@ public class RoleController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_Role.setUpdaterID(v_User.getId());
+            i_Role.setUpdateUserID(v_User.getId());
         }
         
         if ( i_Role == null || Help.isNull(i_Role.getRoleID()) )
@@ -272,7 +272,7 @@ public class RoleController
             }
         }
         
-        if ( Help.isNull(i_Role.getUpdaterID()) )
+        if ( Help.isNull(i_Role.getUpdateUserID()) )
         {
             $Logger.info("编辑角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
             return v_RetResp.setCode("907").setMessage("编辑角色：编辑者编号为空或不存在");
@@ -287,7 +287,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getAppKey() ,i_Role.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getAppKey() ,i_Role.getUpdateUserID());
             if ( v_Updater == null )
             {
                 $Logger.info("编辑角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID() + "：" + i_Role.getRoleName());
@@ -360,7 +360,7 @@ public class RoleController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_Role.setUpdaterID(v_User.getId());
+            i_Role.setUpdateUserID(v_User.getId());
         }
         
         if ( i_Role == null || Help.isNull(i_Role.getRoleID()) )
@@ -375,7 +375,7 @@ public class RoleController
             return v_RetResp.setCode("903").setMessage("删除角色：所属系统编号为空");
         }
         
-        if ( Help.isNull(i_Role.getUpdaterID()) )
+        if ( Help.isNull(i_Role.getUpdateUserID()) )
         {
             $Logger.info("删除角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
             return v_RetResp.setCode("904").setMessage("删除角色：编辑者编号为空或不存在");
@@ -390,7 +390,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getAppKey() ,i_Role.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_Role.getAppKey() ,i_Role.getUpdateUserID());
             if ( v_Updater == null )
             {
                 $Logger.info("删除角色：编辑者编号为空或不存在" + i_Role.getAppKey() + "：" + i_Role.getRoleID());
@@ -533,7 +533,7 @@ public class RoleController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_RoleRelation.setCreaterID(v_User.getId());
+            i_RoleRelation.setCreateUserID(v_User.getId());
         }
         
         if ( i_RoleRelation == null || Help.isNull(i_RoleRelation.getRoleID()) )
@@ -566,7 +566,7 @@ public class RoleController
         }
         
         
-        if ( Help.isNull(i_RoleRelation.getCreaterID()) )
+        if ( Help.isNull(i_RoleRelation.getCreateUserID()) )
         {
             $Logger.info("授权用户角色：编辑者编号为空或不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("906").setMessage("授权用户角色：编辑者编号为空或不存在");
@@ -582,7 +582,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Creater = this.userInfoService.queryUserGID(i_RoleRelation.getAppKey() ,i_RoleRelation.getCreaterID());
+            UserInfo v_Creater = this.userInfoService.queryUserGID(i_RoleRelation.getAppKey() ,i_RoleRelation.getCreateUserID());
             if ( v_Creater == null )
             {
                 $Logger.info("授权用户角色：编辑者编号为空或不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
@@ -695,7 +695,7 @@ public class RoleController
             }
             
             // 当验证用户登录会话时，谁登录创建者即是谁
-            i_RoleRelation.setUpdaterID(v_User.getId());
+            i_RoleRelation.setUpdateUserID(v_User.getId());
         }
         
         if ( i_RoleRelation == null || Help.isNull(i_RoleRelation.getRoleID()) )
@@ -718,7 +718,7 @@ public class RoleController
         }
         
         
-        if ( Help.isNull(i_RoleRelation.getUpdaterID()) )
+        if ( Help.isNull(i_RoleRelation.getUpdateUserID()) )
         {
             $Logger.info("撤销用户角色：编辑者编号为空或不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());
             return v_RetResp.setCode("905").setMessage("撤销用户角色：编辑者编号为空或不存在");
@@ -734,7 +734,7 @@ public class RoleController
         }
         else
         {
-            UserInfo v_Updater = this.userInfoService.queryUserGID(i_RoleRelation.getAppKey() ,i_RoleRelation.getUpdaterID());
+            UserInfo v_Updater = this.userInfoService.queryUserGID(i_RoleRelation.getAppKey() ,i_RoleRelation.getUpdateUserID());
             if ( v_Updater == null )
             {
                 $Logger.info("撤销用户角色：编辑者编号为空或不存在" + i_RoleRelation.getAppKey() + "：" + i_RoleRelation.getRoleID() + "：" + i_RoleRelation.getUserGID());

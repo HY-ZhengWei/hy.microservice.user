@@ -101,7 +101,7 @@ public interface IPermissionDAO
      * @return
      */
     @Xsql("XSQL_User_UserPermission_Insert")
-    public int addPermission(@Xparam(notNulls= {"appKey" ,"permissionID" ,"permissionCode" ,"permissionName" ,"createrID"}) Permission i_Permission);
+    public int addPermission(@Xparam(notNulls= {"appKey" ,"permissionID" ,"permissionCode" ,"permissionName" ,"createUserID"}) Permission i_Permission);
     
     
     
@@ -135,6 +135,6 @@ public interface IPermissionDAO
      * @return
      */
     @Xsql("XSQL_User_UserPermission_Update")
-    public int updatePermission(@Xparam(notNulls= {"appKey" ,"permissionID" ,"permissionName" ,"updaterID"}) Permission i_Permission);
+    public int updatePermission(@Xparam(notNulls= {"appKey" ,"permissionID" ,"permissionName" ,"updateUserID"}) Permission i_Permission);
     
 }

@@ -12,10 +12,10 @@ import org.hy.common.app.Param;
 import org.hy.common.license.AppKey;
 import org.hy.common.xml.log.Logger;
 import org.hy.microservice.common.BaseResponse;
+import org.hy.microservice.common.cache.ShareCache;
+import org.hy.microservice.common.user.TokenInfo;
+import org.hy.microservice.common.user.UserService;
 import org.hy.microservice.user.account.UserAccount;
-import org.hy.microservice.user.common.DatasPool;
-import org.hy.microservice.user.user.TokenInfo;
-import org.hy.microservice.user.user.UserService;
 import org.hy.microservice.user.userInfo.UserInfo;
 import org.hy.microservice.user.userInfo.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,8 +82,8 @@ public class LoginController
     private Param isCheckToken;
     
     @Autowired
-    @Qualifier("DatasPool")
-    private DatasPool datasPool;
+    @Qualifier("ShareCache")
+    private ShareCache shareCache;
     
     @Autowired
     @Qualifier("UserService")
@@ -327,7 +327,7 @@ public class LoginController
             String v_SessionID = i_Request.getSession().getId();
             if ( !Help.isNull(v_SessionID) )
             {
-                Integer v_LCount = (Integer)datasPool.get($DP_SessionID + v_SessionID);
+                Integer v_LCount = (Integer)shareCache.get($DP_SessionID + v_SessionID);
                 
                 if ( v_LCount != null && v_LCount >= v_LoginLockMaxCount )
                 {
@@ -338,7 +338,7 @@ public class LoginController
             // 账号尝试登录N次后，不允许再连续登录
             if ( !Help.isNull(i_LoginUser.getLoginAccount()) )
             {
-                Integer v_LCount = (Integer)datasPool.get($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount());
+                Integer v_LCount = (Integer)shareCache.get($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount());
                 
                 if ( v_LCount != null && v_LCount >= v_LoginLockMaxCount )
                 {
@@ -349,7 +349,7 @@ public class LoginController
             // OpenID尝试登录N次后，不允许再连续登录
             if ( !Help.isNull(i_LoginUser.getOpenID()) )
             {
-                Integer v_LCount = (Integer)datasPool.get($DP_LoginAccount + i_LoginUser.getOpenID());
+                Integer v_LCount = (Integer)shareCache.get($DP_LoginAccount + i_LoginUser.getOpenID());
                 
                 if ( v_LCount != null && v_LCount >= v_LoginLockMaxCount )
                 {
@@ -390,15 +390,15 @@ public class LoginController
             String v_SessionID = i_Request.getSession().getId();
             if ( !Help.isNull(v_SessionID) )
             {
-                Integer v_LCount = (Integer)datasPool.get($DP_SessionID + v_SessionID);
+                Integer v_LCount = (Integer)shareCache.get($DP_SessionID + v_SessionID);
                 
                 if ( v_LCount == null || v_LCount <= 0 )
                 {
-                    datasPool.put($DP_SessionID + v_SessionID ,1            ,60 * v_LoginLockTimeLen);
+                    shareCache.put($DP_SessionID + v_SessionID ,1            ,60 * v_LoginLockTimeLen);
                 }
                 else if ( v_LCount < v_LoginLockMaxCount )
                 {
-                    datasPool.put($DP_SessionID + v_SessionID ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
+                    shareCache.put($DP_SessionID + v_SessionID ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
                 }
                 else
                 {
@@ -409,15 +409,15 @@ public class LoginController
             // 账号尝试登录三次后，不允许再连续登录
             if ( !Help.isNull(i_LoginUser.getLoginAccount()) )
             {
-                Integer v_LCount = (Integer)datasPool.get($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount());
+                Integer v_LCount = (Integer)shareCache.get($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount());
                 
                 if ( v_LCount == null || v_LCount <= 0 )
                 {
-                    datasPool.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,1            ,60 * v_LoginLockTimeLen);
+                    shareCache.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,1            ,60 * v_LoginLockTimeLen);
                 }
                 else if ( v_LCount < v_LoginLockMaxCount )
                 {
-                    datasPool.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
+                    shareCache.put($DP_LoginAccount + i_LoginUser.getAppID() + "_" + i_LoginUser.getLoginAccount() ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
                 }
                 else
                 {
@@ -428,15 +428,15 @@ public class LoginController
             // OpenID尝试登录N次后，不允许再连续登录
             if ( !Help.isNull(i_LoginUser.getOpenID()) )
             {
-                Integer v_LCount = (Integer)datasPool.get($DP_OpenID + i_LoginUser.getOpenID());
+                Integer v_LCount = (Integer)shareCache.get($DP_OpenID + i_LoginUser.getOpenID());
                 
                 if ( v_LCount == null || v_LCount <= 0 )
                 {
-                    datasPool.put($DP_OpenID + i_LoginUser.getOpenID() ,1            ,60 * v_LoginLockTimeLen);
+                    shareCache.put($DP_OpenID + i_LoginUser.getOpenID() ,1            ,60 * v_LoginLockTimeLen);
                 }
                 else if ( v_LCount < v_LoginLockMaxCount )
                 {
-                    datasPool.put($DP_OpenID + i_LoginUser.getOpenID() ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
+                    shareCache.put($DP_OpenID + i_LoginUser.getOpenID() ,v_LCount + 1 ,60 * v_LoginLockTimeLen);
                 }
                 else
                 {

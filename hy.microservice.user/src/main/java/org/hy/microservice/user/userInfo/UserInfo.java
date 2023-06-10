@@ -1,8 +1,8 @@
 package org.hy.microservice.user.userInfo;
 
 import org.hy.common.Date;
-import org.hy.microservice.user.user.TokenInfo;
-import org.hy.microservice.user.user.UserSSO;
+import org.hy.microservice.common.user.TokenInfo;
+import org.hy.microservice.common.user.UserSSO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

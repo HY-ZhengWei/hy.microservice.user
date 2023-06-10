@@ -25,8 +25,8 @@
                        ,remarks       
                        ,createTime   
                        ,updateTime  
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         'R0000'
@@ -48,8 +48,8 @@
                        ,remarks       
                        ,createTime   
                        ,updateTime  
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         'R0001'
@@ -84,8 +84,8 @@
                 ,remarks         VARCHAR(500)                       COMMENT '备注说明'
                 ,createTime      DATETIME        NOT NULL           COMMENT '创建时间'
                 ,updateTime      DATETIME        NOT NULL           COMMENT '修改时间'
-                ,createrID       VARCHAR(64)     NOT NULL           COMMENT '创建者的用户全域编号'
-                ,updaterID       VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
+                ,createUserID    VARCHAR(64)     NOT NULL           COMMENT '创建者的用户全域编号'
+                ,updateUserID    VARCHAR(64)     NOT NULL           COMMENT '更新者的用户全域编号'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;/
 
                 ALTER TABLE UserRoleInfo ADD CONSTRAINT PK_UserRoleInfo PRIMARY KEY (roleID ,appKey);/

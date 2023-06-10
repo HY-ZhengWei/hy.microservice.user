@@ -83,7 +83,7 @@ public interface IPermissionRelationDAO
      * @return
      */
     @Xsql("XSQL_User_UserPermissionRelation_Insert")
-    public int addRelation(@Xparam(notNulls= {"appKey" ,"uprID" ,"permissionID" ,"ownerID" ,"ownerType" ,"createrID"}) PermissionRelation i_PermissionRelation);
+    public int addRelation(@Xparam(notNulls= {"appKey" ,"uprID" ,"permissionID" ,"ownerID" ,"ownerType" ,"createUserID"}) PermissionRelation i_PermissionRelation);
     
     
     
@@ -113,7 +113,7 @@ public interface IPermissionRelationDAO
      * @return
      */
     @Xsql("XSQL_User_UserPermissionRelation_Update")
-    public int updateRelation(@Xparam(notNulls= {"appKey" ,"uprID" ,"updaterID"}) PermissionRelation i_PermissionRelation);
+    public int updateRelation(@Xparam(notNulls= {"appKey" ,"uprID" ,"updateUserID"}) PermissionRelation i_PermissionRelation);
     
     
     
@@ -128,6 +128,6 @@ public interface IPermissionRelationDAO
      * @return
      */
     @Xsql("XSQL_User_UserPermissionRelation_Update_IsValid")
-    public int updateIsValid(@Xparam(notNulls= {"appKey" ,"uprID" ,"updaterID"}) PermissionRelation i_PermissionRelation);
+    public int updateIsValid(@Xparam(notNulls= {"appKey" ,"uprID" ,"updateUserID"}) PermissionRelation i_PermissionRelation);
     
 }

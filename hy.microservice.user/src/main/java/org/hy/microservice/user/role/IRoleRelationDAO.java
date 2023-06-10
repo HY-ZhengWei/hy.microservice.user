@@ -82,7 +82,7 @@ public interface IRoleRelationDAO
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Insert")
-    public int addRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"userGID" ,"roleID" ,"createrID"}) RoleRelation i_RoleRelation);
+    public int addRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"userGID" ,"roleID" ,"createUserID"}) RoleRelation i_RoleRelation);
     
     
     
@@ -112,6 +112,6 @@ public interface IRoleRelationDAO
      * @return
      */
     @Xsql("XSQL_User_UserRoleRelation_Update")
-    public int updateRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"updaterID"}) RoleRelation i_RoleRelation);
+    public int updateRelation(@Xparam(notNulls= {"appKey" ,"urrID" ,"updateUserID"}) RoleRelation i_RoleRelation);
     
 }

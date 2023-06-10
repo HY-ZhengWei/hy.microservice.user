@@ -23,8 +23,8 @@
                        ,A.remarks       
                        ,A.createTime   
                        ,A.updateTime 
-                       ,A.createrID
-                       ,A.updaterID
+                       ,A.createUserID
+                       ,A.updateUserID
                   FROM  UserRoleRelation  A
                  WHERE  A.urrID  = ':urrID' 
                    AND  A.appKey = ':appKey'
@@ -53,8 +53,8 @@
                        ,A.remarks       
                        ,A.createTime   
                        ,A.updateTime 
-                       ,A.createrID
-                       ,A.updaterID
+                       ,A.createUserID
+                       ,A.updateUserID
                   FROM  UserRoleRelation  A
                  WHERE  A.appKey     = ':appKey'
               <[   AND  A.userGID    = ':userGID'                    ]>
@@ -89,8 +89,8 @@
                        ,remarks       
                        ,createTime   
                        ,updateTime  
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         ':urrID'
@@ -100,8 +100,8 @@
                        ,':remarks'
                        ,NOW()
                        ,NOW()
-                       ,':createrID'
-                       ,':createrID'
+                       ,':createUserID'
+                       ,':createUserID'
                        )
                 ]]>
             </content>
@@ -117,11 +117,11 @@
             <content>
                 <![CDATA[
                 UPDATE  UserRoleRelation
-                   SET  remarks    = ':remarks'
-                       ,updateTime = NOW()
-                       ,updaterID  = ':updaterID'
-                 WHERE  urrID      = ':urrID'
-                   AND  appKey     = ':appKey'
+                   SET  remarks      = ':remarks'
+                       ,updateTime   = NOW()
+                       ,updateUserID = ':updateUserID'
+                 WHERE  urrID        = ':urrID'
+                   AND  appKey       = ':appKey'
                 ]]>
             </content>
             

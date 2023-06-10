@@ -22,8 +22,8 @@
                        ,A.remarks       
                        ,A.createTime   
                        ,A.updateTime 
-                       ,A.createrID
-                       ,A.updaterID
+                       ,A.createUserID
+                       ,A.updateUserID
                   FROM  UserRoleInfo  A
                  WHERE  A.appKey      = ':appKey'
               <[   AND  A.roleID      = ':roleID'                      ]>
@@ -55,8 +55,8 @@
                        ,remarks       
                        ,createTime   
                        ,updateTime  
-                       ,createrID
-                       ,updaterID
+                       ,createUserID
+                       ,updateUserID
                        )
                 VALUES (
                         ':roleID'
@@ -65,8 +65,8 @@
                        ,':remarks'
                        ,NOW()
                        ,NOW()
-                       ,':createrID'
-                       ,':createrID'
+                       ,':createUserID'
+                       ,':createUserID'
                        )
                 ]]>
             </content>
@@ -82,12 +82,12 @@
             <content>
                 <![CDATA[
                 UPDATE  UserRoleInfo
-                   SET  roleName   = ':roleName'
-                       ,remarks    = ':remarks'
-                       ,updateTime = NOW()
-                       ,updaterID  = ':updaterID'
-                 WHERE  appKey     = ':appKey'
-                   AND  roleID     = ':roleID'
+                   SET  roleName     = ':roleName'
+                       ,remarks      = ':remarks'
+                       ,updateTime   = NOW()
+                       ,updateUserID = ':updateUserID'
+                 WHERE  appKey       = ':appKey'
+                   AND  roleID       = ':roleID'
                 ]]>
             </content>
             
