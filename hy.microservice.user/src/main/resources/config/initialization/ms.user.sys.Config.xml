@@ -31,7 +31,7 @@
             
             <item id="MS_User_Analyses_Password" this="MS_Common_Analyses_Password">
                 <name>MS_User_Analyses_Password</name>
-                <value encrypt="org.hy.common.StringHelp">msuser@1qaz!QAZ</value>
+                <value encrypt="org.hy.common.StringHelp">encrypt:XpXlSOqMWU4eOSB2b1/oyQ==</value>
                 <comment>分析中心的访问密码</comment>
                 <onlyRead>true</onlyRead>
             </item>
