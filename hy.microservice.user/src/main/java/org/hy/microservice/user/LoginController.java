@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Controller
 @RestController
-@RequestMapping("user")
+@RequestMapping(value="user" ,name="用户登录")
 public class LoginController
 {
     private static final Logger $Logger          = new Logger(LoginController.class);
@@ -107,7 +107,7 @@ public class LoginController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="code" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="获取临时票据" ,value="code" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<String> code(@RequestParam(value="appKey" ,required=false) String i_AppKey
                                     ,HttpServletRequest  i_Request
@@ -161,7 +161,7 @@ public class LoginController
      *                      登录失败时，
      *                         1. 记录一定时间内的失败次数，防止暴力破解
      */
-    @RequestMapping(value="loginWeiXin" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="微信登录" ,value="loginWeiXin" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<UserInfo> loginWeiXin(@RequestParam(value="code"   ,required=false) String i_Code
                                              ,@RequestParam(value="appKey" ,required=false) String i_AppKey

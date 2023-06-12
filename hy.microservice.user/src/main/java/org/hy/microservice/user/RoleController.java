@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Controller
 @RestController
-@RequestMapping("role")
+@RequestMapping(value="role" ,name="角色管理")
 public class RoleController
 {
     
@@ -86,7 +86,7 @@ public class RoleController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="addRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="创建角色" ,value="addRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<RoleInfo> addRole(@RequestParam(value="token" ,required=false) String i_Token
                                          ,@RequestBody RoleInfo i_CreateRole
@@ -205,7 +205,7 @@ public class RoleController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="editRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="编辑角色" ,value="editRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<String> editRole(@RequestParam(value="token" ,required=false) String i_Token
                                         ,@RequestBody RoleInfo i_Role
@@ -330,7 +330,7 @@ public class RoleController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="delRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="删除角色" ,value="delRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<String> delRole(@RequestParam(value="token" ,required=false) String i_Token
                                        ,@RequestBody RoleInfo i_Role
@@ -433,7 +433,7 @@ public class RoleController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="list" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="查询角色" ,value="list" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<List<RoleInfo>> query(@RequestParam(value="token" ,required=false) String i_Token
                                              ,@RequestBody RoleInfo i_Role
@@ -503,7 +503,7 @@ public class RoleController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="grantRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="角色授权" ,value="grantRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<RoleRelation> grantRole(@RequestParam(value="token" ,required=false) String i_Token
                                                 ,@RequestBody RoleRelation i_RoleRelation
@@ -665,7 +665,7 @@ public class RoleController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="revokeRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="角色销权" ,value="revokeRole" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<RoleRelation> revokeRole(@RequestParam(value="token" ,required=false) String i_Token
                                                  ,@RequestBody RoleRelation i_RoleRelation

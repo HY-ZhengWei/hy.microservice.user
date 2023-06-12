@@ -62,7 +62,7 @@ public interface IUserInfoDAO
      * @return
      */
     @Xsql("GXSQL_User_UserInfo_Insert_CreateUser")
-    public boolean createUser(@Xparam(notNulls={"appKey" ,"id" ,"userName" ,"password" ,"createUserID"}) UserInfo i_User);
+    public boolean createUser(@Xparam(notNulls={"appKey" ,"id" ,"userName" ,"password"}) UserInfo i_User);
     
     
     
@@ -77,6 +77,6 @@ public interface IUserInfoDAO
      * @return
      */
     @Xsql("XSQL_User_UserInfo_Update_OpenID")
-    public int bindingOpenID(@Xparam(notNulls={"appKey" ,"id" ,"openID" ,"updateUserID"}) UserInfo i_User);
+    public int bindingOpenID(@Xparam(notNulls={"appKey" ,"id" ,"openID"}) UserInfo i_User);
     
 }

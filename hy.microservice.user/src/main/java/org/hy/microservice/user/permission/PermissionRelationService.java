@@ -17,6 +17,7 @@ import org.hy.common.xml.log.Logger;
  * @createDate  2021-08-26
  * @version     v1.0
  */
+@Xjava
 public class PermissionRelationService
 {
     

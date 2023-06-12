@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Controller
 @RestController
-@RequestMapping("user")
+@RequestMapping(value="user" ,name="用户管理")
 public class UserController
 {
     
@@ -78,7 +78,7 @@ public class UserController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="createUser" ,produces=MediaType.APPLICATION_JSON_VALUE ,method= {RequestMethod.POST})
+    @RequestMapping(name="创建用户" ,value="createUser" ,produces=MediaType.APPLICATION_JSON_VALUE ,method= {RequestMethod.POST})
     @ResponseBody
     public BaseResponse<UserInfo> createUser(@RequestParam(value="token" ,required=false) String i_Token
                                             ,@RequestBody UserInfo i_CreateUser

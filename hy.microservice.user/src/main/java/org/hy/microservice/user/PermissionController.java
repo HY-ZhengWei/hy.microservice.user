@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Controller
 @RestController
-@RequestMapping("permission")
+@RequestMapping(value="permission" ,name="权限项")
 public class PermissionController
 {
     
@@ -100,7 +100,7 @@ public class PermissionController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="addPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="添加权限项" ,value="addPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<Permission> addPermission(@RequestParam(value="token" ,required=false) String i_Token
                                                  ,@RequestBody Permission i_Permission
@@ -259,7 +259,7 @@ public class PermissionController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="editPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="编辑权限项" ,value="editPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<String> editPermission(@RequestParam(value="token" ,required=false) String i_Token
                                               ,@RequestBody Permission i_Permission
@@ -405,7 +405,7 @@ public class PermissionController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="delPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="删除权限项" ,value="delPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<String> delPermission(@RequestParam(value="token" ,required=false) String i_Token
                                              ,@RequestBody Permission i_Permission
@@ -508,7 +508,7 @@ public class PermissionController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="list" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="查询权限项" ,value="list" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<List<Permission>> query(@RequestParam(value="token" ,required=false) String i_Token
                                                ,@RequestBody Permission i_Permission
@@ -578,7 +578,7 @@ public class PermissionController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="grantPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="授权使用者权限" ,value="grantPermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<PermissionRelation> grantPermission(@RequestParam(value="token" ,required=false) String i_Token
                                                             ,@RequestBody PermissionRelation i_PermissionRelation
@@ -753,7 +753,7 @@ public class PermissionController
      * @param i_Response
      * @return
      */
-    @RequestMapping(value="revokePermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(name="销权使用者权限" ,value="revokePermission" ,produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public BaseResponse<PermissionRelation> revokePermission(@RequestParam(value="token" ,required=false) String i_Token
                                                              ,@RequestBody PermissionRelation i_PermissionRelation
